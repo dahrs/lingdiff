@@ -1,0 +1,23 @@
+[project]
+name = "lingdiff"
+version = "0.1.0"
+description = "Offline data pipeline that builds per-language linguistic profiles for the lingdiff comparison site"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2",
+    "requests>=2.31",
+    "pycldf>=1.37",
+    "lang2vec>=1.1",
+    "panphon>=0.20",
+    "anthropic>=0.40",
+    "rapidfuzz>=3.9",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "N", "C4"]
+
+[tool.mypy]
+strict = true

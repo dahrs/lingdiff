@@ -1,0 +1,190 @@
+{
+  "iso639_3": "cmn",
+  "glottocode": "mand1415",
+  "name": "Mandarin",
+  "english_name": "Mandarin",
+  "classification": {
+    "path": [
+      {
+        "name": "Sino-Tibetan"
+      },
+      {
+        "name": "Chinese"
+      },
+      {
+        "name": "Mandarin",
+        "glottocode": "mand1415"
+      }
+    ]
+  },
+  "phonology": {
+    "phonemes": [
+      "f",
+      "j",
+      "k",
+      "kʰ",
+      "l",
+      "m",
+      "n",
+      "p",
+      "pʰ",
+      "s",
+      "t",
+      "ts",
+      "tsʰ",
+      "tɕ",
+      "tɕʰ",
+      "tʰ",
+      "t̠ʃ",
+      "t̠ʃ̺ʰ",
+      "w",
+      "x",
+      "ŋ",
+      "ɕ",
+      "ɹ",
+      "ʃ̺",
+      "˦",
+      "˦˨",
+      "˧˦",
+      "˧˨˧",
+      "a",
+      "ai",
+      "au",
+      "ei",
+      "i",
+      "ia",
+      "iau",
+      "ie",
+      "iou",
+      "iu",
+      "ou",
+      "u",
+      "ua",
+      "uai",
+      "uei",
+      "uo",
+      "uə",
+      "y",
+      "ye",
+      "ə",
+      "ɤ"
+    ],
+    "source_inventory_id": 1047
+  },
+  "syntax": {
+    "features": [
+      {
+        "wals_code": "81A",
+        "name": "Order of Subject, Object and Verb",
+        "value": "SVO"
+      },
+      {
+        "wals_code": "82A",
+        "name": "Order of Subject and Verb",
+        "value": "SV"
+      },
+      {
+        "wals_code": "83A",
+        "name": "Order of Object and Verb",
+        "value": "VO"
+      },
+      {
+        "wals_code": "84A",
+        "name": "Order of Object, Oblique, and Verb",
+        "value": "XVO"
+      },
+      {
+        "wals_code": "85A",
+        "name": "Order of Adposition and Noun Phrase",
+        "value": "No dominant order"
+      },
+      {
+        "wals_code": "86A",
+        "name": "Order of Genitive and Noun",
+        "value": "Genitive-Noun"
+      },
+      {
+        "wals_code": "87A",
+        "name": "Order of Adjective and Noun",
+        "value": "Adjective-Noun"
+      },
+      {
+        "wals_code": "88A",
+        "name": "Order of Demonstrative and Noun",
+        "value": "Demonstrative-Noun"
+      },
+      {
+        "wals_code": "89A",
+        "name": "Order of Numeral and Noun",
+        "value": "Numeral-Noun"
+      },
+      {
+        "wals_code": "90A",
+        "name": "Order of Relative Clause and Noun",
+        "value": "Relative clause-Noun"
+      },
+      {
+        "wals_code": "91A",
+        "name": "Order of Degree Word and Adjective",
+        "value": "Degree word-Adjective"
+      },
+      {
+        "wals_code": "95A",
+        "name": "Relationship between the Order of Object and Verb and the Order of Adposition and Noun Phrase",
+        "value": "Other"
+      },
+      {
+        "wals_code": "96A",
+        "name": "Relationship between the Order of Object and Verb and the Order of Relative Clause and Noun",
+        "value": "VO and RelN"
+      },
+      {
+        "wals_code": "97A",
+        "name": "Relationship between the Order of Object and Verb and the Order of Adjective and Noun",
+        "value": "VO and AdjN"
+      },
+      {
+        "wals_code": "104A",
+        "name": "Order of Person Markers on the Verb",
+        "value": "A and P do not or do not both occur on the verb"
+      },
+      {
+        "wals_code": "143A",
+        "name": "Order of Negative Morpheme and Verb",
+        "value": "NegV"
+      }
+    ]
+  },
+  "morphology": {
+    "tense_aspect_categories": [
+      {
+        "wals_code": "21B",
+        "name": "Exponence of Tense-Aspect-Mood Inflection"
+      },
+      {
+        "wals_code": "65A",
+        "name": "Perfective/Imperfective Aspect"
+      },
+      {
+        "wals_code": "66A",
+        "name": "The Past Tense"
+      },
+      {
+        "wals_code": "67A",
+        "name": "The Future Tense"
+      },
+      {
+        "wals_code": "68A",
+        "name": "The Perfect"
+      },
+      {
+        "wals_code": "69A",
+        "name": "Position of Tense-Aspect Affixes"
+      },
+      {
+        "wals_code": "79A",
+        "name": "Suppletion According to Tense and Aspect"
+      }
+    ]
+  }
+}

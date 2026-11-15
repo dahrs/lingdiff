@@ -1,0 +1,136 @@
+{
+  "iso639_3": "arb",
+  "glottocode": "stan1318",
+  "name": "Arabic (Modern Standard)",
+  "english_name": "Arabic (Modern Standard)",
+  "classification": {
+    "path": [
+      {
+        "name": "Afro-Asiatic"
+      },
+      {
+        "name": "Semitic"
+      },
+      {
+        "name": "Arabic (Modern Standard)",
+        "glottocode": "stan1318"
+      }
+    ]
+  },
+  "phonology": {
+    "phonemes": [
+      "b",
+      "d̙ˤ",
+      "d̪",
+      "d̪ʒ",
+      "f",
+      "h",
+      "j",
+      "kʰ",
+      "l",
+      "lˤ",
+      "m",
+      "n̪",
+      "q",
+      "r",
+      "s",
+      "s̙ˤ",
+      "t̪ʰ",
+      "t̪̙ˤ",
+      "w",
+      "xʀ̥",
+      "z",
+      "ð̪",
+      "ð̪̙ˤ",
+      "ħ",
+      "ɣ",
+      "ʃ",
+      "ʔ",
+      "ʕ̙",
+      "θ̪",
+      "a",
+      "ai",
+      "au",
+      "aː",
+      "i",
+      "ii̯",
+      "u",
+      "uu̯"
+    ],
+    "source_inventory_id": 2157
+  },
+  "syntax": {
+    "features": [
+      {
+        "wals_code": "81A",
+        "name": "Order of Subject, Object and Verb",
+        "value": "VSO"
+      },
+      {
+        "wals_code": "82A",
+        "name": "Order of Subject and Verb",
+        "value": "VS"
+      },
+      {
+        "wals_code": "83A",
+        "name": "Order of Object and Verb",
+        "value": "VO"
+      },
+      {
+        "wals_code": "84A",
+        "name": "Order of Object, Oblique, and Verb",
+        "value": "VOX"
+      },
+      {
+        "wals_code": "85A",
+        "name": "Order of Adposition and Noun Phrase",
+        "value": "Prepositions"
+      },
+      {
+        "wals_code": "86A",
+        "name": "Order of Genitive and Noun",
+        "value": "Noun-Genitive"
+      },
+      {
+        "wals_code": "87A",
+        "name": "Order of Adjective and Noun",
+        "value": "Noun-Adjective"
+      },
+      {
+        "wals_code": "88A",
+        "name": "Order of Demonstrative and Noun",
+        "value": "Demonstrative-Noun"
+      },
+      {
+        "wals_code": "89A",
+        "name": "Order of Numeral and Noun",
+        "value": "Numeral-Noun"
+      },
+      {
+        "wals_code": "91A",
+        "name": "Order of Degree Word and Adjective",
+        "value": "Adjective-Degree word"
+      },
+      {
+        "wals_code": "94A",
+        "name": "Order of Adverbial Subordinator and Clause",
+        "value": "Initial subordinator word"
+      },
+      {
+        "wals_code": "95A",
+        "name": "Relationship between the Order of Object and Verb and the Order of Adposition and Noun Phrase",
+        "value": "VO and Prepositions"
+      },
+      {
+        "wals_code": "97A",
+        "name": "Relationship between the Order of Object and Verb and the Order of Adjective and Noun",
+        "value": "VO and NAdj"
+      },
+      {
+        "wals_code": "143A",
+        "name": "Order of Negative Morpheme and Verb",
+        "value": "NegV"
+      }
+    ]
+  }
+}
