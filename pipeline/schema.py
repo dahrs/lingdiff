@@ -25,7 +25,9 @@ class PhonemeInventory(BaseModel):
     """IPA symbols, from PHOIBLE."""
     source_inventory_id: int | None = None
     phonological_vector: list[float] | None = None
-    """URIEL phonological feature vector."""
+    """URIEL "phonology_knn" vector — overall sound-system typology (tone, stress, etc.)."""
+    inventory_vector: list[float] | None = None
+    """URIEL "inventory_knn" vector — presence/absence of specific common phonemes."""
 
 
 class WordOrderFeature(BaseModel):
@@ -63,7 +65,7 @@ class LexicalData(BaseModel):
 class WritingSystem(BaseModel):
     script_name: str
     script_type: str
-    """One of: alphabet, abjad, syllabary, logographic, featural, other."""
+    """One of: alphabet, abjad, abugida, syllabary, logographic, featural, other."""
     sample_glyphs: list[str]
     source: str
     """One of: wikidata, wals, llm."""

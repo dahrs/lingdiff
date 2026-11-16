@@ -26,9 +26,23 @@ Downloads WALS (CLDF), PHOIBLE, and Glottolog source data into `data/sources/raw
 reruns skip files already present), builds one `LanguageProfile` per ISO 639-3 code listed in
 `pipeline/run_pipeline.py`, and writes `data/languages/<code>.json` + `data/index.json`.
 
-Currently covers a ~25-language smoke-test set to validate the schema/merge logic end-to-end
-(see the full plan for the broader build-out: URIEL/lang2vec vectors, Wikidata lookups, scoped
-LLM enrichment, then scaling to the full target language list).
+Per language, each profile combines:
+- **WALS** — genealogical path (Family/Subfamily/Genus), word-order features, tense/aspect
+  categories, writing system where coded (sparse — WALS's "Writing Systems" chapter covers few
+  languages)
+- **PHOIBLE** — phoneme inventory (IPA symbols)
+- **Glottolog** — real lat/lon + macroarea (context only, not used in any distance score)
+- **URIEL / lang2vec** — dense genetic/syntactic/phonological/inventory feature vectors (the
+  `_knn` sets specifically, since those are the only ones guaranteed to have no missing values —
+  see `pipeline/uriel_vectors.py`)
+- **Wikidata** (SPARQL, cached to `data/sources/raw/wikidata_cache.json`) — writing-system
+  fallback when WALS has no entry for a language
 
-No LLM calls happen yet at this stage — that's a later pipeline increment, and even once added,
-only runs offline during the data build, never at site runtime.
+Currently covers a ~25-language smoke-test set to validate the schema/merge logic end-to-end.
+Still to come per the plan: scoped LLM enrichment (writing-system fallback-of-last-resort +
+a grounded narrative blurb), then scaling to the full target language list. No LLM calls happen
+yet at this stage, and even once added, that only runs offline during the data build, never at
+site runtime.
+
+**Dependency note**: `lang2vec` imports the deprecated `pkg_resources`, which `setuptools>=81`
+dropped — `pyproject.toml` pins `setuptools<81` to keep it working.

@@ -10,9 +10,11 @@ from pathlib import Path
 from pipeline.build_profile import build_profile
 from pipeline.checkpoint import Checkpoint
 from pipeline.fetch_sources import fetch_all
+from pipeline.glottolog_loader import GlottologGeoData
 from pipeline.phoible_loader import PhoibleData
 from pipeline.schema import LanguageIndexEntry
 from pipeline.wals_loader import WalsData
+from pipeline.wikidata_lookup import WikidataWritingSystemCache
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 _RAW_DIR = _REPO_ROOT / "data" / "sources" / "raw"
@@ -33,6 +35,8 @@ def main() -> None:
     fetch_all()
     wals = WalsData(_RAW_DIR)
     phoible = PhoibleData(_RAW_DIR)
+    glottolog = GlottologGeoData(_RAW_DIR)
+    wikidata = WikidataWritingSystemCache(_RAW_DIR / "wikidata_cache.json")
     checkpoint = Checkpoint(_CHECKPOINT_PATH)
     _LANGUAGES_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -40,7 +44,7 @@ def main() -> None:
     missing: list[str] = []
 
     for iso in _SMOKE_TEST_ISO_CODES:
-        profile = build_profile(iso, wals, phoible)
+        profile = build_profile(iso, wals, phoible, glottolog, wikidata)
         if profile is None:
             missing.append(iso)
             continue
