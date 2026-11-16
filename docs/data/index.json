@@ -1,0 +1,263 @@
+[
+  {
+    "glottocode": "stan1288",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "spa",
+    "name": "Spanish",
+    "english_name": "Spanish",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "ital1282",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "ita",
+    "name": "Italian",
+    "english_name": "Italian",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "stan1290",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "fra",
+    "name": "French",
+    "english_name": "French",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "port1283",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "por",
+    "name": "Portuguese",
+    "english_name": "Portuguese",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "roma1327",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "ron",
+    "name": "Romanian",
+    "english_name": "Romanian",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "stan1293",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "eng",
+    "name": "English",
+    "english_name": "English",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "stan1295",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "deu",
+    "name": "German",
+    "english_name": "German",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "dutc1256",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "nld",
+    "name": "Dutch",
+    "english_name": "Dutch",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "swed1254",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "swe",
+    "name": "Swedish",
+    "english_name": "Swedish",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "icel1247",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "isl",
+    "name": "Icelandic",
+    "english_name": "Icelandic",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "russ1263",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "rus",
+    "name": "Russian",
+    "english_name": "Russian",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "poli1260",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "pol",
+    "name": "Polish",
+    "english_name": "Polish",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "czec1258",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "ces",
+    "name": "Czech",
+    "english_name": "Czech",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "mand1415",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "cmn",
+    "name": "Mandarin",
+    "english_name": "Mandarin",
+    "family": "Sino-Tibetan"
+  },
+  {
+    "glottocode": "nucl1643",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "jpn",
+    "name": "Japanese",
+    "english_name": "Japanese",
+    "family": "Japanese"
+  },
+  {
+    "glottocode": "kore1280",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "kor",
+    "name": "Korean",
+    "english_name": "Korean",
+    "family": "Korean"
+  },
+  {
+    "glottocode": "stan1318",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "arb",
+    "name": "Arabic (Modern Standard)",
+    "english_name": "Arabic (Modern Standard)",
+    "family": "Afroasiatic"
+  },
+  {
+    "glottocode": "nort3139",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "apc",
+    "name": "Arabic (Beirut)",
+    "english_name": "Arabic (Beirut)",
+    "family": "Afroasiatic"
+  },
+  {
+    "glottocode": "egyp1253",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "arz",
+    "name": "Arabic (Egyptian)",
+    "english_name": "Arabic (Egyptian)",
+    "family": "Afro-Asiatic"
+  },
+  {
+    "glottocode": "hebr1245",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "heb",
+    "name": "Hebrew (Modern)",
+    "english_name": "Hebrew (Modern)",
+    "family": "Afroasiatic"
+  },
+  {
+    "glottocode": "hind1269",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "hin",
+    "name": "Hindi",
+    "english_name": "Hindi",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "nucl1301",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "tur",
+    "name": "Turkish",
+    "english_name": "Turkish",
+    "family": "Altaic"
+  },
+  {
+    "glottocode": "finn1318",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "fin",
+    "name": "Finnish",
+    "english_name": "Finnish",
+    "family": "Uralic"
+  },
+  {
+    "glottocode": "mode1248",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "ell",
+    "name": "Greek (Modern)",
+    "english_name": "Greek (Modern)",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "basq1248",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "eus",
+    "name": "Basque",
+    "english_name": "Basque",
+    "family": "Basque"
+  },
+  {
+    "glottocode": "zulu1248",
+    "comparison_kind": "leaf",
+    "glottolog_level": "language",
+    "iso639_3": "zul",
+    "name": "Zulu",
+    "english_name": "Zulu",
+    "family": "Niger-Congo"
+  },
+  {
+    "glottocode": "roma1334",
+    "comparison_kind": "group",
+    "glottolog_level": "family",
+    "iso639_3": null,
+    "name": "Romance",
+    "english_name": "Romance",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "ital1284",
+    "comparison_kind": "group",
+    "glottolog_level": "family",
+    "iso639_3": null,
+    "name": "Italic",
+    "english_name": "Italic",
+    "family": "Indo-European"
+  },
+  {
+    "glottocode": "arab1395",
+    "comparison_kind": "group",
+    "glottolog_level": "family",
+    "iso639_3": null,
+    "name": "Arabic",
+    "english_name": "Arabic",
+    "family": "Afroasiatic"
+  }
+]

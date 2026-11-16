@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>lingdiff — compare any two languages</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>lingdiff</h1>
+      <p class="tagline">Compare any two languages — phonology, syntax, morphology, writing system, and family distance.</p>
+      <p class="draft-notice">Draft build — small test set, for review before scaling up. See README.md.</p>
+    </header>
+
+    <main>
+      <div class="picker">
+        <select id="lang-a"><option value="">Loading…</option></select>
+        <span class="vs">vs.</span>
+        <select id="lang-b"><option value="">Loading…</option></select>
+        <button id="compare-btn">Compare</button>
+      </div>
+
+      <div id="results"></div>
+    </main>
+
+    <footer>
+      <p>
+        Data: <a href="https://wals.info" target="_blank" rel="noopener">WALS</a> (CC-BY 4.0),
+        <a href="https://phoible.org" target="_blank" rel="noopener">PHOIBLE</a> (CC-BY-SA),
+        <a href="https://glottolog.org" target="_blank" rel="noopener">Glottolog</a> (CC-BY),
+        <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0),
+        <a href="https://github.com/antonisa/lang2vec" target="_blank" rel="noopener">URIEL/lang2vec</a>.
+        Notable-features text is LLM-generated offline from fetched Wikipedia excerpts — everything else on this page is computed directly from the data above, with no LLM involved at runtime.
+      </p>
+    </footer>
+
+    <script src="compare.js"></script>
+    <script src="diffView.js"></script>
+    <script src="summary.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

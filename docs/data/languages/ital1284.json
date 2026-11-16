@@ -1,0 +1,30 @@
+{
+  "glottocode": "ital1284",
+  "comparison_kind": "group",
+  "glottolog_level": "family",
+  "name": "Italic",
+  "english_name": "Italic",
+  "classification": {
+    "path": [
+      {
+        "name": "Indo-European"
+      },
+      {
+        "name": "Italo-Celtic"
+      },
+      {
+        "name": "Italic",
+        "glottocode": "ital1284"
+      }
+    ],
+    "path_source": "wikidata"
+  },
+  "other_typological_features": [],
+  "geography": {
+    "primary_region": "Eurasia",
+    "coordinates": [
+      42.99937193700613,
+      6.166917340757963
+    ]
+  }
+}

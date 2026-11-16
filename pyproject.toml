@@ -9,7 +9,6 @@ dependencies = [
     "pycldf>=1.37",
     "lang2vec>=1.1",
     "panphon>=0.20",
-    "anthropic>=0.40",
     "rapidfuzz>=3.9",
     "setuptools<81",  # lang2vec imports pkg_resources, which setuptools>=81 dropped
 ]

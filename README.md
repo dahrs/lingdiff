@@ -13,8 +13,9 @@ Tool for linguistic comparison between languages.
   -> `/media/dahrs/My_passport/uv-cache`
 
 If the drive isn't mounted, `uv run ...` and the pipeline scripts will fail outright.
-`data/languages/*.json` and `data/index.json` (the small, committed outputs the website
-actually reads) live in the repo as normal and don't depend on the drive.
+`docs/data/*.json` (the small, committed outputs the website actually reads — see "Website"
+below for why `docs/`, not top-level `data/`) lives in the repo as normal and doesn't depend
+on the drive.
 
 ## Data pipeline
 
@@ -23,26 +24,118 @@ uv run python -m pipeline.run_pipeline
 ```
 
 Downloads WALS (CLDF), PHOIBLE, and Glottolog source data into `data/sources/raw/` (cached —
-reruns skip files already present), builds one `LanguageProfile` per ISO 639-3 code listed in
-`pipeline/run_pipeline.py`, and writes `data/languages/<code>.json` + `data/index.json`.
+reruns skip files already present), builds one `LanguageProfile` per entity listed in
+`pipeline/run_pipeline.py` (`_SMOKE_TEST_ISO_CODES` for leaf languages/dialects,
+`_DRAFT_GROUP_ENTITIES` for family/macrolanguage groups), and writes
+`docs/data/languages/<glottocode>.json` + `docs/data/index.json`.
 
-Per language, each profile combines:
-- **WALS** — genealogical path (Family/Subfamily/Genus), word-order features, tense/aspect
-  categories, writing system where coded (sparse — WALS's "Writing Systems" chapter covers few
-  languages)
+**Two kinds of entity** (`LanguageProfile.comparison_kind`, see `pipeline/schema.py`):
+- **`leaf`** — a single speakable variety (a language or a dialect — Glottolog's own
+  `glottolog_level` label, not something that changes how it's built). Spanish, Levantine
+  Arabic, and Standard Arabic are all `leaf`; Levantine/Egyptian Arabic are **siblings** of
+  Standard Arabic under the Arabic macrolanguage, not dialects of it (confirmed against
+  Glottolog's own classification) — this is what makes "Levantine Arabic vs. French" and
+  "Levantine Arabic vs. Standard Arabic" both valid, independent comparisons.
+- **`group`** — an aggregate node (a Glottolog family grouping, or an ISO 639-3 macrolanguage
+  like Arabic) with *only* `classification` populated — there's no single phoneme inventory or
+  word order for an entire family, so every other field stays empty. This is what makes
+  "Levantine Arabic vs. Italic languages" a valid (if score-limited) comparison: family
+  distance still works via the classification paths' common prefix, nothing else does.
+  Built by `build_profile.build_group_profile`; for this draft the 3 example groups (Romance,
+  Italic, Arabic) are hardcoded in `run_pipeline.py` rather than swept from Glottolog's full
+  languoid table — scaling that up is future work, not yet needed for a small draft set.
+
+Per **leaf** entity, each profile combines:
+- **WALS** — genealogical path (Family/Subfamily/Genus, used as a fallback/sanity-check — see
+  below), word-order features, tense/aspect/case-marking categories, writing system where
+  coded (sparse), and now **all 192 WALS parameters** — anything not already captured by a
+  more specific category above lands in `other_typological_features` (numeral classifiers,
+  reduplication, politeness distinctions, etc.)
 - **PHOIBLE** — phoneme inventory (IPA symbols)
-- **Glottolog** — real lat/lon + macroarea (context only, not used in any distance score)
+- **Glottolog** — real lat/lon + macroarea (context only, not used in any distance score) and
+  `glottolog_level` ("language"/"dialect")
 - **URIEL / lang2vec** — dense genetic/syntactic/phonological/inventory feature vectors (the
-  `_knn` sets specifically, since those are the only ones guaranteed to have no missing values —
-  see `pipeline/uriel_vectors.py`)
-- **Wikidata** (SPARQL, cached to `data/sources/raw/wikidata_cache.json`) — writing-system
-  fallback when WALS has no entry for a language
+  `_knn` sets specifically — the only ones guaranteed to have no missing values; see
+  `pipeline/uriel_vectors.py`). These, not the human-readable classification path below, are
+  the actual basis for the genetic distance SCORE.
+- **Wikidata** (`pipeline/wikidata_lookup.py`, `pipeline/wikidata_family_tree.py`; see
+  `pipeline/wikidata_sparql.py` for the shared querying/caching/retry logic used by both):
+  - *Writing system* fallback when WALS has none.
+  - *Grammatical case/tense/mood/aspect* — real named enumerations (confirmed live: German's
+    actual 4 cases, Finnish's ~15), not just a typological yes/no the way WALS's own
+    case-related parameters are. **Caveat**: Wikidata's tagging isn't perfectly rigorous —
+    confirmed live, Levantine Arabic's `grammatical_cases` includes "Iḍāfah", which is a
+    possessive *construction*, not a case. Not filtered out automatically (no principled way
+    to do that without linguistic authority over what counts) — flagged here for review
+    instead.
+  - *Deep family tree* — the real multi-level classification (e.g. "Spanish → Castilian →
+    West Iberian → Iberian Romance → ... → Indo-European"), replacing WALS's shallow 3-level
+    Family/Subfamily/Genus columns, via `P279` ("subclass of") edges filtered to nodes tagged
+    "instance of: language family" (`Q25295`). **Caveat, with a safety net**: Wikidata
+    sometimes encodes a disputed/alternative classification alongside the mainstream one
+    (confirmed live: Mandarin's raw chain ending at "Dené–Caucasian" instead of Sino-Tibetan,
+    Korean's at the contested "Altaic" hypothesis, French's at an areal "Southern European
+    language" tag instead of Indo-European) — `build_profile._root_matches_wals_family`
+    checks the climbed root against WALS's own top-level `Family` value and falls back to
+    WALS's shallower-but-reliable path on any mismatch, rather than show a chain that might be
+    wrong throughout. `Classification.path_source` records which one a given profile used.
+- **LLM enrichment** (`pipeline/enrich_llm.py`) — a short grounded "notable features" blurb,
+  plus writing-system classification as the last-resort fallback when WALS, Wikidata, *and*
+  this both have nothing. Grounded in a fetched Wikipedia extract (via the language's Wikidata
+  sitelink) + the structured facts already gathered — never left to the model's unaided
+  memory — and skipped entirely (not called) when no Wikipedia article was found to ground it
+  in. Calls go through **`claude -p` (the CLI)**, not a hosted `ANTHROPIC_API_KEY` — see
+  `pipeline/claude_cli_client.py` (same approach as ye_olde's `common/claude_cli_client.py`,
+  reusing a `claude login`'d subscription session instead of pay-per-token billing). Requires
+  `claude` on PATH and logged in.
 
-Currently covers a ~25-language smoke-test set to validate the schema/merge logic end-to-end.
-Still to come per the plan: scoped LLM enrichment (writing-system fallback-of-last-resort +
-a grounded narrative blurb), then scaling to the full target language list. No LLM calls happen
-yet at this stage, and even once added, that only runs offline during the data build, never at
-site runtime.
+**Caching**: every external lookup (Wikidata of all kinds, Wikipedia, LLM) is cached to its
+own file under `data/sources/raw/`, and — important — a *failed* query (the public Wikidata
+endpoint does time out under load) is never written to cache as if it were a confirmed empty
+result; it's simply retried fresh on the next pipeline run. See `pipeline/wikidata_sparql.py`.
+
+Currently covers a small draft set (~26 leaf entities + 3 group entities) to get something
+reviewable before scaling up — see "To do" below for what's intentionally deferred. No LLM
+calls happen at site runtime — this is an offline, one-time-per-entity data-build step only.
 
 **Dependency note**: `lang2vec` imports the deprecated `pkg_resources`, which `setuptools>=81`
 dropped — `pyproject.toml` pins `setuptools<81` to keep it working.
+
+## Website
+
+`docs/` is a plain static site (HTML/CSS/vanilla JS, no build step, no framework) — GitHub
+Pages serves a repo's chosen folder directly, which is *why* the pipeline writes its output to
+`docs/data/` rather than a top-level `data/`: anything outside the published folder simply
+isn't reachable once Pages is enabled, regardless of relative-path tricks.
+
+- `index.html` / `styles.css` — picker UI + layout
+- `compare.js` — pure comparison functions (family distance via classification-path common
+  prefix, phoneme/grammar-category set overlaps, word-order row-by-row match/mismatch,
+  weighted overall score re-normalized over whichever categories have data for the pair)
+- `diffView.js` — the reusable "shared / only-in-A / only-in-B" renderer behind the
+  public-friendly requirement (phonemes, grammatical categories, etc. all reduce to this)
+- `summary.js` — template-based narrative over the already-computed facts
+- `app.js` — fetches `data/index.json` once + the two selected profiles lazily, wires the
+  picker to the above
+
+No LLM call anywhere in `docs/` — everything there is arithmetic/set-logic over already-fetched
+JSON, per the project's core design constraint.
+
+**Not yet verified in an actual browser** — this sandboxed environment has no browser or JS
+runtime available, so this was checked by serving `docs/` locally and confirming the data/JS
+files are reachable (`curl`), plus a manual code read-through and a brace/paren balance check.
+Please open it yourself before trusting it works end-to-end.
+
+## To do
+
+- **Vocabulary richness** — no structured source found (not Wikidata, WALS, PHOIBLE,
+  Glottolog, or URIEL), and arguably no standardized cross-linguistic academic measure exists
+  at all (depends heavily on corpus size/genre/dictionary completeness). Needs more research
+  before deciding whether/how to include it.
+- **Vocabulary origin** (% native vs. borrowed) — a real source exists, **WOLD** (World
+  Loanword Database, same academic family as WALS, CC-licensed), but it only covers 41
+  languages total vs. WALS's ~2,662 — needs more research on whether that's worth wiring in
+  given the coverage gap, and how it'd be disclosed as missing for everyone else.
+- **Scaling the group-entity list** — currently 3 hardcoded families/macrolanguages; sweeping
+  Glottolog's full languoid table (and the official ISO 639-3 macrolanguage mapping) would
+  make this systematic instead of hand-picked.

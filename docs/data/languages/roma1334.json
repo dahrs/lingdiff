@@ -1,0 +1,36 @@
+{
+  "glottocode": "roma1334",
+  "comparison_kind": "group",
+  "glottolog_level": "family",
+  "name": "Romance",
+  "english_name": "Romance",
+  "classification": {
+    "path": [
+      {
+        "name": "Indo-European"
+      },
+      {
+        "name": "Italo-Celtic"
+      },
+      {
+        "name": "Italic"
+      },
+      {
+        "name": "Latino-Faliscan"
+      },
+      {
+        "name": "Romance",
+        "glottocode": "roma1334"
+      }
+    ],
+    "path_source": "wikidata"
+  },
+  "other_typological_features": [],
+  "geography": {
+    "primary_region": "Eurasia",
+    "coordinates": [
+      41.588280773333345,
+      12.532342982000023
+    ]
+  }
+}

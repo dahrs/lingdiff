@@ -64,6 +64,11 @@ class WalsData:
                 matches.append(row)
         return matches
 
+    def all_values_for(self, wals_language_id: str) -> list[dict[str, str]]:
+        """Every WALS value row for this language, across all 192 parameters — the basis for
+        build_profile.py's other_typological_features catch-all."""
+        return list(self._values_by_language_id.get(wals_language_id, []))
+
 
 def _read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(newline="", encoding="utf-8") as f:

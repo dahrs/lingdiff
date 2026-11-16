@@ -1,0 +1,30 @@
+{
+  "glottocode": "arab1395",
+  "comparison_kind": "group",
+  "glottolog_level": "family",
+  "name": "Arabic",
+  "english_name": "Arabic",
+  "classification": {
+    "path": [
+      {
+        "name": "Afroasiatic"
+      },
+      {
+        "name": "Semitic"
+      },
+      {
+        "name": "Arabic",
+        "glottocode": "arab1395"
+      }
+    ],
+    "path_source": "wikidata"
+  },
+  "other_typological_features": [],
+  "geography": {
+    "primary_region": "Eurasia",
+    "coordinates": [
+      28.293689418964068,
+      35.871537655605096
+    ]
+  }
+}
