@@ -15,27 +15,33 @@ from pipeline.wikidata_sparql import query_with_macrolanguage_fallback
 
 _REQUEST_DELAY_SECONDS = 1.0
 
-# Best-effort script-name -> script-type mapping for Wikidata's common script labels.
-# Not exhaustive — anything not listed here falls back to "other".
-_SCRIPT_TYPES: dict[str, str] = {
-    "latin script": "alphabet",
-    "cyrillic script": "alphabet",
-    "greek script": "alphabet",
-    "armenian script": "alphabet",
-    "georgian script": "alphabet",
+# Script-family-name -> script-type, matched as a substring of Wikidata's label rather than
+# requiring the full phrase: Wikidata labels a script as "<family> script" OR "<family>
+# alphabet" inconsistently even for the same family (confirmed live: Levantine Arabic
+# "Arabic alphabet" vs Egyptian Arabic "Arabic script", both really the Arabic abjad) — the
+# generic suffix word never indicates type, only the family name does. Not exhaustive —
+# anything not listed here falls back to "other".
+_SCRIPT_FAMILY_TYPES: dict[str, str] = {
+    "latin": "alphabet",
+    "cyrillic": "alphabet",
+    "greek": "alphabet",
+    "armenian": "alphabet",
+    "georgian": "alphabet",
     "hangul": "alphabet",
-    "arabic script": "abjad",
-    "hebrew script": "abjad",
+    "arabic": "abjad",
+    "hebrew": "abjad",
     "devanagari": "abugida",
-    "thai script": "abugida",
-    "ge'ez script": "abugida",
-    "ethiopic script": "abugida",
-    "tamil script": "abugida",
-    "bengali-assamese script": "abugida",
-    "han script": "logographic",
-    "chinese characters": "logographic",
+    "thai": "abugida",
+    "ge'ez": "abugida",
+    "ethiopic": "abugida",
+    "tamil": "abugida",
+    "bengali": "abugida",
+    "han": "logographic",
+    "chinese": "logographic",
+    "kanji": "logographic",
     "hiragana": "syllabary",
     "katakana": "syllabary",
+    "kana": "syllabary",
 }
 
 # property_kind -> Wikidata property ID
@@ -62,11 +68,13 @@ class WikidataPropertyCache:
 
     def get(self, iso639_3: str) -> list[str]:
         """Returns the named values (e.g. ["nominative case", "accusative case", ...]) for
-        this language, [] if none found (confirmed, or the query failed this run — a failed
-        query is NOT written to cache, so it's retried on the next pipeline run instead of
-        being permanently baked in as "no data" — see wikidata_sparql.py)."""
+        this language, deduped (Wikidata sometimes carries the same label on more than one
+        statement — confirmed live: Levantine Arabic's writing systems included "Arabic
+        alphabet" twice), [] if none found (confirmed, or the query failed this run — a
+        failed query is NOT written to cache, so it's retried on the next pipeline run
+        instead of being permanently baked in as "no data" — see wikidata_sparql.py)."""
         if iso639_3 in self._cache:
-            return self._cache[iso639_3]
+            return _dedupe(self._cache[iso639_3])
 
         values = _query_property(iso639_3, self._property_id)
         time.sleep(_REQUEST_DELAY_SECONDS)
@@ -75,11 +83,32 @@ class WikidataPropertyCache:
         self._cache[iso639_3] = values
         self._cache_path.parent.mkdir(parents=True, exist_ok=True)
         self._cache_path.write_text(json.dumps(self._cache, indent=2))
-        return values
+        return _dedupe(values)
+
+
+def _dedupe(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for value in values:
+        if value not in seen:
+            seen.add(value)
+            result.append(value)
+    return result
 
 
 def script_type_for(script_name: str) -> str:
-    return _SCRIPT_TYPES.get(script_name.lower(), "other")
+    lowered = script_name.lower()
+    if "chat alphabet" in lowered or "chat alphbet" in lowered:
+        # An informal Latin-based romanization scheme for digital writing (e.g. "Arabic chat
+        # alphabet"/Arabizi) — the family-name substring match below would otherwise classify
+        # this as the family's native script type (e.g. "arabic" -> abjad), which is wrong:
+        # it's specifically NOT written in that script, that's the whole point of a chat
+        # alphabet. Checked before the substring match for exactly this reason.
+        return "alphabet"
+    for family, script_type in _SCRIPT_FAMILY_TYPES.items():
+        if family in lowered:
+            return script_type
+    return "other"
 
 
 def _query_property(iso639_3: str, property_id: str) -> list[str] | None:

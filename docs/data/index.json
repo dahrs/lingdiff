@@ -6,7 +6,21 @@
     "iso639_3": "spa",
     "name": "Spanish",
     "english_name": "Spanish",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Italo-Celtic",
+      "Italic",
+      "Latino-Faliscan",
+      "Romance",
+      "Italo-Western",
+      "Western Romance",
+      "Gallo-Iberian",
+      "Iberian Romance",
+      "West Iberian",
+      "Castilian",
+      "Spanish"
+    ]
   },
   {
     "glottocode": "ital1282",
@@ -15,7 +29,18 @@
     "iso639_3": "ita",
     "name": "Italian",
     "english_name": "Italian",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Italo-Celtic",
+      "Italic",
+      "Latino-Faliscan",
+      "Romance",
+      "Italo-Western",
+      "Italo-Dalmatian",
+      "Italo-Romance",
+      "Italian"
+    ]
   },
   {
     "glottocode": "stan1290",
@@ -24,7 +49,12 @@
     "iso639_3": "fra",
     "name": "French",
     "english_name": "French",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Romance",
+      "French"
+    ]
   },
   {
     "glottocode": "port1283",
@@ -33,7 +63,21 @@
     "iso639_3": "por",
     "name": "Portuguese",
     "english_name": "Portuguese",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Italo-Celtic",
+      "Italic",
+      "Latino-Faliscan",
+      "Romance",
+      "Italo-Western",
+      "Western Romance",
+      "Gallo-Iberian",
+      "Iberian Romance",
+      "West Iberian",
+      "Galician\u2013Portuguese",
+      "Portuguese"
+    ]
   },
   {
     "glottocode": "roma1327",
@@ -42,7 +86,16 @@
     "iso639_3": "ron",
     "name": "Romanian",
     "english_name": "Romanian",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Italo-Celtic",
+      "Italic",
+      "Latino-Faliscan",
+      "Romance",
+      "Eastern Romance",
+      "Romanian"
+    ]
   },
   {
     "glottocode": "stan1293",
@@ -51,7 +104,16 @@
     "iso639_3": "eng",
     "name": "English",
     "english_name": "English",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Germanic languages",
+      "West Germanic languages",
+      "North Sea Germanic",
+      "Anglo-Frisian",
+      "Anglic",
+      "English"
+    ]
   },
   {
     "glottocode": "stan1295",
@@ -60,7 +122,14 @@
     "iso639_3": "deu",
     "name": "German",
     "english_name": "German",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Germanic languages",
+      "West Germanic languages",
+      "South Germanic",
+      "German"
+    ]
   },
   {
     "glottocode": "dutc1256",
@@ -69,7 +138,17 @@
     "iso639_3": "nld",
     "name": "Dutch",
     "english_name": "Dutch",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Germanic languages",
+      "West Germanic languages",
+      "South Germanic",
+      "Weser-Rhine Germanic",
+      "Franconian",
+      "Low Franconian",
+      "Dutch"
+    ]
   },
   {
     "glottocode": "swed1254",
@@ -78,7 +157,12 @@
     "iso639_3": "swe",
     "name": "Swedish",
     "english_name": "Swedish",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Germanic",
+      "Swedish"
+    ]
   },
   {
     "glottocode": "icel1247",
@@ -87,7 +171,12 @@
     "iso639_3": "isl",
     "name": "Icelandic",
     "english_name": "Icelandic",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Germanic",
+      "Icelandic"
+    ]
   },
   {
     "glottocode": "russ1263",
@@ -96,7 +185,13 @@
     "iso639_3": "rus",
     "name": "Russian",
     "english_name": "Russian",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Slavic",
+      "East Slavic",
+      "Russian"
+    ]
   },
   {
     "glottocode": "poli1260",
@@ -105,7 +200,14 @@
     "iso639_3": "pol",
     "name": "Polish",
     "english_name": "Polish",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Slavic",
+      "West Slavic",
+      "Lechitic",
+      "Polish"
+    ]
   },
   {
     "glottocode": "czec1258",
@@ -114,7 +216,13 @@
     "iso639_3": "ces",
     "name": "Czech",
     "english_name": "Czech",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Slavic",
+      "West Slavic",
+      "Czech"
+    ]
   },
   {
     "glottocode": "mand1415",
@@ -123,7 +231,12 @@
     "iso639_3": "cmn",
     "name": "Mandarin",
     "english_name": "Mandarin",
-    "family": "Sino-Tibetan"
+    "family": "Sino-Tibetan",
+    "classification_path": [
+      "Sino-Tibetan",
+      "Chinese",
+      "Mandarin"
+    ]
   },
   {
     "glottocode": "nucl1643",
@@ -132,7 +245,10 @@
     "iso639_3": "jpn",
     "name": "Japanese",
     "english_name": "Japanese",
-    "family": "Japanese"
+    "family": "Japanese",
+    "classification_path": [
+      "Japanese"
+    ]
   },
   {
     "glottocode": "kore1280",
@@ -141,7 +257,10 @@
     "iso639_3": "kor",
     "name": "Korean",
     "english_name": "Korean",
-    "family": "Korean"
+    "family": "Korean",
+    "classification_path": [
+      "Korean"
+    ]
   },
   {
     "glottocode": "stan1318",
@@ -150,7 +269,13 @@
     "iso639_3": "arb",
     "name": "Arabic (Modern Standard)",
     "english_name": "Arabic (Modern Standard)",
-    "family": "Afroasiatic"
+    "family": "Afroasiatic",
+    "classification_path": [
+      "Afroasiatic",
+      "Semitic",
+      "Arabic",
+      "Arabic (Modern Standard)"
+    ]
   },
   {
     "glottocode": "nort3139",
@@ -159,7 +284,13 @@
     "iso639_3": "apc",
     "name": "Arabic (Beirut)",
     "english_name": "Arabic (Beirut)",
-    "family": "Afroasiatic"
+    "family": "Afroasiatic",
+    "classification_path": [
+      "Afroasiatic",
+      "Semitic",
+      "Arabic",
+      "Arabic (Beirut)"
+    ]
   },
   {
     "glottocode": "egyp1253",
@@ -168,7 +299,12 @@
     "iso639_3": "arz",
     "name": "Arabic (Egyptian)",
     "english_name": "Arabic (Egyptian)",
-    "family": "Afro-Asiatic"
+    "family": "Afro-Asiatic",
+    "classification_path": [
+      "Afro-Asiatic",
+      "Semitic",
+      "Arabic (Egyptian)"
+    ]
   },
   {
     "glottocode": "hebr1245",
@@ -177,7 +313,17 @@
     "iso639_3": "heb",
     "name": "Hebrew (Modern)",
     "english_name": "Hebrew (Modern)",
-    "family": "Afroasiatic"
+    "family": "Afroasiatic",
+    "classification_path": [
+      "Afroasiatic",
+      "Semitic",
+      "West Semitic",
+      "Central Semitic",
+      "Northwest Semitic",
+      "Canaanite",
+      "Hebrew",
+      "Hebrew (Modern)"
+    ]
   },
   {
     "glottocode": "hind1269",
@@ -186,7 +332,16 @@
     "iso639_3": "hin",
     "name": "Hindi",
     "english_name": "Hindi",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Indo-Iranian",
+      "Indo-Aryan",
+      "Central Indo-Aryan",
+      "Western Hindi",
+      "Hindustani",
+      "Hindi"
+    ]
   },
   {
     "glottocode": "nucl1301",
@@ -195,7 +350,12 @@
     "iso639_3": "tur",
     "name": "Turkish",
     "english_name": "Turkish",
-    "family": "Altaic"
+    "family": "Altaic",
+    "classification_path": [
+      "Altaic",
+      "Turkic",
+      "Turkish"
+    ]
   },
   {
     "glottocode": "finn1318",
@@ -204,7 +364,16 @@
     "iso639_3": "fin",
     "name": "Finnish",
     "english_name": "Finnish",
-    "family": "Uralic"
+    "family": "Uralic",
+    "classification_path": [
+      "Uralic",
+      "Finno-Ugric",
+      "Finno-Permic",
+      "Finno-Volgaic",
+      "Finno-Samic",
+      "Finnic",
+      "Finnish"
+    ]
   },
   {
     "glottocode": "mode1248",
@@ -213,7 +382,13 @@
     "iso639_3": "ell",
     "name": "Greek (Modern)",
     "english_name": "Greek (Modern)",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Graeco-Phrygian",
+      "Hellenic",
+      "Greek (Modern)"
+    ]
   },
   {
     "glottocode": "basq1248",
@@ -222,7 +397,10 @@
     "iso639_3": "eus",
     "name": "Basque",
     "english_name": "Basque",
-    "family": "Basque"
+    "family": "Basque",
+    "classification_path": [
+      "Basque"
+    ]
   },
   {
     "glottocode": "zulu1248",
@@ -231,7 +409,13 @@
     "iso639_3": "zul",
     "name": "Zulu",
     "english_name": "Zulu",
-    "family": "Niger-Congo"
+    "family": "Niger-Congo",
+    "classification_path": [
+      "Niger-Congo",
+      "Benue-Congo",
+      "Bantu",
+      "Zulu"
+    ]
   },
   {
     "glottocode": "roma1334",
@@ -240,7 +424,14 @@
     "iso639_3": null,
     "name": "Romance",
     "english_name": "Romance",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Italo-Celtic",
+      "Italic",
+      "Latino-Faliscan",
+      "Romance"
+    ]
   },
   {
     "glottocode": "ital1284",
@@ -249,7 +440,12 @@
     "iso639_3": null,
     "name": "Italic",
     "english_name": "Italic",
-    "family": "Indo-European"
+    "family": "Indo-European",
+    "classification_path": [
+      "Indo-European",
+      "Italo-Celtic",
+      "Italic"
+    ]
   },
   {
     "glottocode": "arab1395",
@@ -258,6 +454,11 @@
     "iso639_3": null,
     "name": "Arabic",
     "english_name": "Arabic",
-    "family": "Afroasiatic"
+    "family": "Afroasiatic",
+    "classification_path": [
+      "Afroasiatic",
+      "Semitic",
+      "Arabic"
+    ]
   }
 ]

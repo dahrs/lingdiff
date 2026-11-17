@@ -4797,10 +4797,14 @@
     }
   ],
   "writing_system": {
-    "script_name": "Hebrew alphabet",
-    "script_type": "other",
-    "sample_glyphs": [],
-    "source": "wikidata"
+    "scripts": [
+      {
+        "name": "Hebrew alphabet",
+        "script_type": "abjad",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      }
+    ]
   },
   "geography": {
     "primary_region": "Eurasia",

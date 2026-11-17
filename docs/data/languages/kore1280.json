@@ -8,12 +8,6 @@
   "classification": {
     "path": [
       {
-        "name": "Korean"
-      },
-      {
-        "name": "Korean"
-      },
-      {
         "name": "Korean",
         "glottocode": "kore1280"
       }
@@ -4846,10 +4840,20 @@
     }
   ],
   "writing_system": {
-    "script_name": "Hangul",
-    "script_type": "alphabet",
-    "sample_glyphs": [],
-    "source": "wikidata"
+    "scripts": [
+      {
+        "name": "Hangul",
+        "script_type": "alphabet",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      },
+      {
+        "name": "Hanja",
+        "script_type": "logographic",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      }
+    ]
   },
   "geography": {
     "primary_region": "Eurasia",

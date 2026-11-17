@@ -21,6 +21,7 @@ from pipeline.schema import (
     LanguageProfile,
     MorphologyData,
     PhonemeInventory,
+    Script,
     SyntaxData,
     TenseAspectCategory,
     WordOrderFeature,
@@ -30,7 +31,11 @@ from pipeline.wals_loader import WalsData
 from pipeline.wikidata_family_tree import FamilyTreeCache, get_family_path_from_qid
 from pipeline.wikidata_lookup import WikidataPropertyCache, script_type_for
 
-_SCRIPT_TYPE_KEYWORDS: dict[str, str] = {
+# For WALS's own code text (e.g. "Logographic", "Syllabic", "Alphabetic") — the descriptive
+# word IS the type here, unlike Wikidata's "<script family> script/alphabet" labels, where the
+# suffix word is generic and wikidata_lookup.script_type_for's family-name matching is used
+# instead (see _build_writing_system).
+_WALS_SCRIPT_TYPE_KEYWORDS: dict[str, str] = {
     "alphabet": "alphabet",
     "syllabary": "syllabary",
     "syllabic": "syllabary",
@@ -112,6 +117,7 @@ def build_group_profile(
     deep_path = get_family_path_from_qid(wikidata_qid) or []
     nodes = [ClassificationNode(name=n) for n in reversed(deep_path)]
     nodes.append(ClassificationNode(name=name, glottocode=glottocode))
+    nodes = _dedupe_consecutive(nodes)
     classification = Classification(path=nodes, genetic_vector=None, path_source="wikidata" if deep_path else "wals")
     geography = Geography(primary_region=macroarea or "Unknown", coordinates=coordinates) if coordinates else None
 
@@ -133,17 +139,20 @@ def _build_classification(
     genetic_vector = uriel_vectors.get_genetic_vector(iso639_3)
     wals_family = wals_lang.get("Family", "").strip()
 
-    deep_path = family_tree_cache.get(iso639_3)
+    deep_path = family_tree_cache.get(iso639_3) or []
     if deep_path and _root_matches_wals_family(deep_path[-1], wals_family):
         nodes = [ClassificationNode(name=name) for name in reversed(deep_path)]
         nodes.append(ClassificationNode(name=wals_lang["Name"], glottocode=wals_lang["Glottocode"]))
-        return Classification(path=nodes, genetic_vector=genetic_vector, path_source="wikidata")
+        return Classification(path=_dedupe_consecutive(nodes), genetic_vector=genetic_vector, path_source="wikidata")
     # Wikidata's P279 chain sometimes encodes a disputed/alternative classification scheme
     # alongside the mainstream one (confirmed live: Mandarin's chain ending at "Dené–Caucasian"
     # instead of Sino-Tibetan, Korean's at the disputed "Altaic" hypothesis, French's at an
     # areal "Southern European language" tag rather than Indo-European) — if the climbed
     # root doesn't match WALS's own (typologist-curated) top-level Family, the whole chain is
     # not trusted, not just its root: falls back to WALS's shallower-but-reliable 3 levels.
+    # (This can also reject a Wikidata chain that was actually fine, just differently named —
+    # confirmed live: Japanese's Wikidata root "Japonic" vs. WALS's "Japanese" — in which case
+    # this fallback below, after dedup, isn't wrong, just less detailed.)
 
     path: list[ClassificationNode] = []
     for key in ("Family", "Subfamily", "Genus"):
@@ -151,7 +160,26 @@ def _build_classification(
         if value:
             path.append(ClassificationNode(name=value))
     path.append(ClassificationNode(name=wals_lang["Name"], glottocode=wals_lang["Glottocode"]))
-    return Classification(path=path, genetic_vector=genetic_vector, path_source="wals")
+    return Classification(path=_dedupe_consecutive(path), genetic_vector=genetic_vector, path_source="wals")
+
+
+def _dedupe_consecutive(nodes: list[ClassificationNode]) -> list[ClassificationNode]:
+    """Collapses consecutive same-name entries — confirmed live two different ways: (1)
+    Japanese's Wikidata chain produced ["Japanese", "Japanese", "Japanese"] (three different
+    entities sharing one English label, which the tree-walk's cycle guard — keyed on entity
+    ID, not display label — doesn't catch), and (2) WALS's own data for Japanese has
+    Family="Japanese", Genus="Japanese", Name="Japanese" all identical. A path like
+    [X, X, X, leaf] is never a meaningful display regardless of why the duplication
+    happened, so collapsing it is always safe. Keeps a glottocode from whichever node in a
+    collapsed run has one (only ever the leaf), rather than dropping it."""
+    result: list[ClassificationNode] = []
+    for node in nodes:
+        if result and result[-1].name == node.name:
+            if node.glottocode and not result[-1].glottocode:
+                result[-1] = node
+            continue
+        result.append(node)
+    return result
 
 
 def _root_matches_wals_family(wikidata_root: str, wals_family: str) -> bool:
@@ -212,26 +240,34 @@ def _build_morphology(
 def _build_writing_system(
     wals_lang: dict[str, str], wals: WalsData, iso639_3: str, wikidata: WikidataCaches, claimed: set[str]
 ) -> WritingSystem | None:
+    """A language can genuinely use more than one script (see schema.WritingSystem) — merges
+    WALS's single coded value (if any) with Wikidata's full list (confirmed live: Japanese has
+    4 distinct Wikidata-tagged scripts, Levantine Arabic has Arabic/Latin/Hebrew), deduped by
+    name, WALS first when both have data."""
     rows = wals.values_for(wals_lang["ID"], name_contains=("writing system",))
     claimed.update(row["Parameter_ID"] for row in rows)
-    if rows:
-        row = rows[0]
-        code_text = wals.code_name(row["Code_ID"]) if row["Code_ID"] else row["Value"]
-        script_type = next(
-            (t for keyword, t in _SCRIPT_TYPE_KEYWORDS.items() if keyword in code_text.lower()),
-            "other",
-        )
-        return WritingSystem(script_name=code_text, script_type=script_type, sample_glyphs=[], source="wals")
 
-    scripts = wikidata.writing_system.get(iso639_3)
+    scripts: list[Script] = []
+    seen_names: set[str] = set()
+    if rows:
+        code_text = wals.code_name(rows[0]["Code_ID"]) if rows[0]["Code_ID"] else rows[0]["Value"]
+        scripts.append(Script(name=code_text, script_type=_wals_script_type(code_text), source="wals"))
+        seen_names.add(code_text)
+
+    for name in wikidata.writing_system.get(iso639_3):
+        if name in seen_names:
+            continue
+        seen_names.add(name)
+        scripts.append(Script(name=name, script_type=script_type_for(name), source="wikidata"))
+
     if not scripts:
         return None
-    return WritingSystem(
-        script_name=scripts[0],
-        script_type=script_type_for(scripts[0]),
-        sample_glyphs=[],
-        source="wikidata",
-    )
+    return WritingSystem(scripts=scripts)
+
+
+def _wals_script_type(code_text: str) -> str:
+    lowered = code_text.lower()
+    return next((t for keyword, t in _WALS_SCRIPT_TYPE_KEYWORDS.items() if keyword in lowered), "other")
 
 
 def _build_other_typological_features(

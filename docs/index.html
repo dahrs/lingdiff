@@ -15,9 +15,15 @@
 
     <main>
       <div class="picker">
-        <select id="lang-a"><option value="">Loading…</option></select>
+        <div class="lang-picker" id="picker-a">
+          <button type="button" class="picker-button" aria-haspopup="listbox">Loading…</button>
+          <div class="picker-panel" hidden></div>
+        </div>
         <span class="vs">vs.</span>
-        <select id="lang-b"><option value="">Loading…</option></select>
+        <div class="lang-picker" id="picker-b">
+          <button type="button" class="picker-button" aria-haspopup="listbox">Loading…</button>
+          <div class="picker-panel" hidden></div>
+        </div>
         <button id="compare-btn">Compare</button>
       </div>
 
@@ -38,6 +44,7 @@
     <script src="compare.js"></script>
     <script src="diffView.js"></script>
     <script src="summary.js"></script>
+    <script src="languagePicker.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

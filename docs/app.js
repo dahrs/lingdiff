@@ -3,33 +3,15 @@
 
 let indexEntries = [];
 const profileCache = new Map();
+let pickerA = null;
+let pickerB = null;
 
 async function loadIndex() {
   const response = await fetch("data/index.json");
   indexEntries = await response.json();
-  populateSelect(document.getElementById("lang-a"));
-  populateSelect(document.getElementById("lang-b"));
-}
-
-function populateSelect(select) {
-  select.innerHTML = '<option value="">Select a language…</option>';
-  const leaves = indexEntries.filter((e) => e.comparison_kind === "leaf");
-  const groups = indexEntries.filter((e) => e.comparison_kind === "group");
-
-  const addGroup = (label, entries) => {
-    const optgroup = document.createElement("optgroup");
-    optgroup.label = label;
-    for (const entry of entries.sort((x, y) => x.name.localeCompare(y.name))) {
-      const option = document.createElement("option");
-      option.value = entry.glottocode;
-      option.textContent = `${entry.name}${entry.iso639_3 ? ` (${entry.iso639_3})` : ""}`;
-      optgroup.appendChild(option);
-    }
-    select.appendChild(optgroup);
-  };
-
-  addGroup("Languages & dialects", leaves);
-  addGroup("Families & macrolanguage groups", groups);
+  pickerA = createLanguagePicker(document.getElementById("picker-a"), indexEntries, () => {});
+  pickerB = createLanguagePicker(document.getElementById("picker-b"), indexEntries, () => {});
+  document.querySelectorAll(".picker-button").forEach((b) => (b.textContent = "Select a language…"));
 }
 
 async function loadProfile(glottocode) {
@@ -41,17 +23,26 @@ async function loadProfile(glottocode) {
 }
 
 async function onCompareClick() {
-  const glottocodeA = document.getElementById("lang-a").value;
-  const glottocodeB = document.getElementById("lang-b").value;
+  const entryA = pickerA?.getSelected();
+  const entryB = pickerB?.getSelected();
   const resultsEl = document.getElementById("results");
-  if (!glottocodeA || !glottocodeB) {
+  if (!entryA || !entryB) {
     resultsEl.innerHTML = '<p class="error">Pick two languages first.</p>';
     return;
   }
   resultsEl.innerHTML = '<p class="loading">Loading…</p>';
-  const [a, b] = await Promise.all([loadProfile(glottocodeA), loadProfile(glottocodeB)]);
+  const [a, b] = await Promise.all([loadProfile(entryA.glottocode), loadProfile(entryB.glottocode)]);
   const comparison = compareLanguages(a, b);
   renderComparison(resultsEl, comparison);
+}
+
+/** 0-1 distance -> {percent, label} for display — same scale/labels the overall score uses
+ * (qualitativeLabel in compare.js), so a reader can compare a category's own score against
+ * the overall number the same way. */
+function scoreBadge(score) {
+  if (score === null || score === undefined) return { percent: null, label: "no data" };
+  const percent = Math.round(score * 100);
+  return { percent, label: qualitativeLabel(percent) };
 }
 
 function renderComparison(container, comparison) {
@@ -67,6 +58,11 @@ function renderComparison(container, comparison) {
       <span class="score-label">${label}</span>
       <span class="score-coverage">${overall.availableCount} of ${overall.totalCount} metrics available</span>
     </div>
+    <p class="score-explainer">
+      Overall distance score, 0–100: <strong>0 means identical</strong>, <strong>100 means maximally different</strong>
+      across whichever categories had data for this pair. Each section below shows its own score the same way —
+      click a section's title to see the detail behind it.
+    </p>
   `;
   container.appendChild(header);
 
@@ -76,8 +72,18 @@ function renderComparison(container, comparison) {
   container.appendChild(summaryEl);
 
   container.appendChild(renderFamilySection(categories.family, a, b));
-  container.appendChild(renderCategorySection("Phonology — IPA phoneme inventory", categories.phonology, a, b, "set"));
-  container.appendChild(renderCategorySection("Syntax — word order", categories.wordOrder, a, b, "row"));
+  container.appendChild(
+    renderCollapsibleSection("Phonology — IPA phoneme inventory", categories.phonology.score, (body) => {
+      if (!categories.phonology.available) return renderNoData(body);
+      renderSetDiff(body, categories.phonology, a.name, b.name);
+    }),
+  );
+  container.appendChild(
+    renderCollapsibleSection("Syntax — word order", categories.wordOrder.score, (body) => {
+      if (!categories.wordOrder.available) return renderNoData(body);
+      renderRowDiff(body, categories.wordOrder.rows, a.name, b.name);
+    }),
+  );
   container.appendChild(renderMorphologySection(categories.morphology, a, b));
   container.appendChild(renderWritingSystemSection(categories.writingSystem, a, b));
 
@@ -91,91 +97,89 @@ function renderComparison(container, comparison) {
   }
 }
 
-function renderFamilySection(family, a, b) {
-  const section = document.createElement("div");
-  section.className = "category-section";
-  section.innerHTML = "<h3>Family classification</h3>";
-  const branches = document.createElement("div");
-  branches.className = "family-branches";
-  branches.innerHTML = `
-    <div class="family-branch"><strong>${a.name}:</strong> ${family.pathA.join(" → ")}</div>
-    <div class="family-branch"><strong>${b.name}:</strong> ${family.pathB.join(" → ")}</div>
-    <div class="family-common">${family.commonAncestor ? `Common ancestor: ${family.commonAncestor}` : "No common ancestor found in this data."}</div>
-  `;
-  section.appendChild(branches);
-  return section;
+function renderNoData(container) {
+  const note = document.createElement("p");
+  note.className = "no-data";
+  note.textContent = "No data available for this pair.";
+  container.appendChild(note);
 }
 
-function renderCategorySection(title, category, a, b, kind) {
-  const section = document.createElement("div");
-  section.className = "category-section";
-  const heading = document.createElement("h3");
-  heading.textContent = title;
-  section.appendChild(heading);
-  if (!category.available) {
-    const note = document.createElement("p");
-    note.className = "no-data";
-    note.textContent = "No data available for this pair.";
-    section.appendChild(note);
-    return section;
-  }
+/** A native <details>/<summary> element — clicking the title toggles the body, with no
+ * custom JS needed for that behavior. The summary shows a score badge (0-100 + label, same
+ * scale as the overall score) next to the title, or "no data" when this category has none. */
+function renderCollapsibleSection(title, score, bodyBuilder) {
+  const details = document.createElement("details");
+  details.className = "category-section";
+  const badge = scoreBadge(score);
+  const summary = document.createElement("summary");
+  summary.innerHTML = `
+    <span class="section-title">${title}</span>
+    <span class="section-badge ${badge.percent === null ? "badge-empty" : ""}">${badge.percent === null ? "no data" : `${badge.percent} · ${badge.label}`}</span>
+  `;
+  details.appendChild(summary);
   const body = document.createElement("div");
-  section.appendChild(body);
-  if (kind === "set") {
-    renderSetDiff(body, category, a.name, b.name);
-  } else {
-    renderRowDiff(body, category.rows, a.name, b.name);
-  }
-  return section;
+  body.className = "section-body";
+  details.appendChild(body);
+  bodyBuilder(body);
+  return details;
+}
+
+function renderFamilySection(family, a, b) {
+  return renderCollapsibleSection("Family classification", family.score, (body) => {
+    const branches = document.createElement("div");
+    branches.className = "family-branches";
+    branches.innerHTML = `
+      <div class="family-branch"><strong>${a.name}:</strong> ${family.pathA.join(" → ")}</div>
+      <div class="family-branch"><strong>${b.name}:</strong> ${family.pathB.join(" → ")}</div>
+      <div class="family-common">${family.commonAncestor ? `Common ancestor: ${family.commonAncestor}` : "No common ancestor found in this data."}</div>
+    `;
+    body.appendChild(branches);
+  });
 }
 
 function renderMorphologySection(morphology, a, b) {
-  const section = document.createElement("div");
-  section.className = "category-section";
-  section.innerHTML = "<h3>Morphology — grammatical categories</h3>";
-  if (!morphology.available) {
-    section.innerHTML += '<p class="no-data">No data available for this pair.</p>';
-    return section;
-  }
-  const subcats = [
-    ["Grammatical cases", morphology.cases],
-    ["Tenses", morphology.tenses],
-    ["Moods", morphology.moods],
-    ["Aspects", morphology.aspects],
-    ["WALS tense/aspect typology", morphology.walsCategories],
-  ];
-  for (const [label, diff] of subcats) {
-    if (diff.shared.length + diff.onlyA.length + diff.onlyB.length === 0) continue;
-    const sub = document.createElement("div");
-    sub.className = "morphology-subcategory";
-    const h4 = document.createElement("h4");
-    h4.textContent = label;
-    sub.appendChild(h4);
-    const body = document.createElement("div");
-    sub.appendChild(body);
-    renderSetDiff(body, diff, a.name, b.name);
-    section.appendChild(sub);
-  }
-  return section;
+  return renderCollapsibleSection("Morphology — grammatical categories", morphology.score, (body) => {
+    if (!morphology.available) return renderNoData(body);
+    const subcats = [
+      ["Grammatical cases", morphology.cases],
+      ["Tenses", morphology.tenses],
+      ["Moods", morphology.moods],
+      ["Aspects", morphology.aspects],
+      ["WALS tense/aspect typology", morphology.walsCategories],
+    ];
+    let anyRendered = false;
+    for (const [label, diff] of subcats) {
+      // A null score means one side had no data for this specific sub-category — rendering
+      // the diff anyway would make "no data gathered" look like "confirmed zero" (see
+      // compare.js's diffSets docs). Skip it rather than show something misleading.
+      if (diff.score === null) continue;
+      anyRendered = true;
+      const sub = document.createElement("div");
+      sub.className = "morphology-subcategory";
+      const h4 = document.createElement("h4");
+      const badge = scoreBadge(diff.score);
+      h4.innerHTML = `${label} <span class="subcategory-badge">${badge.percent} · ${badge.label}</span>`;
+      sub.appendChild(h4);
+      const subBody = document.createElement("div");
+      sub.appendChild(subBody);
+      renderSetDiff(subBody, diff, a.name, b.name);
+      body.appendChild(sub);
+    }
+    if (!anyRendered) renderNoData(body);
+  });
 }
 
 function renderWritingSystemSection(ws, a, b) {
-  const section = document.createElement("div");
-  section.className = "category-section";
-  section.innerHTML = "<h3>Writing system</h3>";
-  if (!ws.available) {
-    section.innerHTML += '<p class="no-data">No data available for this pair.</p>';
-    return section;
-  }
-  const row = document.createElement("div");
-  row.className = "writing-system-row";
-  const side = (name, data) =>
-    data
-      ? `<div class="ws-side"><strong>${name}:</strong> ${data.script_name} <span class="ws-type">(${data.script_type})</span></div>`
-      : `<div class="ws-side"><strong>${name}:</strong> no data</div>`;
-  row.innerHTML = side(a.name, ws.wsA) + side(b.name, ws.wsB);
-  section.appendChild(row);
-  return section;
+  return renderCollapsibleSection("Writing system", ws.score, (body) => {
+    if (!ws.available) return renderNoData(body);
+    if (ws.sharedTypes?.length && ws.shared.length === 0) {
+      const note = document.createElement("p");
+      note.className = "ws-type-note";
+      note.textContent = `No exact script in common, but both use a ${ws.sharedTypes.join("/")} system.`;
+      body.appendChild(note);
+    }
+    renderSetDiff(body, ws, a.name, b.name);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {

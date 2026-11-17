@@ -94,13 +94,22 @@ class LexicalData(BaseModel):
     """ASJP 40-item core vocabulary."""
 
 
-class WritingSystem(BaseModel):
-    script_name: str
+class Script(BaseModel):
+    name: str
     script_type: str
     """One of: alphabet, abjad, abugida, syllabary, logographic, featural, other."""
-    sample_glyphs: list[str]
+    sample_glyphs: list[str] = []
     source: str
     """One of: wikidata, wals, llm."""
+
+
+class WritingSystem(BaseModel):
+    scripts: list[Script]
+    """A language can genuinely use more than one script — not a data gap to collapse to
+    "pick one": Japanese routinely uses hiragana+katakana+kanji together, and several Arabic
+    varieties are tagged with both the Arabic script and an informal Latin-based "chat
+    alphabet"/romanization (confirmed live: Levantine Arabic's Wikidata entry lists Arabic,
+    Latin, *and* Hebrew scripts). Always non-empty when this field is present at all."""
 
 
 class Geography(BaseModel):
@@ -152,7 +161,14 @@ class LanguageProfile(BaseModel):
 
 
 class LanguageIndexEntry(BaseModel):
-    """One row of the lightweight data/index.json used by the UI's language picker."""
+    """One row of the lightweight data/index.json used by the UI's language picker.
+
+    `classification_path` (the same names as LanguageProfile.classification.path, root-first)
+    is what lets the picker nest entries under one another — e.g. Levantine/Egyptian Arabic
+    indented under the Arabic macrolanguage group, Romanian under the Romance group — by
+    finding, for each entry, the other entry whose own path is its longest matching prefix.
+    Kept small (names only, no vectors) since every entry's row ships in the one index file
+    the picker loads upfront, unlike full profiles which stay lazily fetched."""
 
     glottocode: str
     comparison_kind: Literal["leaf", "group"]
@@ -161,3 +177,4 @@ class LanguageIndexEntry(BaseModel):
     name: str
     english_name: str
     family: str
+    classification_path: list[str]

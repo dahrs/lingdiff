@@ -4915,10 +4915,32 @@
     }
   ],
   "writing_system": {
-    "script_name": "English alphabet",
-    "script_type": "other",
-    "sample_glyphs": [],
-    "source": "wikidata"
+    "scripts": [
+      {
+        "name": "English alphabet",
+        "script_type": "other",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      },
+      {
+        "name": "Deseret alphabet",
+        "script_type": "other",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      },
+      {
+        "name": "Shavian alphabet",
+        "script_type": "other",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      },
+      {
+        "name": "Unified English Braille",
+        "script_type": "other",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      }
+    ]
   },
   "geography": {
     "primary_region": "Eurasia",

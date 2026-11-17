@@ -4877,10 +4877,14 @@
     }
   ],
   "writing_system": {
-    "script_name": "Turkish alphabet",
-    "script_type": "other",
-    "sample_glyphs": [],
-    "source": "wikidata"
+    "scripts": [
+      {
+        "name": "Turkish alphabet",
+        "script_type": "other",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      }
+    ]
   },
   "geography": {
     "primary_region": "Eurasia",

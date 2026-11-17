@@ -88,14 +88,69 @@ main {
   margin-bottom: 2rem;
 }
 
-select {
+.lang-picker {
+  position: relative;
+  min-width: 220px;
+}
+
+.picker-button {
+  width: 100%;
+  text-align: left;
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--card-bg);
   color: var(--fg);
   font-size: 1rem;
-  min-width: 220px;
+  cursor: pointer;
+}
+
+.picker-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 0.25rem 0;
+}
+
+.picker-option {
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.picker-option:hover {
+  background: var(--only-a-bg);
+}
+
+/* Main languages & family/macrolanguage groups: bold, full prominence. Each further nesting
+ * level (dialects, and dialects-of-dialects) gets progressively lighter and smaller — see
+ * languagePicker.js's buildLanguageTree for how depth is determined. */
+.picker-option.depth-0 {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--fg);
+}
+
+.picker-option.depth-1 {
+  font-weight: 400;
+  font-size: 0.92rem;
+  color: var(--fg);
+}
+
+.picker-option.depth-2 {
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: var(--muted);
 }
 
 .vs {
@@ -146,6 +201,13 @@ button:hover {
   color: var(--muted);
 }
 
+.score-explainer {
+  max-width: 640px;
+  margin: 0.8rem auto 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
 .summary-text {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -160,7 +222,69 @@ button:hover {
   border-top: 1px solid var(--border);
 }
 
-.category-section h3 {
+.category-section > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+  list-style: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.2rem 0;
+}
+
+.category-section > summary::-webkit-details-marker {
+  display: none;
+}
+
+.category-section > summary::before {
+  content: "▸";
+  margin-right: 0.5rem;
+  color: var(--muted);
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
+.category-section[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.section-title {
+  flex: 1;
+}
+
+.section-badge {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--only-a-bg);
+  border: 1px solid var(--only-a-border);
+  color: var(--fg);
+  white-space: nowrap;
+}
+
+.section-badge.badge-empty {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.subcategory-badge {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.section-body {
+  margin-top: 0.8rem;
+}
+
+.ws-type-note {
+  color: var(--muted);
+  font-style: italic;
   margin-bottom: 0.6rem;
 }
 
@@ -263,15 +387,6 @@ button:hover {
   margin-bottom: 0.4rem;
 }
 
-.writing-system-row {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.ws-type {
-  color: var(--muted);
-}
 
 .loading,
 .error {

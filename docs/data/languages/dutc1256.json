@@ -4579,10 +4579,26 @@
     }
   ],
   "writing_system": {
-    "script_name": "Dutch alphabet",
-    "script_type": "other",
-    "sample_glyphs": [],
-    "source": "wikidata"
+    "scripts": [
+      {
+        "name": "Dutch alphabet",
+        "script_type": "other",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      },
+      {
+        "name": "Dutch six-dot Braille",
+        "script_type": "other",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      },
+      {
+        "name": "Dutch eight-dot Braille",
+        "script_type": "other",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      }
+    ]
   },
   "geography": {
     "primary_region": "Eurasia",

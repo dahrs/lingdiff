@@ -8,12 +8,6 @@
   "classification": {
     "path": [
       {
-        "name": "Basque"
-      },
-      {
-        "name": "Basque"
-      },
-      {
         "name": "Basque",
         "glottocode": "basq1248"
       }
@@ -4849,10 +4843,20 @@
     }
   ],
   "writing_system": {
-    "script_name": "Latin script",
-    "script_type": "alphabet",
-    "sample_glyphs": [],
-    "source": "wikidata"
+    "scripts": [
+      {
+        "name": "Latin script",
+        "script_type": "alphabet",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      },
+      {
+        "name": "Basque alphabet",
+        "script_type": "other",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      }
+    ]
   },
   "geography": {
     "primary_region": "Eurasia",

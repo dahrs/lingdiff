@@ -4258,10 +4258,14 @@
     }
   ],
   "writing_system": {
-    "script_name": "Arabic script",
-    "script_type": "abjad",
-    "sample_glyphs": [],
-    "source": "wikidata"
+    "scripts": [
+      {
+        "name": "Arabic script",
+        "script_type": "abjad",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      }
+    ]
   },
   "geography": {
     "primary_region": "Eurasia",

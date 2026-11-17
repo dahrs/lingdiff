@@ -3,18 +3,47 @@
 // LLM calls — everything here is plain arithmetic/set-logic over already-fetched JSON, per
 // the project's core design constraint (see README.md).
 
-/** Family/genealogical distance via longest-common-prefix of the two classification paths
- * (both ordered root-first). Works the same whether either side is a "leaf" language or a
- * "group" (family/macrolanguage) entity — a group's path simply ends at itself. */
+/** Loose equality for classification-path node names: lowercased, hyphens/spaces stripped —
+ * the same two sources can spell a family differently (confirmed live: Wikidata's
+ * "Afroasiatic" vs. WALS's "Afro-Asiatic" for the same family). */
+function normalizeFamilyName(name) {
+  return name.toLowerCase().replace(/[-\s]/g, "");
+}
+
+/** Family/genealogical distance. Finds the DEEPEST name that appears in both classification
+ * paths — not simply the longest matching *prefix* — because the two paths can come from
+ * different sources at different granularity for perfectly valid reasons (see
+ * build_profile.py: a language falls back to WALS's shallower 3-level classification when
+ * its own Wikidata chain is too sparse to trust). Confirmed live: Levantine Arabic's path
+ * (Wikidata, 4 levels, includes an explicit "Arabic" node) vs. Egyptian Arabic's (WALS
+ * fallback, 3 levels, jumps straight from "Semitic" to the specific variety, no separate
+ * "Arabic" node at all) — positional prefix-matching found them sharing only "Afro-Asiatic"+
+ * "Semitic" misaligned by a hyphen and scored them as nearly unrelated; matching on the
+ * deepest shared name regardless of position correctly finds "Semitic" as their closest
+ * common ancestor in this data and scores them as close relatives. Works the same whether
+ * either side is a "leaf" language or a "group" (family/macrolanguage) entity — a group's
+ * path simply ends at itself. */
 function compareFamily(a, b) {
   const pathA = a.classification.path.map((n) => n.name);
   const pathB = b.classification.path.map((n) => n.name);
-  let commonDepth = 0;
-  while (commonDepth < pathA.length && commonDepth < pathB.length && pathA[commonDepth] === pathB[commonDepth]) {
-    commonDepth++;
-  }
-  const hopsA = pathA.length - commonDepth;
-  const hopsB = pathB.length - commonDepth;
+
+  let bestIndexA = -1;
+  let bestIndexB = -1;
+  let bestDepth = -1;
+  pathA.forEach((nameA, indexA) => {
+    const normalizedA = normalizeFamilyName(nameA);
+    pathB.forEach((nameB, indexB) => {
+      if (normalizeFamilyName(nameB) !== normalizedA) return;
+      if (indexA + indexB > bestDepth) {
+        bestDepth = indexA + indexB;
+        bestIndexA = indexA;
+        bestIndexB = indexB;
+      }
+    });
+  });
+
+  const hopsA = bestIndexA === -1 ? pathA.length : pathA.length - 1 - bestIndexA;
+  const hopsB = bestIndexB === -1 ? pathB.length : pathB.length - 1 - bestIndexB;
   const maxDepth = Math.max(pathA.length, pathB.length, 1);
   const score = Math.min(1, (hopsA + hopsB) / (2 * maxDepth));
   return {
@@ -22,13 +51,24 @@ function compareFamily(a, b) {
     score,
     pathA,
     pathB,
-    commonAncestor: commonDepth > 0 ? pathA[commonDepth - 1] : null,
-    divergeAtA: pathA[commonDepth] ?? null,
-    divergeAtB: pathB[commonDepth] ?? null,
+    commonAncestor: bestIndexA === -1 ? null : pathA[bestIndexA],
+    divergeAtA: bestIndexA === -1 ? pathA[0] ?? null : pathA[bestIndexA + 1] ?? null,
+    divergeAtB: bestIndexB === -1 ? pathB[0] ?? null : pathB[bestIndexB + 1] ?? null,
   };
 }
 
-/** Three-column shared/only-A/only-B split of two string lists (order-insensitive, de-duped). */
+/** Three-column shared/only-A/only-B split of two string lists (order-insensitive, de-duped).
+ *
+ * `score` is null whenever EITHER list is empty — not just when both are. An empty list here
+ * always means "no data gathered for this side" (no real language has zero phonemes, and for
+ * the Wikidata-sourced grammar lists we can't currently distinguish "confirmed zero" from
+ * "not queried" — see README.md's to-do on this). Treating an empty side as "zero items,
+ * maximally different from whatever the other side has" was a real bug: it made Levantine
+ * Arabic (no PHOIBLE phoneme data) and Egyptian Arabic (67 phonemes) register as 100%
+ * different in phonology alone, when they're actually close relatives. `shared`/`onlyA`/
+ * `onlyB` are still returned so a caller *could* inspect them, but callers should treat a
+ * null score as "not comparable" and avoid rendering a one-sided diff as if it meant
+ * something — see app.js's category renderers. */
 function diffSets(listA, listB) {
   const setA = new Set(listA || []);
   const setB = new Set(listB || []);
@@ -36,14 +76,14 @@ function diffSets(listA, listB) {
   const onlyA = [...setA].filter((x) => !setB.has(x)).sort();
   const onlyB = [...setB].filter((x) => !setA.has(x)).sort();
   const union = shared.length + onlyA.length + onlyB.length;
-  const score = union === 0 ? null : 1 - shared.length / union; // Jaccard distance
+  const score = setA.size === 0 || setB.size === 0 ? null : 1 - shared.length / union; // Jaccard distance
   return { shared, onlyA, onlyB, score };
 }
 
 function comparePhonology(a, b) {
   const phonemesA = a.phonology?.phonemes || [];
   const phonemesB = b.phonology?.phonemes || [];
-  if (phonemesA.length === 0 && phonemesB.length === 0) return { available: false };
+  if (phonemesA.length === 0 || phonemesB.length === 0) return { available: false };
   const diff = diffSets(phonemesA, phonemesB);
   return { available: true, ...diff };
 }
@@ -89,16 +129,23 @@ function compareMorphology(a, b) {
   return { available: true, cases, tenses, moods, aspects, walsCategories, score };
 }
 
+/** A language can genuinely use more than one script (Japanese: hiragana+katakana+kanji;
+ * several Arabic varieties: the Arabic script plus an informal Latin-based "chat alphabet")
+ * — compared the same way as phonemes: a shared/only-in-A/only-in-B set over script names,
+ * not a single name/type pair. Falls back to comparing script *types* only when neither side
+ * shares an exact script name but their types overlap (e.g. two different Latin-alphabet
+ * languages still both use "an alphabet", worth surfacing even if no single script matches). */
 function compareWritingSystem(a, b) {
-  const wsA = a.writing_system;
-  const wsB = b.writing_system;
-  if (!wsA && !wsB) return { available: false };
-  if (!wsA || !wsB) return { available: true, wsA, wsB, score: null, note: "only one side has known data" };
-  let score;
-  if (wsA.script_name === wsB.script_name) score = 0;
-  else if (wsA.script_type === wsB.script_type) score = 0.4;
-  else score = 1;
-  return { available: true, wsA, wsB, score };
+  const scriptsA = a.writing_system?.scripts || [];
+  const scriptsB = b.writing_system?.scripts || [];
+  if (scriptsA.length === 0 || scriptsB.length === 0) return { available: false };
+  const namesDiff = diffSets(scriptsA.map((s) => s.name), scriptsB.map((s) => s.name));
+  const typesA = new Set(scriptsA.map((s) => s.script_type));
+  const typesB = new Set(scriptsB.map((s) => s.script_type));
+  const sharedTypes = [...typesA].filter((t) => typesB.has(t));
+  let score = namesDiff.score;
+  if (namesDiff.shared.length === 0 && sharedTypes.length > 0) score = 0.4;
+  return { available: true, scriptsA, scriptsB, sharedTypes, ...namesDiff, score };
 }
 
 /** Aggregates whichever per-category scores are available into one 0-100 overall score,

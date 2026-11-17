@@ -109,7 +109,8 @@ def _write_profile(profile: LanguageProfile) -> None:
 
 
 def _to_index_entry(profile: LanguageProfile) -> LanguageIndexEntry:
-    family = profile.classification.path[0].name if profile.classification.path else "Unknown"
+    path_names = [node.name for node in profile.classification.path]
+    family = path_names[0] if path_names else "Unknown"
     return LanguageIndexEntry(
         glottocode=profile.glottocode,
         comparison_kind=profile.comparison_kind,
@@ -118,6 +119,7 @@ def _to_index_entry(profile: LanguageProfile) -> LanguageIndexEntry:
         name=profile.name,
         english_name=profile.english_name,
         family=family,
+        classification_path=path_names,
     )
 
 

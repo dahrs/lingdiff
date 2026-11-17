@@ -79,6 +79,11 @@ Per **leaf** entity, each profile combines:
     checks the climbed root against WALS's own top-level `Family` value and falls back to
     WALS's shallower-but-reliable path on any mismatch, rather than show a chain that might be
     wrong throughout. `Classification.path_source` records which one a given profile used.
+    Separately, `build_profile._dedupe_consecutive` collapses same-name steps in a row —
+    caught two different ways this happens: Japanese's raw Wikidata chain repeated
+    "Japanese" three times (different entities sharing one English label, which the
+    tree-walk's cycle guard — keyed on entity ID, not label — doesn't catch), and WALS's own
+    data for Japanese has Family/Genus/Name all literally "Japanese" too.
 - **LLM enrichment** (`pipeline/enrich_llm.py`) — a short grounded "notable features" blurb,
   plus writing-system classification as the last-resort fallback when WALS, Wikidata, *and*
   this both have nothing. Grounded in a fetched Wikipedia extract (via the language's Wikidata
@@ -108,23 +113,61 @@ Pages serves a repo's chosen folder directly, which is *why* the pipeline writes
 `docs/data/` rather than a top-level `data/`: anything outside the published folder simply
 isn't reachable once Pages is enabled, regardless of relative-path tricks.
 
-- `index.html` / `styles.css` — picker UI + layout
-- `compare.js` — pure comparison functions (family distance via classification-path common
-  prefix, phoneme/grammar-category set overlaps, word-order row-by-row match/mismatch,
-  weighted overall score re-normalized over whichever categories have data for the pair)
+- `index.html` / `styles.css` — layout
+- `compare.js` — pure comparison functions. Each category's score is `null` (not a fake
+  maximal-distance value) whenever either side is simply missing data for it — see
+  `diffSets`'s docstring; conflating "no data" with "confirmed zero" was a real bug caught in
+  review (Levantine Arabic has no PHOIBLE phoneme entry, which was scoring it as 100%
+  phonologically different from everything, dragging every comparison involving it toward
+  "very distant" regardless of actual relatedness). Family distance matches on the **deepest
+  shared name anywhere in both classification paths**, not a positional common *prefix* —
+  needed because two entries can have same-family paths of different depth depending on
+  whether they got Wikidata's deep chain or WALS's shallower fallback (confirmed live:
+  Levantine vs. Egyptian Arabic, both genuinely close Semitic languages, scored as nearly
+  unrelated under prefix-matching because Egyptian Arabic's WALS-fallback path has no
+  separate "Arabic" step at all — it jumps straight from "Semitic" to the specific variety).
+- `languagePicker.js` — the picker itself: a custom listbox (not a native `<select>`, which
+  can't reliably style `<option>` font-weight/indentation across browsers) that **nests each
+  language under its macrolanguage/family** rather than listing everything alphabetically
+  flat. Matches on word-boundaries within path elements, not exact position or plain
+  substring (plain substring wrongly nests German's Germanic siblings *under* German itself,
+  since "german" is a literal substring of "Germanic languages" — word-boundary matching
+  requires "german" to be a whole word in some element, which it isn't there, but "Arabic" is
+  a whole word in "Arabic (Egyptian)"). Falls back to checking the entry's own leaf name only
+  when nothing at all matched further up its ancestor chain, for sources sparse enough to
+  skip a level entirely (same Egyptian Arabic case as above).
 - `diffView.js` — the reusable "shared / only-in-A / only-in-B" renderer behind the
-  public-friendly requirement (phonemes, grammatical categories, etc. all reduce to this)
+  public-friendly requirement (phonemes, grammatical categories, writing-system scripts, etc.
+  all reduce to this)
 - `summary.js` — template-based narrative over the already-computed facts
-- `app.js` — fetches `data/index.json` once + the two selected profiles lazily, wires the
-  picker to the above
+- `app.js` — fetches `data/index.json` once + the two selected profiles lazily; each category
+  section is a native `<details>`/`<summary>` (click the title to expand/collapse, no custom
+  JS needed for that) with its own 0–100 score badge next to the title, same scale as the
+  overall score (an explanatory line under the overall number spells out what it means — "0
+  = identical, 100 = maximally different" — since an unexplained number was flagged as
+  confusing in review).
+
+A language can genuinely use more than one script at once (`WritingSystem.scripts` is a
+list, not a single name) — Japanese routinely uses 4 (hiragana/katakana/kanji/kana), and
+several Arabic varieties are tagged with the Arabic script *and* an informal Latin-based
+"chat alphabet"/romanization. Compared the same way as phonemes (shared/only-A/only-B over
+script names), falling back to a looser "at least the same script *type*" match when no exact
+script name is shared. Script-type detection (`wikidata_lookup.script_type_for`) matches on
+the script *family* name as a substring (Wikidata labels the same family inconsistently as
+"<Family> script" vs. "<Family> alphabet" — confirmed live, Levantine vs. Egyptian Arabic), with
+one explicit carve-out: a "chat alphabet" (Arabizi-style informal romanization) is Latin-based
+by definition, not the family's native script, so it's checked before the general match.
 
 No LLM call anywhere in `docs/` — everything there is arithmetic/set-logic over already-fetched
 JSON, per the project's core design constraint.
 
 **Not yet verified in an actual browser** — this sandboxed environment has no browser or JS
 runtime available, so this was checked by serving `docs/` locally and confirming the data/JS
-files are reachable (`curl`), plus a manual code read-through and a brace/paren balance check.
-Please open it yourself before trusting it works end-to-end.
+files are reachable (`curl`), a manual code read-through, a brace/paren balance check, and a
+from-scratch Python reimplementation of the comparison/picker-nesting logic run against the
+real data to confirm the actual math and tree structure, not just that the JS parses. Please
+open the real page yourself before trusting it works end-to-end — a logic re-implementation
+confirms the algorithm, not that the DOM renders it correctly.
 
 ## To do
 

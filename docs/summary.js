@@ -13,13 +13,17 @@ function buildSummary(comparison) {
   }
 
   const ws = categories.writingSystem;
-  if (ws.available && ws.wsA && ws.wsB) {
-    if (ws.wsA.script_name === ws.wsB.script_name) {
-      parts.push(`Both are written in the ${ws.wsA.script_name}.`);
-    } else if (ws.wsA.script_type === ws.wsB.script_type) {
-      parts.push(`Both use a ${ws.wsA.script_type} writing system, but different scripts (${ws.wsA.script_name} vs. ${ws.wsB.script_name}).`);
+  if (ws.available) {
+    if (ws.shared.length > 0) {
+      parts.push(
+        ws.onlyA.length === 0 && ws.onlyB.length === 0
+          ? `Both are written in the same script${ws.shared.length > 1 ? "s" : ""}: ${ws.shared.join(", ")}.`
+          : `Both share the ${ws.shared.join(", ")} script, though each also uses at least one the other doesn't.`,
+      );
+    } else if (ws.sharedTypes?.length > 0) {
+      parts.push(`They use different scripts, but both are a ${ws.sharedTypes.join("/")} system.`);
     } else {
-      parts.push(`They use fundamentally different writing systems: ${ws.wsA.script_name} (${ws.wsA.script_type}) vs. ${ws.wsB.script_name} (${ws.wsB.script_type}).`);
+      parts.push(`They use fundamentally different writing systems (${ws.scriptsA.map((s) => s.name).join(", ")} vs. ${ws.scriptsB.map((s) => s.name).join(", ")}).`);
     }
   }
 
