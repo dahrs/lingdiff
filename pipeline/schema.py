@@ -193,6 +193,13 @@ class LanguageProfile(BaseModel):
     geography: Geography | None = None
     notable_features: NotableFeatures | None = None
     vocabulary_origin: VocabularyOrigin | None = None
+    is_sign_language: bool = False
+    """True for languages WALS classifies under Genus="Sign Languages" (or, as a fallback for
+    "group" entities with no WALS row, a name-keyword match). Drives podium filtering in
+    nearest_neighbors.py: a sign language's closest/farthest podium should only ever contain
+    other sign languages, and a spoken language's podium should never contain one — modality
+    (visual-gestural vs. spoken) dominates every other similarity signal, so mixing the two
+    produces meaningless comparisons."""
 
 
 class NearestNeighbor(BaseModel):
@@ -229,3 +236,6 @@ class LanguageIndexEntry(BaseModel):
     classification_path: list[str]
     closest: list[NearestNeighbor] = []
     farthest: list[NearestNeighbor] = []
+    is_sign_language: bool = False
+    """Mirrors LanguageProfile.is_sign_language — kept here too so the frontend can filter/
+    label without fetching the full profile."""

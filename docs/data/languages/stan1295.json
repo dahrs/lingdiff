@@ -4963,5 +4963,6 @@
     ],
     "sample_size": 11312,
     "source": "etymology_db"
-  }
+  },
+  "is_sign_language": false
 }

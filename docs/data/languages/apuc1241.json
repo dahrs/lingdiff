@@ -4097,5 +4097,6 @@
     "donor_languages": [],
     "sample_size": 18,
     "source": "etymology_db"
-  }
+  },
+  "is_sign_language": false
 }

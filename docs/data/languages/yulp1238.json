@@ -4102,5 +4102,6 @@
       "name": "Hand and Arm",
       "value": "Identical"
     }
-  ]
+  ],
+  "is_sign_language": false
 }

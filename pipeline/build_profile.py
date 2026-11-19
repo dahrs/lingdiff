@@ -34,6 +34,45 @@ from pipeline.wikidata_family_tree import FamilyTreeCache, get_family_path_from_
 from pipeline.wikidata_lookup import WikidataGrammarCache, script_type_for
 from pipeline.wold_loader import WoldData
 
+# Name-keyword fallback for sign-language detection (see is_sign_language_for) — covers every
+# non-English-"sign"-containing name among WALS's 40 Genus="Sign Languages" rows, confirmed
+# live: Auslan, Kata Kolok, native-language terms ("señas"/"signes"/"segni"/"sinais"/
+# "gebärdensprache"/"gebarentaal"/"tegnspråk"/"teckenspråket", Turkish "isaret dili", Lebanese
+# Arabic "lughat al-isharat", Portuguese "gestual"). Primary signal is WALS's own Genus field
+# (_build_profile below); this only matters for "group" entities or any future leaf built
+# without a WALS row to check.
+_SIGN_LANGUAGE_NAME_KEYWORDS = (
+    "sign",
+    "señas",
+    "senas",
+    "signes",
+    "segni",
+    "sinais",
+    "gebärdensprache",
+    "gebardensprache",
+    "gebarentaal",
+    "tegnspråk",
+    "tegnsprak",
+    "teckenspråket",
+    "tecknspraket",
+    "isaret dili",
+    "isharat",
+    "gestual",
+    "auslan",
+    "kata kolok",
+)
+
+
+def is_sign_language_for(name: str, wals_genus: str | None = None) -> bool:
+    """WALS's Genus="Sign Languages" is the authoritative signal (covers all 40 WALS-listed
+    sign languages precisely); the name-keyword fallback exists only for callers with no WALS
+    row to check against (see build_group_profile)."""
+    if wals_genus is not None and wals_genus.strip() == "Sign Languages":
+        return True
+    lowered = name.lower()
+    return any(keyword in lowered for keyword in _SIGN_LANGUAGE_NAME_KEYWORDS)
+
+
 # For WALS's own code text (e.g. "Logographic", "Syllabic", "Alphabetic") — the descriptive
 # word IS the type here, unlike Wikidata's "<script family> script/alphabet" labels, where the
 # suffix word is generic and wikidata_lookup.script_type_for's family-name matching is used
@@ -117,6 +156,7 @@ def build_profile(
         writing_system=writing_system,
         geography=geography,
         vocabulary_origin=vocabulary_origin,
+        is_sign_language=is_sign_language_for(wals_lang["Name"], wals_lang.get("Genus")),
     )
 
 

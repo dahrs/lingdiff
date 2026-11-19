@@ -4364,5 +4364,6 @@
       "name": "SOVNeg Order",
       "value": "Word&OnlyWithAnotherNeg"
     }
-  ]
+  ],
+  "is_sign_language": false
 }

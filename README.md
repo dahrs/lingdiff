@@ -191,6 +191,23 @@ scoreable categories, which would make group entities spuriously dominate "farth
 nearly everyone — "closest *language*" should mean closest among actual languages, not among
 the small set of hand-picked families.
 
+**Modality-aware (sign vs. spoken)**: every leaf profile has `is_sign_language`
+(`schema.LanguageProfile`/`LanguageIndexEntry`), detected primarily from WALS's own
+`Genus == "Sign Languages"` (covers all 40 WALS-listed sign languages precisely — confirmed
+live, only 26 of the 40 have "sign" literally in the name, e.g. "Auslan", "Deutsche
+Gebärdensprache", "Lengua de Señas Argentina" don't), with a name-keyword fallback
+(`build_profile.is_sign_language_for`) for any entity built without a WALS row. The podium
+computation (`nearest_neighbors.py`) skips offering a candidate to either side when the two
+profiles disagree on `is_sign_language` — visual-gestural vs. spoken modality swamps every
+other typological signal this tool scores, and without this guard a sign language's "closest"
+podium would tend to fill up with spoken languages that simply have sparse/absent phonology
+data (scored as incomparable, never as maximally distant — see the missing-data-safety point
+above), which is a meaningless comparison in either direction. Backfilled onto the full
+already-built dataset via `pipeline/backfill_sign_language.py` (local-only, no network calls —
+same pattern as `repair_empty_glottocodes.py`); verified live that every one of the 40 sign
+languages' closest/farthest podiums contain only other sign languages, and spot-checked spoken
+languages (e.g. Spanish) show none.
+
 `pipeline/scoring.py` is a **hand-maintained Python port** of `compare.js`'s overall-score
 math (no Node/JS runtime available in this environment to run the real JS from Python, and no
 shared implementation between the two — see that file's docstring). If you change the scoring

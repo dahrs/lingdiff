@@ -4952,5 +4952,6 @@
     ],
     "sample_size": 2130,
     "source": "wold"
-  }
+  },
+  "is_sign_language": false
 }

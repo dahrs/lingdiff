@@ -141,6 +141,7 @@ def _to_index_entry(profile: LanguageProfile) -> LanguageIndexEntry:
         english_name=profile.english_name,
         family=family,
         classification_path=path_names,
+        is_sign_language=profile.is_sign_language,
     )
 
 

@@ -9,6 +9,14 @@ Restricted to comparison_kind="leaf" profiles only (see run_pipeline.py's caller
 against a "group" (family/macrolanguage) entity means fewer categories have any data at all,
 which would make group entities spuriously dominate "farthest" for almost everyone; "closest
 *language*" should mean closest among actual languages.
+
+Also modality-aware: a pair is only ever offered to either side's podium when both profiles
+agree on `is_sign_language` (see schema.LanguageProfile.is_sign_language). Visual-gestural vs.
+spoken modality swamps every other typological signal this tool scores — without this guard, a
+sign language's "closest" podium would tend to fill up with spoken languages that happen to
+have sparse/absent phonology data (scored as incomparable rather than distant, since missing
+data is never scored as maximally different — see scoring.py), which is a meaningless
+comparison in either direction.
 """
 
 from __future__ import annotations
@@ -38,6 +46,8 @@ def compute_nearest_neighbors(
         glottocode_a, profile_a = leaf_profiles[i]
         for j in range(i + 1, count):
             glottocode_b, profile_b = leaf_profiles[j]
+            if bool(profile_a.get("is_sign_language")) != bool(profile_b.get("is_sign_language")):
+                continue
             score = overall_distance(profile_a, profile_b)
             if score is None:
                 continue

@@ -4403,5 +4403,6 @@
     ],
     "sample_size": 532,
     "source": "etymology_db"
-  }
+  },
+  "is_sign_language": false
 }

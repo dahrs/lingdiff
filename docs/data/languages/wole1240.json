@@ -4324,5 +4324,6 @@
     ],
     "sample_size": 15,
     "source": "etymology_db"
-  }
+  },
+  "is_sign_language": false
 }

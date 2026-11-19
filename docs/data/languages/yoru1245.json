@@ -4852,5 +4852,6 @@
     ],
     "sample_size": 374,
     "source": "etymology_db"
-  }
+  },
+  "is_sign_language": false
 }

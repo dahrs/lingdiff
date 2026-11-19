@@ -4090,5 +4090,6 @@
     ],
     "sample_size": 38,
     "source": "etymology_db"
-  }
+  },
+  "is_sign_language": false
 }
