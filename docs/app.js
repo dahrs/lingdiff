@@ -14,37 +14,61 @@ async function loadIndex() {
   document.querySelectorAll(".picker-button").forEach((b) => (b.textContent = "Select a language…"));
 }
 
-/** Shows language A's precomputed closest/farthest match (from index.json — no extra fetch,
- * see schema.NearestNeighbor) as soon as it's picked, independent of whatever's picked for
- * B. Only leaf languages carry this (see nearest_neighbors.py); a "group" entry (a family or
- * macrolanguage) shows a short note instead of a stale/wrong panel. */
+const _MEDAL_RANKS = ["gold", "silver", "bronze"];
+const _MEDAL_ORDINALS = ["1st", "2nd", "3rd"];
+
+/** One podium (closest OR farthest): rank 1 as the full-size card, ranks 2/3 as smaller
+ * one-line entries below it — a top-3 "gold/silver/bronze" podium, not just a single best
+ * match, since one data point doesn't tell you much about how crowded the neighborhood is. */
+function renderPodium(label, neighbors, cssClass) {
+  if (!neighbors || neighbors.length === 0) return "";
+  const [first, ...rest] = neighbors;
+  const firstBadge = scoreBadge(first.score / 100);
+  const miniRows = rest
+    .map((neighbor, i) => {
+      const rank = i + 1; // rest[0] is rank 2 (silver), rest[1] is rank 3 (bronze)
+      const badge = scoreBadge(neighbor.score / 100);
+      return `
+        <button type="button" class="nearest-mini medal-${_MEDAL_RANKS[rank]}" data-glottocode="${neighbor.glottocode}">
+          <span class="medal-ordinal">${_MEDAL_ORDINALS[rank]}</span> ${neighbor.name} — ${badge.percent} · ${badge.label}
+        </button>
+      `;
+    })
+    .join("");
+  return `
+    <div class="podium">
+      <button type="button" class="nearest-card ${cssClass} medal-gold" data-glottocode="${first.glottocode}">
+        <span class="nearest-label">${label}</span>
+        <span class="medal-ordinal">1st</span>
+        <span class="nearest-name">${first.name}</span>
+        <span class="nearest-score">${firstBadge.percent} · ${firstBadge.label}</span>
+      </button>
+      ${miniRows}
+    </div>
+  `;
+}
+
+/** Shows language A's precomputed closest/farthest podiums (from index.json — no extra
+ * fetch, see schema.NearestNeighbor) as soon as it's picked, independent of whatever's
+ * picked for B. Only leaf languages carry this (see nearest_neighbors.py); a "group" entry
+ * (a family or macrolanguage) shows a short note instead of a stale/wrong panel. */
 function renderNearestPanel(entry) {
   const panel = document.getElementById("nearest-panel");
-  if (entry.comparison_kind !== "leaf" || (!entry.closest && !entry.farthest)) {
+  const hasPodiums = (entry.closest && entry.closest.length > 0) || (entry.farthest && entry.farthest.length > 0);
+  if (entry.comparison_kind !== "leaf" || !hasPodiums) {
     panel.innerHTML = entry.comparison_kind === "leaf"
       ? ""
       : `<p class="nearest-note">${entry.name} is a family/macrolanguage group — closest/farthest comparisons are only computed between individual languages.</p>`;
     return;
   }
-  const side = (label, neighbor, cssClass) => {
-    if (!neighbor) return "";
-    const badge = scoreBadge(neighbor.score / 100);
-    return `
-      <button type="button" class="nearest-card ${cssClass}" data-glottocode="${neighbor.glottocode}">
-        <span class="nearest-label">${label}</span>
-        <span class="nearest-name">${neighbor.name}</span>
-        <span class="nearest-score">${badge.percent} · ${badge.label}</span>
-      </button>
-    `;
-  };
   panel.innerHTML = `
     <p class="nearest-heading">Among all languages in this list, relative to <strong>${entry.name}</strong>:</p>
     <div class="nearest-cards">
-      ${side("Closest", entry.closest, "nearest-closest")}
-      ${side("Most distant", entry.farthest, "nearest-farthest")}
+      ${renderPodium("Closest", entry.closest, "nearest-closest")}
+      ${renderPodium("Most distant", entry.farthest, "nearest-farthest")}
     </div>
   `;
-  panel.querySelectorAll(".nearest-card").forEach((card) => {
+  panel.querySelectorAll(".nearest-card, .nearest-mini").forEach((card) => {
     card.addEventListener("click", () => {
       const neighborEntry = indexEntries.find((e) => e.glottocode === card.dataset.glottocode);
       if (!neighborEntry) return;
@@ -126,6 +150,7 @@ function renderComparison(container, comparison) {
   );
   container.appendChild(renderMorphologySection(categories.morphology, a, b));
   container.appendChild(renderWritingSystemSection(categories.writingSystem, a, b));
+  container.appendChild(renderVocabularyOriginSection(categories.vocabularyOrigin, a, b));
 
   if (a.notable_features || b.notable_features) {
     const notable = document.createElement("div");
@@ -219,6 +244,35 @@ function renderWritingSystemSection(ws, a, b) {
       body.appendChild(note);
     }
     renderSetDiff(body, ws, a.name, b.name);
+  });
+}
+
+/** Informational only — this category's score (donor-language set overlap) is never part of
+ * the overall distance; see compareVocabularyOrigin's docstring in compare.js for why shared/
+ * different borrowing history isn't treated as a measure of linguistic similarity. */
+function renderVocabularyOriginSection(vocab, a, b) {
+  return renderCollapsibleSection("Vocabulary origin — borrowed words", vocab.score, (body) => {
+    if (!vocab.available) return renderNoData(body);
+    const side = (name, vo) => {
+      const pct = Math.round(vo.borrowed_ratio * 100);
+      const sourceLabel = vo.source === "wold" ? "WOLD (expert-curated)" : "etymology-db (auto-parsed from Wiktionary — treat with more caution)";
+      return `<div class="vocab-side"><strong>${name}:</strong> ~${pct}% borrowed vocabulary (${vo.sample_size} words sampled, source: ${sourceLabel})</div>`;
+    };
+    const summary = document.createElement("div");
+    summary.className = "vocab-summary";
+    summary.innerHTML = side(a.name, vocab.voA) + side(b.name, vocab.voB);
+    body.appendChild(summary);
+
+    if (vocab.score === null) {
+      const note = document.createElement("p");
+      note.className = "no-data";
+      note.textContent = "Not enough donor-language data on at least one side to compare borrowing sources directly.";
+      body.appendChild(note);
+      return;
+    }
+    const diffBody = document.createElement("div");
+    body.appendChild(diffBody);
+    renderSetDiff(diffBody, vocab, a.name, b.name);
   });
 }
 

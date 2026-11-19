@@ -112,10 +112,8 @@ def main() -> None:
         result = neighbors.get(entry.glottocode)
         if result is None:
             continue
-        if result["closest"]:
-            entry.closest = NearestNeighbor(**result["closest"])
-        if result["farthest"]:
-            entry.farthest = NearestNeighbor(**result["farthest"])
+        entry.closest = [NearestNeighbor(**n) for n in result["closest"]]
+        entry.farthest = [NearestNeighbor(**n) for n in result["farthest"]]
 
     _INDEX_PATH.write_text(json.dumps([e.model_dump() for e in index_entries], indent=2))
 

@@ -148,6 +148,24 @@ function compareWritingSystem(a, b) {
   return { available: true, scriptsA, scriptsB, sharedTypes, ...namesDiff, score };
 }
 
+/** Donor-language overlap — do these two languages share a similar borrowing history? Scored
+ * the same way as phonemes/scripts (a shared/only-in-A/only-in-B set over donor-language
+ * names), but deliberately kept OUT of the overall score (never added to computeOverall's
+ * `weighted` list below) — shared or different borrowing history is a fact about contact and
+ * history, not a measure of how structurally alike two languages are. Two languages could
+ * share an identical donor profile (e.g. both heavily borrowed from English) while being
+ * typologically nothing alike, or vice versa; folding that into "how close are these
+ * languages" would conflate two different questions. Shown for context instead, alongside
+ * each language's own borrowed_ratio/sample_size/source (see schema.VocabularyOrigin) —
+ * `voA`/`voB` carry those through for the renderer, nothing here computes with them. */
+function compareVocabularyOrigin(a, b) {
+  const voA = a.vocabulary_origin;
+  const voB = b.vocabulary_origin;
+  if (!voA || !voB) return { available: false };
+  const donorsDiff = diffSets((voA.donor_languages || []).map((d) => d.name), (voB.donor_languages || []).map((d) => d.name));
+  return { available: true, voA, voB, ...donorsDiff };
+}
+
 /** Aggregates whichever per-category scores are available into one 0-100 overall score,
  * re-normalized over the categories that actually had data — see README.md's scoring design. */
 function computeOverall(categories) {
@@ -189,6 +207,9 @@ function compareLanguages(a, b) {
     wordOrder: compareWordOrder(a, b),
     morphology: compareMorphology(a, b),
     writingSystem: compareWritingSystem(a, b),
+    // Not in computeOverall's `weighted` list — see compareVocabularyOrigin's docstring for
+    // why this is informational-only, never folded into the overall distance score.
+    vocabularyOrigin: compareVocabularyOrigin(a, b),
   };
   const overall = computeOverall(categories);
   return { a, b, categories, overall, label: qualitativeLabel(overall.score) };

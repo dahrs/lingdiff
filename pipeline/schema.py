@@ -214,7 +214,10 @@ class LanguageIndexEntry(BaseModel):
 
     `closest`/`farthest` (leaf entries only — see pipeline/nearest_neighbors.py) are
     precomputed at build time specifically so the UI can show them for whichever language is
-    selected without an extra fetch: the data's already sitting in this same index file."""
+    selected without an extra fetch: the data's already sitting in this same index file. Each
+    is a "podium" of up to 3 entries, best (lowest score for closest, highest for farthest)
+    first — a list, not a single NearestNeighbor, can be shorter than 3 when there weren't
+    enough comparable other languages."""
 
     glottocode: str
     comparison_kind: Literal["leaf", "group"]
@@ -224,5 +227,5 @@ class LanguageIndexEntry(BaseModel):
     english_name: str
     family: str
     classification_path: list[str]
-    closest: NearestNeighbor | None = None
-    farthest: NearestNeighbor | None = None
+    closest: list[NearestNeighbor] = []
+    farthest: list[NearestNeighbor] = []

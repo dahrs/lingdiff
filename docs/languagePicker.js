@@ -103,8 +103,26 @@ function flattenTree(nodes, depth = 0, out = []) {
   return out;
 }
 
+/** Does this entry match a type-to-search query? Word-prefix, not a plain substring and not
+ * requiring the match be the very first word — typing "Beirut" should find "Arabic
+ * (Beirut)", not just names that literally start with "Beirut". Matches against the
+ * language's own display name and its ISO 639-3 code (e.g. typing "spa" finds Spanish). */
+function entryMatchesQuery(entry, query) {
+  if (!query) return true;
+  const words = entry.name
+    .toLowerCase()
+    .replace(/[-()]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+  if (words.some((word) => word.startsWith(query))) return true;
+  return !!entry.iso639_3 && entry.iso639_3.toLowerCase().startsWith(query);
+}
+
 /** Wires up one .lang-picker container (a .picker-button + a .picker-panel, per index.html)
- * against the given entries. Calls onSelect(entry) when the user picks one. */
+ * against the given entries. Calls onSelect(entry) when the user picks one. With ~2400
+ * languages in the full list, scrolling to find one is tedious — the panel's first child is
+ * a type-to-search box that filters the rows below it as you type, rather than requiring you
+ * to scroll through the whole (tree-nested) list. */
 function createLanguagePicker(container, entries, onSelect) {
   const button = container.querySelector(".picker-button");
   const panel = container.querySelector(".picker-panel");
@@ -120,6 +138,20 @@ function createLanguagePicker(container, entries, onSelect) {
     if (notify) onSelect(entry);
   };
 
+  const searchInput = document.createElement("input");
+  searchInput.type = "text";
+  searchInput.className = "picker-search";
+  searchInput.placeholder = "Type to search…";
+  searchInput.setAttribute("autocomplete", "off");
+  panel.appendChild(searchInput);
+
+  const noMatches = document.createElement("p");
+  noMatches.className = "picker-no-matches";
+  noMatches.textContent = "No languages match.";
+  noMatches.hidden = true;
+  panel.appendChild(noMatches);
+
+  const rowEls = [];
   for (const { entry, depth } of rows) {
     const row = document.createElement("div");
     row.className = `picker-option depth-${Math.min(depth, 2)}`;
@@ -128,7 +160,30 @@ function createLanguagePicker(container, entries, onSelect) {
     row.title = entry.classification_path.join(" → ");
     row.addEventListener("click", () => selectEntry(entry));
     panel.appendChild(row);
+    rowEls.push({ entry, row });
   }
+
+  const applyFilter = () => {
+    const query = searchInput.value.trim().toLowerCase();
+    let anyVisible = false;
+    for (const { entry, row } of rowEls) {
+      const matches = entryMatchesQuery(entry, query);
+      row.hidden = !matches;
+      anyVisible = anyVisible || matches;
+    }
+    noMatches.hidden = anyVisible;
+  };
+
+  searchInput.addEventListener("input", applyFilter);
+  searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closePanel();
+    } else if (event.key === "Enter") {
+      const firstVisible = rowEls.find(({ row }) => !row.hidden);
+      if (firstVisible) selectEntry(firstVisible.entry);
+    }
+  });
+  searchInput.addEventListener("click", (event) => event.stopPropagation());
 
   const closePanel = () => {
     panel.hidden = true;
@@ -138,8 +193,11 @@ function createLanguagePicker(container, entries, onSelect) {
     document.querySelectorAll(".picker-panel").forEach((p) => {
       if (p !== panel) p.hidden = true;
     });
+    searchInput.value = "";
+    applyFilter();
     panel.hidden = false;
     button.setAttribute("aria-expanded", "true");
+    searchInput.focus();
   };
 
   button.addEventListener("click", (event) => {

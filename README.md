@@ -157,7 +157,11 @@ isn't reachable once Pages is enabled, regardless of relative-path tricks.
   requires "german" to be a whole word in some element, which it isn't there, but "Arabic" is
   a whole word in "Arabic (Egyptian)"). Falls back to checking the entry's own leaf name only
   when nothing at all matched further up its ancestor chain, for sources sparse enough to
-  skip a level entirely (same Egyptian Arabic case as above).
+  skip a level entirely (same Egyptian Arabic case as above). Its panel also opens with a
+  type-to-search box, auto-focused — scrolling ~2400 entries by hand wasn't practical once
+  broad coverage landed. Matches by word-prefix (typing "Beirut" finds "Arabic (Beirut)", not
+  just names literally starting with it) against the name or the ISO 639-3 code; Enter
+  selects the first visible match, Escape closes.
 - `diffView.js` — the reusable "shared / only-in-A / only-in-B" renderer behind the
   public-friendly requirement (phonemes, grammatical categories, writing-system scripts, etc.
   all reduce to this)
@@ -170,20 +174,22 @@ isn't reachable once Pages is enabled, regardless of relative-path tricks.
   confusing in review). Also renders the closest/farthest panel (below) as soon as language A
   is picked — no fetch, since that data already rode along in `index.json`.
 
-**Closest/farthest-in-the-list panel**: picking language A immediately shows its precomputed
-closest and farthest match among every *other* leaf language in the dataset, independent of
-whatever's picked for B (clicking either card loads that exact pairing into the full
-comparison below). This can't be computed live in the browser the way the main comparison
+**Closest/farthest-in-the-list panel**: picking language A immediately shows a **top-3
+gold/silver/bronze podium** — the 3 closest and 3 farthest other leaf languages in the whole
+dataset, independent of whatever's picked for B (clicking any entry loads that exact pairing
+into the full comparison below; rank 1 is the full card, ranks 2-3 collapse to a smaller
+one-line button). This can't be computed live in the browser the way the main comparison
 is — finding "closest among all ~2400 languages" means comparing every pair, which would mean
 either downloading every profile into the browser (defeats the lazy-fetch design entirely) or
 redoing an O(n²) pass on every single pickerA change. Instead it's precomputed once, offline,
 in the pipeline (`pipeline/scoring.py` + `pipeline/nearest_neighbors.py`) and shipped as plain
-data on each `LanguageIndexEntry` (`closest`/`farthest`, see `schema.NearestNeighbor`) — the
-picker already has the whole index loaded, so showing it costs nothing extra at view time.
-Restricted to `comparison_kind="leaf"` entries only on both sides: comparing against a
-"group" (family/macrolanguage) entity has far fewer scoreable categories, which would make
-group entities spuriously dominate "farthest" for nearly everyone — "closest *language*"
-should mean closest among actual languages, not among the small set of hand-picked families.
+data on each `LanguageIndexEntry` (`closest`/`farthest`, each a list of up to 3
+`schema.NearestNeighbor`s, best first) — the picker already has the whole index loaded, so
+showing it costs nothing extra at view time. Restricted to `comparison_kind="leaf"` entries
+only on both sides: comparing against a "group" (family/macrolanguage) entity has far fewer
+scoreable categories, which would make group entities spuriously dominate "farthest" for
+nearly everyone — "closest *language*" should mean closest among actual languages, not among
+the small set of hand-picked families.
 
 `pipeline/scoring.py` is a **hand-maintained Python port** of `compare.js`'s overall-score
 math (no Node/JS runtime available in this environment to run the real JS from Python, and no
@@ -251,10 +257,15 @@ independent, reliable second source, which is exactly what WOLD is where it's av
 `VocabularyOrigin.source` and `.sample_size` are on every entry specifically so this kind of
 reliability difference is visible, not hidden behind one flat ratio.
 
-**Not yet surfaced in the website** — `docs/compare.js`/`app.js` don't reference
-`vocabulary_origin` yet. Structurally this is informational (donor-language history), not a
-structural-similarity measure, so the plan is to show it like `Geography` — present for
-context, not folded into the overall distance score.
+**Surfaced in the website** as its own collapsible section (`compare.js`'s
+`compareVocabularyOrigin` + `app.js`'s `renderVocabularyOriginSection`): each language's own
+borrowed-vocabulary percentage/sample size/source, plus a shared/only-in-A/only-in-B diff
+over donor-language names (the same pattern phonemes and scripts use). That donor-overlap
+score is shown in the section's badge but, as planned, deliberately **excluded from the
+overall distance score** — it's informational (donor-language/contact history), not a
+structural-similarity measure; two languages can share an identical borrowing history while
+being typologically nothing alike, or vice versa, so folding it into "how close are these
+languages" would conflate two different questions.
 
 **Backfilled separately from the main pipeline, by design** — see
 `pipeline/backfill_vocabulary_origin.py`'s own docstring for why: it was built and run

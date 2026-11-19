@@ -45,6 +45,16 @@ function buildSummary(comparison) {
     parts.push(`Their phoneme inventories overlap by about ${pct}% (${phon.shared.length} shared sounds out of ${phon.shared.length + phon.onlyA.length + phon.onlyB.length} total).`);
   }
 
+  const vocab = categories.vocabularyOrigin;
+  if (vocab.available) {
+    const pctA = Math.round(vocab.voA.borrowed_ratio * 100);
+    const pctB = Math.round(vocab.voB.borrowed_ratio * 100);
+    parts.push(`An estimated ${pctA}% of ${a.name}'s vocabulary is borrowed, vs. ${pctB}% for ${b.name}.`);
+    if (vocab.shared.length > 0) {
+      parts.push(`Both show influence from ${vocab.shared.slice(0, 3).join(", ")}.`);
+    }
+  }
+
   if (overall.score !== null) {
     parts.push(`Overall linguistic distance: ${overall.score}/100 (${label}), based on ${overall.availableCount} of ${overall.totalCount} available metrics.`);
   } else {
