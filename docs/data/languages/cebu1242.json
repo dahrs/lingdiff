@@ -4250,8 +4250,28 @@
       },
       {
         "name": "Filipino alphabet",
-        "script_type": "other",
-        "sample_glyphs": [],
+        "script_type": "alphabet",
+        "sample_glyphs": [
+          "a",
+          "b",
+          "d",
+          "e",
+          "g",
+          "h",
+          "i",
+          "k",
+          "l",
+          "m",
+          "n",
+          "o",
+          "p",
+          "r",
+          "s",
+          "t",
+          "u",
+          "w",
+          "y"
+        ],
         "source": "wikidata"
       }
     ]

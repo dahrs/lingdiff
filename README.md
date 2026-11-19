@@ -216,6 +216,17 @@ data (French↔Italian, Spanish↔Portuguese, German↔Dutch, and both Arabic-di
 out as each other's closest match, as expected), but there's no automated check enforcing
 that the two stay in sync going forward.
 
+**Family-distance bug, fixed**: `compareFamily`/`_family_distance` used to score two languages
+with ZERO shared classification-path ancestor as something less than maximally distant
+whenever their paths had different lengths (common — one side's path can come from a deep
+Wikidata chain, the other from WALS's shallower 3-level fallback) — the old
+`(hopsA + hopsB) / (2 * maxDepth)` formula let the shorter path's length alone pull the score
+down, even with no real relatedness at all. Confirmed live: a pair sharing no family node
+whatsoever (e.g. Bachamal, path length 2, vs. Sora, path length 4) scored "distant" instead of
+"very distant". Now: no shared ancestor anywhere in either path means score = 1 (100), full
+stop, unconditionally — recomputed across the whole dataset (`index.json`'s podiums changed;
+no profile files did, confirming this was scoring-only).
+
 A language can genuinely use more than one script at once (`WritingSystem.scripts` is a
 list, not a single name) — Japanese routinely uses 4 (hiragana/katakana/kanji/kana), and
 several Arabic varieties are tagged with the Arabic script *and* an informal Latin-based
@@ -225,7 +236,37 @@ script name is shared. Script-type detection (`wikidata_lookup.script_type_for`)
 the script *family* name as a substring (Wikidata labels the same family inconsistently as
 "<Family> script" vs. "<Family> alphabet" — confirmed live, Levantine vs. Egyptian Arabic), with
 one explicit carve-out: a "chat alphabet" (Arabizi-style informal romanization) is Latin-based
-by definition, not the family's native script, so it's checked before the general match.
+by definition, not the family's native script, so it's checked before the general match. A
+further fallback, also fixed: Wikidata often names a language's own Latin-based alphabet after
+the LANGUAGE rather than the script family (confirmed live: "French alphabet", "Italian
+alphabet", "German alphabet" — no family-name substring matches "french"/"italian"/"german"),
+which used to fall all the way to the generic "other" type despite the name saying "alphabet"
+outright; now defaults to "alphabet" whenever the name says so and isn't a Braille entry.
+
+**Letter-level writing-system comparison (Unicode CLDR), added**: name/type matching alone
+couldn't express that French's and Italian's alphabets, despite being named completely
+differently ("French alphabet" vs. "Italian alphabet" — zero name overlap), are actually
+almost entirely the same set of letters. `pipeline/cldr_loader.py` parses Unicode CLDR's
+per-locale "exemplar character" data (`pipeline/fetch_cldr_sources.py` downloads it; a real
+structured source, not an LLM guess — the same data other software uses for "what letters
+does this locale's orthography use") into `Script.sample_glyphs`, attached by
+`build_profile.py`'s `attach_sample_glyphs` to whichever ONE of a profile's script entries is
+its unambiguous primary, non-Braille script (skipped entirely for multi-script profiles like
+Japanese's 4 scripts — CLDR's locale-level data doesn't say which script it belongs to, so
+it's never guessed onto any one of them). `compareWritingSystem`/`_writing_system_distance`
+use this letter-by-letter overlap as the score whenever both sides have it, falling back to
+the name/type match otherwise; `app.js` renders it as its own shared/only-A/only-B grid above
+the named-script one. Verified live: French vs. Italian share 30 of their letters, with only
+12 (French) + 2 (Italian) differing — accented/ligature characters, not a different alphabet —
+giving a 32% writing-system distance instead of the old all-or-nothing name match.
+Coverage is partial by nature of the source: CLDR only has ~250 single-script "base" locales
+(no region variant, no script-disambiguated macrolanguage like "zh-Hans"/"sr-Cyrl" — those are
+downloaded but deliberately left unmatched, see `cldr_loader.py`'s docstring), so only 122 of
+2444 profiles got letter data on this pass. Backfilled onto the already-built dataset via
+`pipeline/backfill_sample_glyphs.py` (fetches CLDR once, re-derives every script's type with
+the corrected fallback above, then recomputes `index.json`'s podiums with the new scoring) —
+`build_profile.py`'s own `cldr` parameter means a future full `run_pipeline.py` run gathers
+this from the start, same pattern as vocabulary origin.
 
 No LLM call anywhere in `docs/` — everything there is arithmetic/set-logic over already-fetched
 JSON, per the project's core design constraint.
@@ -283,6 +324,16 @@ overall distance score** — it's informational (donor-language/contact history)
 structural-similarity measure; two languages can share an identical borrowing history while
 being typologically nothing alike, or vice versa, so folding it into "how close are these
 languages" would conflate two different questions.
+
+**Donor-overlap bug, fixed**: a language never lists itself as its own donor (why would it?),
+but when comparing A to B where B was *directly* influenced by A, A's name should still land
+in the shared column — it's not some unrelated third language that coincidentally matches,
+it's literally the other side of this very comparison. The plain set-diff over donor-language
+names couldn't express that: confirmed live, comparing Italian to Dullay (Gollango) — whose
+donor list includes "Italian" — showed "Italian" as only-in-Dullay's set, not shared.
+`compareVocabularyOrigin` now checks, before diffing, whether either side directly donated to
+the other, and folds that name into the shared set when so; verified against the same
+Italian/Dullay pair.
 
 **Backfilled separately from the main pipeline, by design** — see
 `pipeline/backfill_vocabulary_origin.py`'s own docstring for why: it was built and run

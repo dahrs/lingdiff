@@ -4481,8 +4481,38 @@
     "scripts": [
       {
         "name": "Breton alphabet",
-        "script_type": "other",
-        "sample_glyphs": [],
+        "script_type": "alphabet",
+        "sample_glyphs": [
+          "a",
+          "b",
+          "cʼh",
+          "ch",
+          "d",
+          "e",
+          "ê",
+          "f",
+          "g",
+          "h",
+          "i",
+          "j",
+          "k",
+          "l",
+          "m",
+          "n",
+          "ñ",
+          "o",
+          "p",
+          "r",
+          "s",
+          "t",
+          "u",
+          "ù",
+          "v",
+          "w",
+          "x",
+          "y",
+          "z"
+        ],
         "source": "wikidata"
       }
     ]

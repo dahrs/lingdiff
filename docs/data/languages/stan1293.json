@@ -4918,19 +4918,19 @@
     "scripts": [
       {
         "name": "English alphabet",
-        "script_type": "other",
+        "script_type": "alphabet",
         "sample_glyphs": [],
         "source": "wikidata"
       },
       {
         "name": "Deseret alphabet",
-        "script_type": "other",
+        "script_type": "alphabet",
         "sample_glyphs": [],
         "source": "wikidata"
       },
       {
         "name": "Shavian alphabet",
-        "script_type": "other",
+        "script_type": "alphabet",
         "sample_glyphs": [],
         "source": "wikidata"
       },

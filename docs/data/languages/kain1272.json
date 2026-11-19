@@ -4306,7 +4306,34 @@
       {
         "name": "Latin script",
         "script_type": "alphabet",
-        "sample_glyphs": [],
+        "sample_glyphs": [
+          "a",
+          "á",
+          "ã",
+          "e",
+          "é",
+          "ẽ",
+          "f",
+          "g",
+          "h",
+          "i",
+          "ĩ",
+          "j",
+          "k",
+          "m",
+          "n",
+          "o",
+          "ó",
+          "p",
+          "r",
+          "s",
+          "t",
+          "u",
+          "ũ",
+          "v",
+          "y",
+          "ỹ"
+        ],
         "source": "wikidata"
       }
     ]

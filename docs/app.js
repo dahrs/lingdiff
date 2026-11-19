@@ -237,13 +237,34 @@ function renderMorphologySection(morphology, a, b) {
 function renderWritingSystemSection(ws, a, b) {
   return renderCollapsibleSection("Writing system", ws.score, (body) => {
     if (!ws.available) return renderNoData(body);
-    if (ws.sharedTypes?.length && ws.shared.length === 0) {
+
+    // Letter-level diff (CLDR exemplar characters) is far more concrete than the named-script
+    // diff below when available — see compareWritingSystem's docstring in compare.js. Shown
+    // first, with its own grid (renderSetDiff clears whatever container it's given, so each
+    // grid needs its own child div rather than sharing `body` directly).
+    if (ws.glyphs) {
+      const glyphsNote = document.createElement("p");
+      glyphsNote.className = "ws-type-note";
+      glyphsNote.textContent = "Letter-by-letter comparison of each language's alphabet (source: Unicode CLDR):";
+      body.appendChild(glyphsNote);
+      const glyphsBody = document.createElement("div");
+      body.appendChild(glyphsBody);
+      renderSetDiff(glyphsBody, ws.glyphs, a.name, b.name);
+
+      const namesNote = document.createElement("p");
+      namesNote.className = "ws-type-note";
+      namesNote.textContent = "Named scripts in use:";
+      body.appendChild(namesNote);
+    } else if (ws.sharedTypes?.length && ws.shared.length === 0) {
       const note = document.createElement("p");
       note.className = "ws-type-note";
       note.textContent = `No exact script in common, but both use a ${ws.sharedTypes.join("/")} system.`;
       body.appendChild(note);
     }
-    renderSetDiff(body, ws, a.name, b.name);
+
+    const namesBody = document.createElement("div");
+    body.appendChild(namesBody);
+    renderSetDiff(namesBody, ws, a.name, b.name);
   });
 }
 

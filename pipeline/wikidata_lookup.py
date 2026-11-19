@@ -135,6 +135,14 @@ def script_type_for(script_name: str) -> str:
     for family, script_type in _SCRIPT_FAMILY_TYPES.items():
         if family in lowered:
             return script_type
+    if "alphabet" in lowered and "braille" not in lowered:
+        # Wikidata often names a language's Latin-based alphabet after the LANGUAGE rather
+        # than the script family (confirmed live: "French alphabet", "Italian alphabet",
+        # "German alphabet" — no family-name substring above matches "french"/"italian"/
+        # "german"), which fell all the way to "other" despite the name saying "alphabet"
+        # outright. Checked after the family-name match (which is more specific when both
+        # apply, e.g. "Latin alphabet" already matched above) and before the final "other".
+        return "alphabet"
     return "other"
 
 

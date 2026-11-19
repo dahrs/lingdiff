@@ -4121,7 +4121,33 @@
       {
         "name": "Latin script",
         "script_type": "alphabet",
-        "sample_glyphs": [],
+        "sample_glyphs": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h",
+          "i",
+          "j",
+          "k",
+          "l",
+          "m",
+          "n",
+          "o",
+          "p",
+          "r",
+          "s",
+          "t",
+          "u",
+          "v",
+          "w",
+          "x",
+          "y",
+          "z"
+        ],
         "source": "wikidata"
       }
     ]

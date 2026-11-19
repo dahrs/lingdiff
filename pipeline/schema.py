@@ -99,6 +99,13 @@ class Script(BaseModel):
     script_type: str
     """One of: alphabet, abjad, abugida, syllabary, logographic, featural, other."""
     sample_glyphs: list[str] = []
+    """This script's individual letters (Unicode CLDR exemplar characters — see
+    pipeline/cldr_loader.py), when sourced. Set on at most ONE script entry per profile (the
+    primary, non-Braille script — see build_profile.py's attach_sample_glyphs for why): CLDR's
+    locale-level data doesn't distinguish which of several scripts a multi-script profile's
+    entries it belongs to, so it's never guessed onto more than one. Empty, not absent, when
+    unavailable (no real script has zero letters) — same missing-data convention as every
+    other list field here."""
     source: str
     """One of: wikidata, wals, llm."""
 

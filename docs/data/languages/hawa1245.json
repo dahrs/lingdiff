@@ -4486,8 +4486,27 @@
       },
       {
         "name": "Hawaiian alphabet",
-        "script_type": "other",
-        "sample_glyphs": [],
+        "script_type": "alphabet",
+        "sample_glyphs": [
+          "a",
+          "ā",
+          "e",
+          "ē",
+          "i",
+          "ī",
+          "o",
+          "ō",
+          "u",
+          "ū",
+          "h",
+          "k",
+          "l",
+          "m",
+          "n",
+          "p",
+          "w",
+          "ʻ"
+        ],
         "source": "wikidata"
       }
     ]

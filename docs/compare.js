@@ -42,8 +42,28 @@ function compareFamily(a, b) {
     });
   });
 
-  const hopsA = bestIndexA === -1 ? pathA.length : pathA.length - 1 - bestIndexA;
-  const hopsB = bestIndexB === -1 ? pathB.length : pathB.length - 1 - bestIndexB;
+  // No shared name anywhere in either path means these two don't share so much as a single
+  // ancestor in the data we have — that's the maximum this metric can express, full stop.
+  // The hops/maxDepth formula below is only meaningful when a common ancestor exists; applying
+  // it here too was a real bug: two completely unrelated languages with differently-sized
+  // classification paths (e.g. one from a deep Wikidata chain, one from WALS's shallow
+  // 3-level fallback) scored under 100 purely because of that length mismatch, not because
+  // they shared anything — confirmed live, a pair sharing zero family nodes scored "distant"
+  // instead of "very distant".
+  if (bestIndexA === -1) {
+    return {
+      available: true,
+      score: 1,
+      pathA,
+      pathB,
+      commonAncestor: null,
+      divergeAtA: pathA[0] ?? null,
+      divergeAtB: pathB[0] ?? null,
+    };
+  }
+
+  const hopsA = pathA.length - 1 - bestIndexA;
+  const hopsB = pathB.length - 1 - bestIndexB;
   const maxDepth = Math.max(pathA.length, pathB.length, 1);
   const score = Math.min(1, (hopsA + hopsB) / (2 * maxDepth));
   return {
@@ -51,9 +71,9 @@ function compareFamily(a, b) {
     score,
     pathA,
     pathB,
-    commonAncestor: bestIndexA === -1 ? null : pathA[bestIndexA],
-    divergeAtA: bestIndexA === -1 ? pathA[0] ?? null : pathA[bestIndexA + 1] ?? null,
-    divergeAtB: bestIndexB === -1 ? pathB[0] ?? null : pathB[bestIndexB + 1] ?? null,
+    commonAncestor: pathA[bestIndexA],
+    divergeAtA: pathA[bestIndexA + 1] ?? null,
+    divergeAtB: pathB[bestIndexB + 1] ?? null,
   };
 }
 
@@ -143,9 +163,22 @@ function compareWritingSystem(a, b) {
   const typesA = new Set(scriptsA.map((s) => s.script_type));
   const typesB = new Set(scriptsB.map((s) => s.script_type));
   const sharedTypes = [...typesA].filter((t) => typesB.has(t));
+
+  // Letter-level comparison (CLDR exemplar characters — see build_profile.py's
+  // _attach_sample_glyphs) is far more informative than the name/type match above when both
+  // sides have it: two scripts can be named completely differently ("French alphabet" vs.
+  // "Italian alphabet" — no exact name match, so the diff above shows zero overlap) while
+  // being almost entirely the same set of letters. Only ever set on at most one script entry
+  // per profile (see that function's docstring), so "the" entry with glyphs, if any, is this
+  // language's one unambiguous primary script.
+  const glyphsA = scriptsA.find((s) => (s.sample_glyphs || []).length > 0)?.sample_glyphs;
+  const glyphsB = scriptsB.find((s) => (s.sample_glyphs || []).length > 0)?.sample_glyphs;
+  const glyphs = glyphsA && glyphsB ? diffSets(glyphsA, glyphsB) : null;
+
   let score = namesDiff.score;
   if (namesDiff.shared.length === 0 && sharedTypes.length > 0) score = 0.4;
-  return { available: true, scriptsA, scriptsB, sharedTypes, ...namesDiff, score };
+  if (glyphs && glyphs.score !== null) score = glyphs.score;
+  return { available: true, scriptsA, scriptsB, sharedTypes, glyphs, ...namesDiff, score };
 }
 
 /** Donor-language overlap — do these two languages share a similar borrowing history? Scored
@@ -162,7 +195,27 @@ function compareVocabularyOrigin(a, b) {
   const voA = a.vocabulary_origin;
   const voB = b.vocabulary_origin;
   if (!voA || !voB) return { available: false };
-  const donorsDiff = diffSets((voA.donor_languages || []).map((d) => d.name), (voB.donor_languages || []).map((d) => d.name));
+  const donorsA = voA.donor_languages || [];
+  const donorsB = voB.donor_languages || [];
+
+  // A language never lists itself as its own donor (why would it?), but if it directly
+  // influenced the OTHER language in this very comparison, that's still a genuine point of
+  // overlap between the two sides — without this, comparing e.g. Latin to French would show
+  // "Latin" as a donor only-in-French's set, even though Latin IS the other language being
+  // compared here, not some unrelated third language that merely happens to match.
+  const matchesProfile = (donor, profile) =>
+    (donor.glottocode && donor.glottocode === profile.glottocode) ||
+    normalizeFamilyName(donor.name) === normalizeFamilyName(profile.name) ||
+    normalizeFamilyName(donor.name) === normalizeFamilyName(profile.english_name);
+
+  let namesA = donorsA.map((d) => d.name);
+  let namesB = donorsB.map((d) => d.name);
+  const bBorrowedFromA = donorsB.find((d) => matchesProfile(d, a));
+  const aBorrowedFromB = donorsA.find((d) => matchesProfile(d, b));
+  if (bBorrowedFromA && !namesA.includes(bBorrowedFromA.name)) namesA = [...namesA, bBorrowedFromA.name];
+  if (aBorrowedFromB && !namesB.includes(aBorrowedFromB.name)) namesB = [...namesB, aBorrowedFromB.name];
+
+  const donorsDiff = diffSets(namesA, namesB);
   return { available: true, voA, voB, ...donorsDiff };
 }
 

@@ -4340,7 +4340,7 @@
       },
       {
         "name": "Mari alphabet",
-        "script_type": "other",
+        "script_type": "alphabet",
         "sample_glyphs": [],
         "source": "wikidata"
       }

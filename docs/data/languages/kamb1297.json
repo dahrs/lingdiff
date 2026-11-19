@@ -4222,7 +4222,35 @@
       {
         "name": "Latin script",
         "script_type": "alphabet",
-        "sample_glyphs": [],
+        "sample_glyphs": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h",
+          "i",
+          "ĩ",
+          "j",
+          "k",
+          "l",
+          "m",
+          "n",
+          "o",
+          "p",
+          "q",
+          "r",
+          "s",
+          "t",
+          "u",
+          "ũ",
+          "v",
+          "w",
+          "y",
+          "z"
+        ],
         "source": "wikidata"
       }
     ]

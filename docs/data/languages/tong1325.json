@@ -4322,7 +4322,35 @@
       {
         "name": "Latin script",
         "script_type": "alphabet",
-        "sample_glyphs": [],
+        "sample_glyphs": [
+          "a",
+          "á",
+          "ā",
+          "e",
+          "é",
+          "ē",
+          "f",
+          "h",
+          "i",
+          "í",
+          "ī",
+          "k",
+          "l",
+          "m",
+          "n",
+          "ng",
+          "o",
+          "ó",
+          "ō",
+          "p",
+          "s",
+          "t",
+          "u",
+          "ú",
+          "ū",
+          "v",
+          "ʻ"
+        ],
         "source": "wikidata"
       }
     ]

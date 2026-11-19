@@ -12,6 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from pipeline import uriel_vectors
+from pipeline.cldr_loader import CldrData
 from pipeline.etymology_db_loader import EtymologyDbData
 from pipeline.glottolog_loader import GlottologGeoData
 from pipeline.phoible_loader import PhoibleData
@@ -109,6 +110,7 @@ def build_profile(
     wikidata: WikidataGrammarCache,
     family_tree_cache: FamilyTreeCache,
     vocabulary_sources: VocabularySources | None = None,
+    cldr: CldrData | None = None,
 ) -> LanguageProfile | None:
     wals_lang = wals.find_language(iso639_3)
     if wals_lang is None:
@@ -129,7 +131,9 @@ def build_profile(
     classification = _build_classification(wals_lang, iso639_3, effective_glottocode, family_tree_cache)
     syntax = _build_syntax(wals_lang, wals, iso639_3, claimed_parameter_ids)
     morphology = _build_morphology(wals_lang, wals, grammar, claimed_parameter_ids)
-    writing_system = _build_writing_system(wals_lang, wals, grammar, claimed_parameter_ids)
+    writing_system = _build_writing_system(
+        wals_lang, wals, grammar, claimed_parameter_ids, iso639_3, cldr
+    )
     other_features = _build_other_typological_features(wals_lang, wals, claimed_parameter_ids)
     phonology = _build_phonology(iso639_3, phoible)
     geography = _build_geography(wals_lang["Glottocode"], glottolog)
@@ -299,7 +303,12 @@ def _build_morphology(
 
 
 def _build_writing_system(
-    wals_lang: dict[str, str], wals: WalsData, grammar: dict[str, list[str]], claimed: set[str]
+    wals_lang: dict[str, str],
+    wals: WalsData,
+    grammar: dict[str, list[str]],
+    claimed: set[str],
+    iso639_3: str,
+    cldr: CldrData | None,
 ) -> WritingSystem | None:
     """A language can genuinely use more than one script (see schema.WritingSystem) — merges
     WALS's single coded value (if any) with Wikidata's full list (confirmed live: Japanese has
@@ -312,7 +321,9 @@ def _build_writing_system(
     seen_names: set[str] = set()
     if rows:
         code_text = wals.code_name(rows[0]["Code_ID"]) if rows[0]["Code_ID"] else rows[0]["Value"]
-        scripts.append(Script(name=code_text, script_type=_wals_script_type(code_text), source="wals"))
+        scripts.append(
+            Script(name=code_text, script_type=wals_script_type_for(code_text), source="wals")
+        )
         seen_names.add(code_text)
 
     for name in grammar["writing_system"]:
@@ -323,10 +334,31 @@ def _build_writing_system(
 
     if not scripts:
         return None
+    if cldr is not None:
+        attach_sample_glyphs(scripts, iso639_3, cldr)
     return WritingSystem(scripts=scripts)
 
 
-def _wals_script_type(code_text: str) -> str:
+def attach_sample_glyphs(scripts: list[Script], iso639_3: str, cldr: CldrData) -> None:
+    """Attaches CLDR's actual letter list (see cldr_loader.py) to the ONE script entry that
+    represents this language's primary written form — never guessed onto more than one entry
+    at a time. Only applies when there's exactly one non-Braille script entry: a Braille
+    transcription is auxiliary, not a second genuinely distinct writing system, so it's
+    excluded from the "how many scripts does this profile have" count (confirmed live: most
+    Wikidata-sourced profiles list both "<Language> alphabet" and "<Language> Braille" as
+    separate P282 values). A profile with more than one non-Braille script (e.g. Japanese's
+    hiragana/katakana/kanji, or an Arabic variety tagged with both Arabic script and a Latin
+    "chat alphabet") is left alone — CLDR's locale-level exemplar set doesn't distinguish which
+    of several scripts it belongs to, so attaching it to any one of them would be a guess."""
+    primary = [s for s in scripts if "braille" not in s.name.lower()]
+    if len(primary) != 1:
+        return
+    letters = cldr.get(iso639_3)
+    if letters:
+        primary[0].sample_glyphs = letters
+
+
+def wals_script_type_for(code_text: str) -> str:
     lowered = code_text.lower()
     return next((t for keyword, t in _WALS_SCRIPT_TYPE_KEYWORDS.items() if keyword in lowered), "other")
 

@@ -17,8 +17,10 @@ from typing import Any
 
 from pipeline.build_profile import VocabularySources, build_group_profile, build_profile
 from pipeline.checkpoint import Checkpoint
+from pipeline.cldr_loader import CldrData
 from pipeline.enrich_llm import LlmEnrichmentCache, enrich, fetch_wikipedia_extract, find_wikipedia_title
 from pipeline.etymology_db_loader import EtymologyDbData
+from pipeline.fetch_cldr_sources import fetch_all as fetch_cldr_sources
 from pipeline.fetch_sources import fetch_all
 from pipeline.fetch_vocabulary_sources import fetch_all as fetch_vocabulary_sources
 from pipeline.glottolog_loader import GlottologGeoData
@@ -65,6 +67,7 @@ _DRAFT_GROUP_ENTITIES = [
 def main() -> None:
     fetch_all()
     fetch_vocabulary_sources()
+    fetch_cldr_sources()
     wals = WalsData(_RAW_DIR)
     phoible = PhoibleData(_RAW_DIR)
     glottolog = GlottologGeoData(_RAW_DIR)
@@ -75,6 +78,7 @@ def main() -> None:
         etymology_db=EtymologyDbData(_RAW_DIR),
         name_to_iso3=build_name_to_iso3(_RAW_DIR),
     )
+    cldr = CldrData(_RAW_DIR)
     llm_cache = LlmEnrichmentCache(_RAW_DIR / "llm_enrichment_cache.json")
     checkpoint = Checkpoint(_CHECKPOINT_PATH)
     _LANGUAGES_DIR.mkdir(parents=True, exist_ok=True)
@@ -86,7 +90,7 @@ def main() -> None:
 
     total = len(iso_codes)
     for count, iso in enumerate(iso_codes, start=1):
-        profile = build_profile(iso, wals, phoible, glottolog, wikidata, family_tree_cache, vocabulary_sources)
+        profile = build_profile(iso, wals, phoible, glottolog, wikidata, family_tree_cache, vocabulary_sources, cldr)
         if profile is None:
             missing.append(iso)
             continue

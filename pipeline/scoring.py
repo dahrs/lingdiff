@@ -38,8 +38,15 @@ def _family_distance(a: dict[str, Any], b: dict[str, Any]) -> float:
                 best_depth = index_a + index_b
                 best_index_a, best_index_b = index_a, index_b
 
-    hops_a = len(path_a) if best_index_a == -1 else len(path_a) - 1 - best_index_a
-    hops_b = len(path_b) if best_index_b == -1 else len(path_b) - 1 - best_index_b
+    # No shared name anywhere in either path: maximally distant, full stop — see compare.js's
+    # compareFamily docstring for the bug this fixes (differently-sized paths with zero shared
+    # ancestor used to score under 1.0 purely from the length mismatch, not from any real
+    # relatedness).
+    if best_index_a == -1:
+        return 1.0
+
+    hops_a = len(path_a) - 1 - best_index_a
+    hops_b = len(path_b) - 1 - best_index_b
     max_depth = max(len(path_a), len(path_b), 1)
     return min(1.0, (hops_a + hops_b) / (2 * max_depth))
 
@@ -107,6 +114,17 @@ def _writing_system_distance(a: dict[str, Any], b: dict[str, Any]) -> float | No
     scripts_b = b.get("writing_system", {}).get("scripts", []) if b.get("writing_system") else []
     if not scripts_a or not scripts_b:
         return None
+
+    # Letter-level (CLDR exemplar characters — see build_profile.py's _attach_sample_glyphs)
+    # beats the name/type match below when both sides have it: mirrors compare.js's
+    # compareWritingSystem, see its docstring for why this is more informative.
+    glyphs_a = next((s["sample_glyphs"] for s in scripts_a if s.get("sample_glyphs")), None)
+    glyphs_b = next((s["sample_glyphs"] for s in scripts_b if s.get("sample_glyphs")), None)
+    if glyphs_a and glyphs_b:
+        glyphs_score = _diff_score(glyphs_a, glyphs_b)
+        if glyphs_score is not None:
+            return glyphs_score
+
     names_score = _diff_score([s["name"] for s in scripts_a], [s["name"] for s in scripts_b])
     if names_score is None:
         return None
