@@ -12,6 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from pipeline import uriel_vectors
+from pipeline.etymology_db_loader import EtymologyDbData
 from pipeline.glottolog_loader import GlottologGeoData
 from pipeline.phoible_loader import PhoibleData
 from pipeline.schema import (
@@ -27,9 +28,11 @@ from pipeline.schema import (
     WordOrderFeature,
     WritingSystem,
 )
+from pipeline.vocabulary_origin import build_vocabulary_origin
 from pipeline.wals_loader import WalsData
 from pipeline.wikidata_family_tree import FamilyTreeCache, get_family_path_from_qid
-from pipeline.wikidata_lookup import WikidataPropertyCache, script_type_for
+from pipeline.wikidata_lookup import WikidataGrammarCache, script_type_for
+from pipeline.wold_loader import WoldData
 
 # For WALS's own code text (e.g. "Logographic", "Syllabic", "Alphabetic") — the descriptive
 # word IS the type here, unlike Wikidata's "<script family> script/alphabet" labels, where the
@@ -48,15 +51,15 @@ _WALS_SCRIPT_TYPE_KEYWORDS: dict[str, str] = {
 
 
 @dataclass
-class WikidataCaches:
-    """Bundles the per-property-kind Wikidata caches so build_profile doesn't need five
-    separate parameters — see wikidata_lookup.WikidataPropertyCache."""
+class VocabularySources:
+    """Bundles what build_vocabulary_origin needs so build_profile only takes one extra
+    parameter — optional, and None by default: an older run (or a lightweight caller that
+    doesn't care about vocabulary origin) simply doesn't pass this, and that field of the
+    resulting profile stays empty, same as any other missing-data case in this pipeline."""
 
-    writing_system: WikidataPropertyCache
-    grammatical_case: WikidataPropertyCache
-    tense: WikidataPropertyCache
-    mood: WikidataPropertyCache
-    aspect: WikidataPropertyCache
+    wold: WoldData
+    etymology_db: EtymologyDbData
+    name_to_iso3: dict[str, str]
 
 
 def build_profile(
@@ -64,26 +67,43 @@ def build_profile(
     wals: WalsData,
     phoible: PhoibleData,
     glottolog: GlottologGeoData,
-    wikidata: WikidataCaches,
+    wikidata: WikidataGrammarCache,
     family_tree_cache: FamilyTreeCache,
+    vocabulary_sources: VocabularySources | None = None,
 ) -> LanguageProfile | None:
     wals_lang = wals.find_language(iso639_3)
     if wals_lang is None:
         return None
 
+    # WALS's own Glottocode column is empty for some rows — confirmed live: 928 of WALS's
+    # 3573 rows (11 of them ISO-coded languages this pipeline actually builds, including
+    # Albanian) have no Glottocode at all. Since glottocode doubles as this profile's output
+    # FILENAME (see run_pipeline.py's _write_profile), leaving it as "" would make every such
+    # language collide on literally the same file — confirmed live: 11 languages overwriting
+    # each other down to whichever was processed alphabetically last. Falls back to a
+    # synthetic, ISO-derived identifier (never collides, since iso639_3 is already unique
+    # per call) rather than leaving it empty.
+    effective_glottocode = wals_lang["Glottocode"].strip() or f"iso-{iso639_3}"
+
     claimed_parameter_ids: set[str] = set()
-    classification = _build_classification(wals_lang, iso639_3, family_tree_cache)
+    grammar = wikidata.get(iso639_3)
+    classification = _build_classification(wals_lang, iso639_3, effective_glottocode, family_tree_cache)
     syntax = _build_syntax(wals_lang, wals, iso639_3, claimed_parameter_ids)
-    morphology = _build_morphology(wals_lang, wals, iso639_3, wikidata, claimed_parameter_ids)
-    writing_system = _build_writing_system(wals_lang, wals, iso639_3, wikidata, claimed_parameter_ids)
+    morphology = _build_morphology(wals_lang, wals, grammar, claimed_parameter_ids)
+    writing_system = _build_writing_system(wals_lang, wals, grammar, claimed_parameter_ids)
     other_features = _build_other_typological_features(wals_lang, wals, claimed_parameter_ids)
     phonology = _build_phonology(iso639_3, phoible)
     geography = _build_geography(wals_lang["Glottocode"], glottolog)
     glottolog_row = glottolog.lookup(wals_lang["Glottocode"])
     glottolog_level = (glottolog_row or {}).get("level") or "language"
+    vocabulary_origin = None
+    if vocabulary_sources is not None:
+        vocabulary_origin = build_vocabulary_origin(
+            iso639_3, vocabulary_sources.wold, vocabulary_sources.etymology_db, wals, vocabulary_sources.name_to_iso3
+        )
 
     return LanguageProfile(
-        glottocode=wals_lang["Glottocode"],
+        glottocode=effective_glottocode,
         comparison_kind="leaf",
         glottolog_level=glottolog_level,
         iso639_3=iso639_3,
@@ -96,6 +116,7 @@ def build_profile(
         other_typological_features=other_features,
         writing_system=writing_system,
         geography=geography,
+        vocabulary_origin=vocabulary_origin,
     )
 
 
@@ -134,7 +155,7 @@ def build_group_profile(
 
 
 def _build_classification(
-    wals_lang: dict[str, str], iso639_3: str, family_tree_cache: FamilyTreeCache
+    wals_lang: dict[str, str], iso639_3: str, effective_glottocode: str, family_tree_cache: FamilyTreeCache
 ) -> Classification:
     genetic_vector = uriel_vectors.get_genetic_vector(iso639_3)
     wals_family = wals_lang.get("Family", "").strip()
@@ -142,7 +163,7 @@ def _build_classification(
     deep_path = family_tree_cache.get(iso639_3) or []
     if deep_path and _root_matches_wals_family(deep_path[-1], wals_family):
         nodes = [ClassificationNode(name=name) for name in reversed(deep_path)]
-        nodes.append(ClassificationNode(name=wals_lang["Name"], glottocode=wals_lang["Glottocode"]))
+        nodes.append(ClassificationNode(name=wals_lang["Name"], glottocode=effective_glottocode))
         return Classification(path=_dedupe_consecutive(nodes), genetic_vector=genetic_vector, path_source="wikidata")
     # Wikidata's P279 chain sometimes encodes a disputed/alternative classification scheme
     # alongside the mainstream one (confirmed live: Mandarin's chain ending at "Dené–Caucasian"
@@ -159,7 +180,7 @@ def _build_classification(
         value = wals_lang.get(key, "").strip()
         if value:
             path.append(ClassificationNode(name=value))
-    path.append(ClassificationNode(name=wals_lang["Name"], glottocode=wals_lang["Glottocode"]))
+    path.append(ClassificationNode(name=wals_lang["Name"], glottocode=effective_glottocode))
     return Classification(path=_dedupe_consecutive(path), genetic_vector=genetic_vector, path_source="wals")
 
 
@@ -211,7 +232,7 @@ def _build_syntax(
 
 
 def _build_morphology(
-    wals_lang: dict[str, str], wals: WalsData, iso639_3: str, wikidata: WikidataCaches, claimed: set[str]
+    wals_lang: dict[str, str], wals: WalsData, grammar: dict[str, list[str]], claimed: set[str]
 ) -> MorphologyData | None:
     # WALS tense/aspect/case parameters: typological signals (does this language mark this
     # category, and how), not a literal enumeration — that's what the Wikidata lookups below
@@ -222,10 +243,10 @@ def _build_morphology(
         TenseAspectCategory(wals_code=row["Parameter_ID"], name=wals.param_name(row["Parameter_ID"]))
         for row in rows
     ]
-    grammatical_cases = wikidata.grammatical_case.get(iso639_3)
-    tenses = wikidata.tense.get(iso639_3)
-    moods = wikidata.mood.get(iso639_3)
-    aspects = wikidata.aspect.get(iso639_3)
+    grammatical_cases = grammar["grammatical_case"]
+    tenses = grammar["tense"]
+    moods = grammar["mood"]
+    aspects = grammar["aspect"]
     if not categories and not grammatical_cases and not tenses and not moods and not aspects:
         return None
     return MorphologyData(
@@ -238,7 +259,7 @@ def _build_morphology(
 
 
 def _build_writing_system(
-    wals_lang: dict[str, str], wals: WalsData, iso639_3: str, wikidata: WikidataCaches, claimed: set[str]
+    wals_lang: dict[str, str], wals: WalsData, grammar: dict[str, list[str]], claimed: set[str]
 ) -> WritingSystem | None:
     """A language can genuinely use more than one script (see schema.WritingSystem) — merges
     WALS's single coded value (if any) with Wikidata's full list (confirmed live: Japanese has
@@ -254,7 +275,7 @@ def _build_writing_system(
         scripts.append(Script(name=code_text, script_type=_wals_script_type(code_text), source="wals"))
         seen_names.add(code_text)
 
-    for name in wikidata.writing_system.get(iso639_3):
+    for name in grammar["writing_system"]:
         if name in seen_names:
             continue
         seen_names.add(name)

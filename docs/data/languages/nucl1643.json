@@ -4881,5 +4881,60 @@
   "notable_features": {
     "text": "Japanese has a relatively small phoneme inventory of about 40 sounds and follows a subject-object-verb word order. It marks an unusually rich set of seven tense/aspect distinctions, and as the sole member of its own Japonic branch, it has no close relatives among other language families. It is spoken by roughly 123 million people, primarily in Japan.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.352,
+    "donor_languages": [
+      {
+        "name": "Chinese",
+        "glottocode": "mand1415",
+        "count": 675,
+        "percentage": 69.4
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 129,
+        "percentage": 13.3
+      },
+      {
+        "name": "Proto-Malayo-Polynesian",
+        "glottocode": "mala1545",
+        "count": 40,
+        "percentage": 4.1
+      },
+      {
+        "name": "Latin",
+        "glottocode": "lati1261",
+        "count": 32,
+        "percentage": 3.3
+      },
+      {
+        "name": "Sanskrit",
+        "glottocode": "sans1269",
+        "count": 13,
+        "percentage": 1.3
+      },
+      {
+        "name": "Dutch",
+        "glottocode": "dutc1256",
+        "count": 8,
+        "percentage": 0.8
+      },
+      {
+        "name": "Greek",
+        "glottocode": "mode1248",
+        "count": 8,
+        "percentage": 0.8
+      },
+      {
+        "name": "Korean",
+        "glottocode": "kore1280",
+        "count": 7,
+        "percentage": 0.7
+      }
+    ],
+    "sample_size": 2131,
+    "source": "wold"
   }
 }

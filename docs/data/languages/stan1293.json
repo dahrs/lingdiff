@@ -4952,5 +4952,60 @@
   "notable_features": {
     "text": "English has become the world's leading lingua franca despite being only the third most spoken native language, surpassed by Mandarin Chinese and Spanish, and it has more second-language speakers than native speakers. It is a West Germanic language, named after the Angles, that emerged in early medieval England and spread globally through the influence of the British Empire and later the United States. As an Indo-European Germanic language, it follows an SVO word order and marks 7 WALS tense/aspect categories with a phoneme inventory of 45 sounds.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.414,
+    "donor_languages": [
+      {
+        "name": "Latin",
+        "glottocode": "lati1261",
+        "count": 374,
+        "percentage": 34.3
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 195,
+        "percentage": 17.9
+      },
+      {
+        "name": "French (Anglo-Norman)",
+        "glottocode": "angl1258",
+        "count": 134,
+        "percentage": 12.3
+      },
+      {
+        "name": "Old Norse",
+        "glottocode": "noon1243",
+        "count": 60,
+        "percentage": 5.5
+      },
+      {
+        "name": "Greek",
+        "glottocode": "mode1248",
+        "count": 58,
+        "percentage": 5.3
+      },
+      {
+        "name": "Late Latin",
+        "glottocode": "late1252",
+        "count": 56,
+        "percentage": 5.1
+      },
+      {
+        "name": "Old French",
+        "glottocode": "oldf1239",
+        "count": 47,
+        "percentage": 4.3
+      },
+      {
+        "name": "Dutch",
+        "glottocode": "dutc1256",
+        "count": 22,
+        "percentage": 2.0
+      }
+    ],
+    "sample_size": 1516,
+    "source": "wold"
   }
 }

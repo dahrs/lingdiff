@@ -1,0 +1,267 @@
+{
+  "glottocode": "homs1234",
+  "comparison_kind": "leaf",
+  "glottolog_level": "language",
+  "iso639_3": "hyw",
+  "name": "Armenian (Western)",
+  "english_name": "Armenian (Western)",
+  "classification": {
+    "path": [
+      {
+        "name": "Indo-European"
+      },
+      {
+        "name": "Armenian"
+      },
+      {
+        "name": "Armenian (Western)",
+        "glottocode": "homs1234"
+      }
+    ],
+    "path_source": "wikidata"
+  },
+  "syntax": {
+    "features": [
+      {
+        "wals_code": "81A",
+        "name": "Order of Subject, Object and Verb",
+        "value": "SOV"
+      },
+      {
+        "wals_code": "82A",
+        "name": "Order of Subject and Verb",
+        "value": "SV"
+      },
+      {
+        "wals_code": "83A",
+        "name": "Order of Object and Verb",
+        "value": "OV"
+      },
+      {
+        "wals_code": "84A",
+        "name": "Order of Object, Oblique, and Verb",
+        "value": "No dominant order"
+      },
+      {
+        "wals_code": "85A",
+        "name": "Order of Adposition and Noun Phrase",
+        "value": "Postpositions"
+      },
+      {
+        "wals_code": "86A",
+        "name": "Order of Genitive and Noun",
+        "value": "Genitive-Noun"
+      },
+      {
+        "wals_code": "87A",
+        "name": "Order of Adjective and Noun",
+        "value": "Adjective-Noun"
+      },
+      {
+        "wals_code": "88A",
+        "name": "Order of Demonstrative and Noun",
+        "value": "Demonstrative-Noun"
+      },
+      {
+        "wals_code": "89A",
+        "name": "Order of Numeral and Noun",
+        "value": "Numeral-Noun"
+      },
+      {
+        "wals_code": "90A",
+        "name": "Order of Relative Clause and Noun",
+        "value": "Noun-Relative clause"
+      },
+      {
+        "wals_code": "91A",
+        "name": "Order of Degree Word and Adjective",
+        "value": "Degree word-Adjective"
+      },
+      {
+        "wals_code": "94A",
+        "name": "Order of Adverbial Subordinator and Clause",
+        "value": "Initial subordinator word"
+      },
+      {
+        "wals_code": "95A",
+        "name": "Relationship between the Order of Object and Verb and the Order of Adposition and Noun Phrase",
+        "value": "OV and Postpositions"
+      },
+      {
+        "wals_code": "96A",
+        "name": "Relationship between the Order of Object and Verb and the Order of Relative Clause and Noun",
+        "value": "OV and NRel"
+      },
+      {
+        "wals_code": "97A",
+        "name": "Relationship between the Order of Object and Verb and the Order of Adjective and Noun",
+        "value": "OV and AdjN"
+      },
+      {
+        "wals_code": "143A",
+        "name": "Order of Negative Morpheme and Verb",
+        "value": "Type 1 / Type 3"
+      }
+    ]
+  },
+  "morphology": {
+    "tense_aspect_categories": [
+      {
+        "wals_code": "51A",
+        "name": "Position of Case Affixes"
+      },
+      {
+        "wals_code": "69A",
+        "name": "Position of Tense-Aspect Affixes"
+      }
+    ],
+    "grammatical_cases": [],
+    "tenses": [],
+    "moods": [],
+    "aspects": []
+  },
+  "other_typological_features": [
+    {
+      "wals_code": "26A",
+      "name": "Prefixing vs. Suffixing in Inflectional Morphology",
+      "value": "Strongly suffixing"
+    },
+    {
+      "wals_code": "27A",
+      "name": "Reduplication",
+      "value": "Full reduplication only"
+    },
+    {
+      "wals_code": "33A",
+      "name": "Coding of Nominal Plurality",
+      "value": "Plural suffix"
+    },
+    {
+      "wals_code": "37A",
+      "name": "Definite Articles",
+      "value": "Definite affix"
+    },
+    {
+      "wals_code": "38A",
+      "name": "Indefinite Articles",
+      "value": "Indefinite word distinct from 'one'"
+    },
+    {
+      "wals_code": "53A",
+      "name": "Ordinal Numerals",
+      "value": "First, two-th, three-th"
+    },
+    {
+      "wals_code": "57A",
+      "name": "Position of Pronominal Possessive Affixes",
+      "value": "Possessive suffixes"
+    },
+    {
+      "wals_code": "77A",
+      "name": "Semantic Distinctions of Evidentiality",
+      "value": "Indirect only"
+    },
+    {
+      "wals_code": "78A",
+      "name": "Coding of Evidentiality",
+      "value": "Part of the tense system"
+    },
+    {
+      "wals_code": "90C",
+      "name": "Postnominal relative clauses",
+      "value": "Noun-Relative clause (NRel) dominant"
+    },
+    {
+      "wals_code": "92A",
+      "name": "Position of Polar Question Particles",
+      "value": "No question particle"
+    },
+    {
+      "wals_code": "93A",
+      "name": "Position of Interrogative Phrases in Content Questions",
+      "value": "Not initial interrogative phrase"
+    },
+    {
+      "wals_code": "101A",
+      "name": "Expression of Pronominal Subjects",
+      "value": "Subject affixes on verb"
+    },
+    {
+      "wals_code": "112A",
+      "name": "Negative Morphemes",
+      "value": "Negative auxiliary verb"
+    },
+    {
+      "wals_code": "116A",
+      "name": "Polar Questions",
+      "value": "Interrogative intonation only"
+    },
+    {
+      "wals_code": "129A",
+      "name": "Hand and Arm",
+      "value": "Identical"
+    },
+    {
+      "wals_code": "130A",
+      "name": "Finger and Hand",
+      "value": "Different"
+    },
+    {
+      "wals_code": "143E",
+      "name": "Preverbal Negative Morphemes",
+      "value": "NegV&[Neg-V]"
+    },
+    {
+      "wals_code": "143F",
+      "name": "Postverbal Negative Morphemes",
+      "value": "None"
+    },
+    {
+      "wals_code": "143G",
+      "name": "Minor morphological means of signaling negation",
+      "value": "None"
+    },
+    {
+      "wals_code": "144A",
+      "name": "Position of Negative Word With Respect to Subject, Object, and Verb",
+      "value": "More than one position"
+    },
+    {
+      "wals_code": "144L",
+      "name": "The Position of Negative Morphemes in SOV Languages",
+      "value": "More than one construction"
+    },
+    {
+      "wals_code": "144M",
+      "name": "Multiple Negative Constructions in SOV Languages",
+      "value": "SOV & NegV/[V-Neg]"
+    },
+    {
+      "wals_code": "144R",
+      "name": "SONegV Order",
+      "value": "Prefix&NoDoubleNeg"
+    },
+    {
+      "wals_code": "144S",
+      "name": "SOVNeg Order",
+      "value": "NoSOVNeg"
+    }
+  ],
+  "writing_system": {
+    "scripts": [
+      {
+        "name": "Armenian alphabet",
+        "script_type": "alphabet",
+        "sample_glyphs": [],
+        "source": "wikidata"
+      }
+    ]
+  },
+  "geography": {
+    "primary_region": "Eurasia",
+    "coordinates": [
+      40.1897,
+      44.4839
+    ]
+  }
+}

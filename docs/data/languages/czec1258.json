@@ -3775,8 +3775,7 @@
       "ä",
       "äu̯",
       "äː",
-      "i",
-      "iː",
+      "iˑ",
       "o",
       "ou̯",
       "oː",
@@ -3784,9 +3783,10 @@
       "uː",
       "ɛ",
       "ɛu̯",
-      "ɛː"
+      "ɛː",
+      "ɪ"
     ],
-    "source_inventory_id": 2480,
+    "source_inventory_id": 2274,
     "phonological_vector": [
       1.0,
       1.0,
@@ -4427,5 +4427,58 @@
   "notable_features": {
     "text": "Czech is a fusional West Slavic language with a rich morphological case system and comparatively flexible word order despite its basic SVO order, with 40 phonemes and marking of 2 tense/aspect categories. It is closely related to Slovak, with which it shares a high degree of mutual intelligibility, and to a lesser extent to Polish. Its vocabulary shows substantial historical influence from Latin and German.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.223,
+    "donor_languages": [
+      {
+        "name": "German",
+        "glottocode": "stan1295",
+        "count": 381,
+        "percentage": 31.9
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 169,
+        "percentage": 14.1
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 143,
+        "percentage": 12.0
+      },
+      {
+        "name": "Latin",
+        "count": 143,
+        "percentage": 12.0
+      },
+      {
+        "name": "Russian",
+        "glottocode": "russ1263",
+        "count": 75,
+        "percentage": 6.3
+      },
+      {
+        "name": "Polish",
+        "glottocode": "poli1260",
+        "count": 40,
+        "percentage": 3.3
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 33,
+        "percentage": 2.8
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 27,
+        "percentage": 2.3
+      }
+    ],
+    "sample_size": 5369,
+    "source": "etymology_db"
   }
 }

@@ -4816,5 +4816,56 @@
   "notable_features": {
     "text": "Modern Hebrew is the sole surviving Canaanite language and a rare case of successful language revitalization, having been revived as a first language after centuries of primarily liturgical use. It follows an SVO word order, has a phoneme inventory of 30 sounds, and marks 7 distinct tense/aspect categories in its verbal system.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.731,
+    "donor_languages": [
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 229,
+        "percentage": 33.3
+      },
+      {
+        "name": "Arabic",
+        "glottocode": "stan1318",
+        "count": 86,
+        "percentage": 12.5
+      },
+      {
+        "name": "Aramaic",
+        "count": 81,
+        "percentage": 11.8
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 50,
+        "percentage": 7.3
+      },
+      {
+        "name": "Yiddish",
+        "count": 37,
+        "percentage": 5.4
+      },
+      {
+        "name": "Russian",
+        "glottocode": "russ1263",
+        "count": 25,
+        "percentage": 3.6
+      },
+      {
+        "name": "German",
+        "glottocode": "stan1295",
+        "count": 24,
+        "percentage": 3.5
+      },
+      {
+        "name": "Latin",
+        "count": 23,
+        "percentage": 3.3
+      }
+    ],
+    "sample_size": 941,
+    "source": "etymology_db"
   }
 }

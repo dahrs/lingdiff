@@ -4497,5 +4497,57 @@
   "notable_features": {
     "text": "Swedish is a North Germanic language with a moderately sized phoneme inventory of 35 sounds and follows a subject-verb-object word order. It marks a relatively rich set of six tense/aspect categories, and as a North Germanic language it is the most widely spoken Germanic language in the Nordic countries.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.237,
+    "donor_languages": [
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 313,
+        "percentage": 24.2
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 265,
+        "percentage": 20.5
+      },
+      {
+        "name": "German",
+        "glottocode": "stan1295",
+        "count": 169,
+        "percentage": 13.1
+      },
+      {
+        "name": "Latin",
+        "count": 133,
+        "percentage": 10.3
+      },
+      {
+        "name": "Middle Low German",
+        "count": 130,
+        "percentage": 10.0
+      },
+      {
+        "name": "Tavringer Romani",
+        "count": 33,
+        "percentage": 2.6
+      },
+      {
+        "name": "Low German",
+        "glottocode": "nort2627",
+        "count": 32,
+        "percentage": 2.5
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 26,
+        "percentage": 2.0
+      }
+    ],
+    "sample_size": 5466,
+    "source": "etymology_db"
   }
 }

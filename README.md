@@ -24,10 +24,22 @@ uv run python -m pipeline.run_pipeline
 ```
 
 Downloads WALS (CLDF), PHOIBLE, and Glottolog source data into `data/sources/raw/` (cached —
-reruns skip files already present), builds one `LanguageProfile` per entity listed in
-`pipeline/run_pipeline.py` (`_SMOKE_TEST_ISO_CODES` for leaf languages/dialects,
-`_DRAFT_GROUP_ENTITIES` for family/macrolanguage groups), and writes
-`docs/data/languages/<glottocode>.json` + `docs/data/index.json`.
+reruns skip files already present), builds one `LanguageProfile` per leaf entity WALS has an
+ISO 639-3 entry for (`WalsData.all_iso_codes()` — currently 2442 languages, the natural
+ceiling since every leaf profile requires a WALS match) plus a handful of hardcoded
+"group"-level family/macrolanguage entries (`_DRAFT_GROUP_ENTITIES` in `run_pipeline.py`), and
+writes `docs/data/languages/<glottocode>.json` + `docs/data/index.json`.
+
+**Runtime at this scale**: the dominant cost is Wikidata lookups — up to ~8 requests per
+language (1 combined query for writing-system/case/tense/mood/aspect, ~2 for the family tree,
+~3 for the Wikipedia-grounding title) even after combining 5 separate grammar-property
+queries into 1 (see `wikidata_lookup.WikidataGrammarCache`). The public endpoint's reliability
+varies a lot hour to hour (clean runs and sustained 502/timeout stretches both observed live
+in the same session) — a full build can run anywhere from a couple hours to most of a day.
+**Safe to interrupt and resume at any point**: every expensive lookup is cached in its own
+file under `data/sources/raw/`, independent of the top-level loop, and a failed query is never
+written to cache as if it were a confirmed empty result (see `wikidata_sparql.run_query`) —
+so a rerun only pays real cost for languages that genuinely weren't cached yet.
 
 **Two kinds of entity** (`LanguageProfile.comparison_kind`, see `pipeline/schema.py`):
 - **`leaf`** — a single speakable variety (a language or a dialect — Glottolog's own
@@ -50,7 +62,17 @@ Per **leaf** entity, each profile combines:
   below), word-order features, tense/aspect/case-marking categories, writing system where
   coded (sparse), and now **all 192 WALS parameters** — anything not already captured by a
   more specific category above lands in `other_typological_features` (numeral classifiers,
-  reduplication, politeness distinctions, etc.)
+  reduplication, politeness distinctions, etc.). **Caveat, found at full scale**: 928 of
+  WALS's 3573 rows have an empty `Glottocode` column — 11 of them ISO-coded languages this
+  pipeline actually builds, including Albanian. Since `glottocode` doubles as each profile's
+  output filename, all 11 were silently colliding on the exact same file (`docs/data/
+  languages/.json`), each overwriting the last — confirmed live, only the alphabetically-last
+  of the 11 survived after a full build. `build_profile.py`'s `effective_glottocode` now
+  falls back to a synthetic `iso-<code>` identifier (e.g. `iso-sqi` for Albanian) whenever
+  WALS's own value is empty, which can never collide since `iso639_3` is already unique per
+  profile. `pipeline/repair_empty_glottocodes.py` is the one-off script that fixed an
+  already-built dataset without a full ~2442-language rerun (everything it needs is already
+  cached — pure local recomputation).
 - **PHOIBLE** — phoneme inventory (IPA symbols)
 - **Glottolog** — real lat/lon + macroarea (context only, not used in any distance score) and
   `glottolog_level` ("language"/"dialect")
@@ -145,7 +167,31 @@ isn't reachable once Pages is enabled, regardless of relative-path tricks.
   JS needed for that) with its own 0–100 score badge next to the title, same scale as the
   overall score (an explanatory line under the overall number spells out what it means — "0
   = identical, 100 = maximally different" — since an unexplained number was flagged as
-  confusing in review).
+  confusing in review). Also renders the closest/farthest panel (below) as soon as language A
+  is picked — no fetch, since that data already rode along in `index.json`.
+
+**Closest/farthest-in-the-list panel**: picking language A immediately shows its precomputed
+closest and farthest match among every *other* leaf language in the dataset, independent of
+whatever's picked for B (clicking either card loads that exact pairing into the full
+comparison below). This can't be computed live in the browser the way the main comparison
+is — finding "closest among all ~2400 languages" means comparing every pair, which would mean
+either downloading every profile into the browser (defeats the lazy-fetch design entirely) or
+redoing an O(n²) pass on every single pickerA change. Instead it's precomputed once, offline,
+in the pipeline (`pipeline/scoring.py` + `pipeline/nearest_neighbors.py`) and shipped as plain
+data on each `LanguageIndexEntry` (`closest`/`farthest`, see `schema.NearestNeighbor`) — the
+picker already has the whole index loaded, so showing it costs nothing extra at view time.
+Restricted to `comparison_kind="leaf"` entries only on both sides: comparing against a
+"group" (family/macrolanguage) entity has far fewer scoreable categories, which would make
+group entities spuriously dominate "farthest" for nearly everyone — "closest *language*"
+should mean closest among actual languages, not among the small set of hand-picked families.
+
+`pipeline/scoring.py` is a **hand-maintained Python port** of `compare.js`'s overall-score
+math (no Node/JS runtime available in this environment to run the real JS from Python, and no
+shared implementation between the two — see that file's docstring). If you change the scoring
+in one, change it in the other; verified live that they produce matching results on the same
+data (French↔Italian, Spanish↔Portuguese, German↔Dutch, and both Arabic-dialect pairs all come
+out as each other's closest match, as expected), but there's no automated check enforcing
+that the two stay in sync going forward.
 
 A language can genuinely use more than one script at once (`WritingSystem.scripts` is a
 list, not a single name) — Japanese routinely uses 4 (hiragana/katakana/kanji/kana), and
@@ -169,16 +215,68 @@ real data to confirm the actual math and tree structure, not just that the JS pa
 open the real page yourself before trusting it works end-to-end — a logic re-implementation
 confirms the algorithm, not that the DOM renders it correctly.
 
+## Vocabulary origin
+
+`LanguageProfile.vocabulary_origin` (see `schema.VocabularyOrigin`) — an estimated
+borrowed-vs-inherited ratio plus a donor-language breakdown ("37.8% from Latin, 11.6% from
+French, ..."), not just a single number. Two sources, WOLD preferred:
+
+- **WOLD** (World Loanword Database, `pipeline/wold_loader.py`) — expert-curated, 41
+  languages. Gives a *graded* `Borrowed_score` per word (0.0-1.0, not binary) and the actual
+  donor language **by Glottolog code**, not just a name — both richer than what was first
+  scoped for this ("just a ratio would work").
+- **etymology-db** (`pipeline/etymology_db_loader.py`) — a dataset auto-parsed from
+  Wiktionary's own etymology templates, CC BY-SA 3.0, covering 3300+ languages/dialects at
+  very uneven depth. Fallback for whatever WOLD doesn't cover. Its real distribution channel
+  (a GitHub README's OneDrive link) doesn't support plain HTTP download — confirmed live,
+  redirects to onedrive.live.com and 403s a non-browser request — so this pulls the
+  community-maintained Hugging Face mirror instead (`Nickmancol/etymology`, same license,
+  same data, ordinary HTTPS). Donor languages here are free-text names (e.g. "Ancient
+  Greek"), not codes; `pipeline/iso_language_codes.py` maps those (and etymology-db's own
+  `lang` column) to ISO 639-3 using Wiktionary's own code table plus SIL's official ISO 639-1
+  <-> 639-3 equivalence — confirmed live that ~7400 of Wiktionary's ~8600 codes are already
+  bare ISO 639-3 (its 2-letter codes are the ones needing a lookup, and are exactly the major
+  world languages: English, French, German, Spanish, Arabic, Chinese, ...).
+
+**Why WOLD is preferred, not just listed first — a real, confirmed-live finding, not a
+theoretical concern**: etymology-db gives Mandarin Chinese an 86% borrowed ratio (dominated
+by English/Japanese donors); WOLD's expert-curated score for the same language is 2%. This
+isn't noise, it's systematic: Wiktionary's etymology templates get applied far more
+consistently to loanwords (which editors find interesting to document) than to a language's
+inherited core vocabulary — especially for a language in a non-Latin, non-alphabetic script.
+Arabic shows the same pattern (84.7% from etymology-db) and WOLD doesn't cover it at all, so
+that number should be treated with real skepticism rather than as a measurement — flagged in
+code and here, not silently corrected (there's no principled way to correct it without an
+independent, reliable second source, which is exactly what WOLD is where it's available).
+`VocabularyOrigin.source` and `.sample_size` are on every entry specifically so this kind of
+reliability difference is visible, not hidden behind one flat ratio.
+
+**Not yet surfaced in the website** — `docs/compare.js`/`app.js` don't reference
+`vocabulary_origin` yet. Structurally this is informational (donor-language history), not a
+structural-similarity measure, so the plan is to show it like `Geography` — present for
+context, not folded into the overall distance score.
+
+**Backfilled separately from the main pipeline, by design** — see
+`pipeline/backfill_vocabulary_origin.py`'s own docstring for why: it was built and run
+*while* the 2442-language full build was already in progress (see "Data pipeline" above), to
+avoid interrupting a run that was already taking the better part of a day. It only touches
+the `vocabulary_origin` field of already-written profiles — confirmed live, safe to run
+concurrently with `run_pipeline.py` (no file either process touches is written by both in the
+same run) and idempotent to rerun. `build_profile.py`'s own `VocabularySources` plumbing means
+a *future* full `run_pipeline.py` run gathers this from the start like everything else; the
+backfill script is only needed for profiles built before that existed, or after interrupting
+a run that predates it.
+
 ## To do
 
 - **Vocabulary richness** — no structured source found (not Wikidata, WALS, PHOIBLE,
-  Glottolog, or URIEL), and arguably no standardized cross-linguistic academic measure exists
-  at all (depends heavily on corpus size/genre/dictionary completeness). Needs more research
-  before deciding whether/how to include it.
-- **Vocabulary origin** (% native vs. borrowed) — a real source exists, **WOLD** (World
-  Loanword Database, same academic family as WALS, CC-licensed), but it only covers 41
-  languages total vs. WALS's ~2,662 — needs more research on whether that's worth wiring in
-  given the coverage gap, and how it'd be disclosed as missing for everyone else.
+  Glottolog, URIEL, WOLD, or etymology-db), and arguably no standardized cross-linguistic
+  academic measure exists at all (depends heavily on corpus size/genre/dictionary
+  completeness). Needs more research before deciding whether/how to include it.
+- **Which languages got no LLM enrichment, and why** — currently derivable only indirectly
+  (a profile with no `notable_features` means either "no Wikipedia article found" or "found
+  one but the LLM reply didn't parse," not distinguished in any persisted record). Worth an
+  explicit log if this needs reviewing/prioritizing later.
 - **Scaling the group-entity list** — currently 3 hardcoded families/macrolanguages; sweeping
   Glottolog's full languoid table (and the official ISO 639-3 macrolanguage mapping) would
   make this systematic instead of hand-picked.

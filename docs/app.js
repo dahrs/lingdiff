@@ -9,9 +9,49 @@ let pickerB = null;
 async function loadIndex() {
   const response = await fetch("data/index.json");
   indexEntries = await response.json();
-  pickerA = createLanguagePicker(document.getElementById("picker-a"), indexEntries, () => {});
+  pickerA = createLanguagePicker(document.getElementById("picker-a"), indexEntries, renderNearestPanel);
   pickerB = createLanguagePicker(document.getElementById("picker-b"), indexEntries, () => {});
   document.querySelectorAll(".picker-button").forEach((b) => (b.textContent = "Select a language…"));
+}
+
+/** Shows language A's precomputed closest/farthest match (from index.json — no extra fetch,
+ * see schema.NearestNeighbor) as soon as it's picked, independent of whatever's picked for
+ * B. Only leaf languages carry this (see nearest_neighbors.py); a "group" entry (a family or
+ * macrolanguage) shows a short note instead of a stale/wrong panel. */
+function renderNearestPanel(entry) {
+  const panel = document.getElementById("nearest-panel");
+  if (entry.comparison_kind !== "leaf" || (!entry.closest && !entry.farthest)) {
+    panel.innerHTML = entry.comparison_kind === "leaf"
+      ? ""
+      : `<p class="nearest-note">${entry.name} is a family/macrolanguage group — closest/farthest comparisons are only computed between individual languages.</p>`;
+    return;
+  }
+  const side = (label, neighbor, cssClass) => {
+    if (!neighbor) return "";
+    const badge = scoreBadge(neighbor.score / 100);
+    return `
+      <button type="button" class="nearest-card ${cssClass}" data-glottocode="${neighbor.glottocode}">
+        <span class="nearest-label">${label}</span>
+        <span class="nearest-name">${neighbor.name}</span>
+        <span class="nearest-score">${badge.percent} · ${badge.label}</span>
+      </button>
+    `;
+  };
+  panel.innerHTML = `
+    <p class="nearest-heading">Among all languages in this list, relative to <strong>${entry.name}</strong>:</p>
+    <div class="nearest-cards">
+      ${side("Closest", entry.closest, "nearest-closest")}
+      ${side("Most distant", entry.farthest, "nearest-farthest")}
+    </div>
+  `;
+  panel.querySelectorAll(".nearest-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const neighborEntry = indexEntries.find((e) => e.glottocode === card.dataset.glottocode);
+      if (!neighborEntry) return;
+      pickerB.selectByGlottocode(neighborEntry.glottocode);
+      onCompareClick();
+    });
+  });
 }
 
 async function loadProfile(glottocode) {

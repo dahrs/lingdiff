@@ -4924,5 +4924,55 @@
   "notable_features": {
     "text": "Spanish is a Romance language that marks seven distinct tense/aspect categories, reflecting a richly inflected verb system. It follows a basic subject-verb-object word order and has a relatively large phoneme inventory of 45 sounds. As the world's most widely spoken Romance language, it serves as an official language in 21 countries.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.659,
+    "donor_languages": [
+      {
+        "name": "Latin",
+        "count": 3269,
+        "percentage": 37.8
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 1000,
+        "percentage": 11.6
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 947,
+        "percentage": 10.9
+      },
+      {
+        "name": "Late Latin",
+        "count": 527,
+        "percentage": 6.1
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 388,
+        "percentage": 4.5
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 371,
+        "percentage": 4.3
+      },
+      {
+        "name": "Medieval Latin",
+        "count": 243,
+        "percentage": 2.8
+      },
+      {
+        "name": "Classical Nahuatl",
+        "count": 199,
+        "percentage": 2.3
+      }
+    ],
+    "sample_size": 13132,
+    "source": "etymology_db"
   }
 }

@@ -2,7 +2,11 @@
 (fallback when WALS's sparse "Writing Systems" chapter has no entry), and real named
 enumerations of grammatical case/tense/mood/aspect (Wikidata has dedicated properties for
 these — confirmed live: German correctly returns its 4 cases via P2989, Finnish its 15).
-Each property kind gets its own cache file under data/sources/raw/, independently resumable.
+
+All five properties are fetched in ONE combined query per language (see
+WikidataGrammarCache) rather than five separate ones — confirmed live, a ~5x reduction in
+Wikidata requests per language, which matters once building thousands of profiles rather than
+a couple dozen even though it made no visible difference at draft scale.
 """
 
 from __future__ import annotations
@@ -11,7 +15,7 @@ import json
 import time
 from pathlib import Path
 
-from pipeline.wikidata_sparql import query_with_macrolanguage_fallback
+from pipeline.wikidata_sparql import query_multi_with_macrolanguage_fallback
 
 _REQUEST_DELAY_SECONDS = 1.0
 
@@ -44,7 +48,8 @@ _SCRIPT_FAMILY_TYPES: dict[str, str] = {
     "kana": "syllabary",
 }
 
-# property_kind -> Wikidata property ID
+# property_kind -> Wikidata property ID. Order matters only for readability of the generated
+# query; dict iteration order is used to build both the pattern and the cache shape.
 _PROPERTIES: dict[str, str] = {
     "writing_system": "P282",
     "grammatical_case": "P2989",
@@ -53,37 +58,59 @@ _PROPERTIES: dict[str, str] = {
     "aspect": "P7486",
 }
 
+# Legacy per-property cache filenames from before the combined query existed — migrated in on
+# first load (see WikidataGrammarCache._migrate_legacy_caches) so already-fetched data isn't
+# re-queried just because the storage format changed.
+_LEGACY_CACHE_FILENAMES: dict[str, str] = {kind: f"wikidata_{kind}.json" for kind in _PROPERTIES}
 
-class WikidataPropertyCache:
-    """One cache file per property kind (e.g. data/sources/raw/wikidata_tense.json)."""
 
-    def __init__(self, cache_dir: Path, property_kind: str) -> None:
-        if property_kind not in _PROPERTIES:
-            raise ValueError(f"unknown Wikidata property kind: {property_kind}")
-        self._property_id = _PROPERTIES[property_kind]
-        self._cache_path = cache_dir / f"wikidata_{property_kind}.json"
-        self._cache: dict[str, list[str]] = {}
+class WikidataGrammarCache:
+    def __init__(self, cache_dir: Path) -> None:
+        self._cache_path = cache_dir / "wikidata_grammar.json"
+        self._cache: dict[str, dict[str, str]] = {}
         if self._cache_path.exists():
             self._cache = json.loads(self._cache_path.read_text())
+        self._migrate_legacy_caches(cache_dir)
 
-    def get(self, iso639_3: str) -> list[str]:
-        """Returns the named values (e.g. ["nominative case", "accusative case", ...]) for
-        this language, deduped (Wikidata sometimes carries the same label on more than one
-        statement — confirmed live: Levantine Arabic's writing systems included "Arabic
-        alphabet" twice), [] if none found (confirmed, or the query failed this run — a
-        failed query is NOT written to cache, so it's retried on the next pipeline run
-        instead of being permanently baked in as "no data" — see wikidata_sparql.py)."""
-        if iso639_3 in self._cache:
-            return _dedupe(self._cache[iso639_3])
+    def _migrate_legacy_caches(self, cache_dir: Path) -> None:
+        legacy_data: dict[str, dict[str, list[str]]] = {}
+        for kind, filename in _LEGACY_CACHE_FILENAMES.items():
+            path = cache_dir / filename
+            if path.exists():
+                legacy_data[kind] = json.loads(path.read_text())
+        if not legacy_data:
+            return
+        all_isos = {iso for values in legacy_data.values() for iso in values}
+        changed = False
+        for iso in all_isos:
+            if iso in self._cache:
+                continue
+            self._cache[iso] = {
+                kind: "|".join(legacy_data.get(kind, {}).get(iso, [])) for kind in _PROPERTIES
+            }
+            changed = True
+        if changed:
+            self._write_cache()
 
-        values = _query_property(iso639_3, self._property_id)
-        time.sleep(_REQUEST_DELAY_SECONDS)
-        if values is None:
-            return []
-        self._cache[iso639_3] = values
+    def _write_cache(self) -> None:
         self._cache_path.parent.mkdir(parents=True, exist_ok=True)
         self._cache_path.write_text(json.dumps(self._cache, indent=2))
-        return _dedupe(values)
+
+    def get(self, iso639_3: str) -> dict[str, list[str]]:
+        """Returns {"writing_system": [...], "grammatical_case": [...], "tense": [...],
+        "mood": [...], "aspect": [...]} for this language, each deduped, [] where none found
+        (confirmed, or the query failed this run — a failed query is NOT written to cache, so
+        it's retried on the next pipeline run instead of being permanently baked in as "no
+        data" — see wikidata_sparql.py)."""
+        if iso639_3 not in self._cache:
+            raw = _query_combined(iso639_3)
+            time.sleep(_REQUEST_DELAY_SECONDS)
+            if raw is None:
+                return {kind: [] for kind in _PROPERTIES}
+            self._cache[iso639_3] = raw
+            self._write_cache()
+        stored = self._cache[iso639_3]
+        return {kind: _dedupe(stored.get(kind, "").split("|")) if stored.get(kind) else [] for kind in _PROPERTIES}
 
 
 def _dedupe(values: list[str]) -> list[str]:
@@ -111,9 +138,17 @@ def script_type_for(script_name: str) -> str:
     return "other"
 
 
-def _query_property(iso639_3: str, property_id: str) -> list[str] | None:
-    pattern = f'?entity wdt:{property_id} ?val . SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}'
-    bindings = query_with_macrolanguage_fallback(iso639_3, pattern, select_var="valLabel", limit=30)
-    if bindings is None:
-        return None
-    return [b["valLabel"]["value"] for b in bindings]
+def _query_combined(iso639_3: str) -> dict[str, str] | None:
+    optional_blocks = []
+    select_expressions = []
+    for kind, property_id in _PROPERTIES.items():
+        val_var, label_var = f"{kind}Val", f"{kind}Label"
+        optional_blocks.append(
+            f"OPTIONAL {{ ?entity wdt:{property_id} ?{val_var} . "
+            f'?{val_var} rdfs:label ?{label_var} . FILTER(LANG(?{label_var})="en") }}'
+        )
+        select_expressions.append(f'(GROUP_CONCAT(DISTINCT ?{label_var}; separator="|") AS ?{kind})')
+    pattern = " ".join(optional_blocks)
+    return query_multi_with_macrolanguage_fallback(
+        iso639_3, pattern, select_expressions, output_vars=list(_PROPERTIES)
+    )

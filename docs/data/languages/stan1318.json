@@ -4273,5 +4273,54 @@
       27.9625,
       43.8525
     ]
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.847,
+    "donor_languages": [
+      {
+        "name": "Aramaic",
+        "count": 367,
+        "percentage": 20.9
+      },
+      {
+        "name": "Persian",
+        "count": 238,
+        "percentage": 13.6
+      },
+      {
+        "name": "Classical Syriac",
+        "count": 195,
+        "percentage": 11.1
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 143,
+        "percentage": 8.2
+      },
+      {
+        "name": "Ottoman Turkish",
+        "count": 119,
+        "percentage": 6.8
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 97,
+        "percentage": 5.5
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 95,
+        "percentage": 5.4
+      },
+      {
+        "name": "Middle Persian",
+        "count": 61,
+        "percentage": 3.5
+      }
+    ],
+    "sample_size": 2069,
+    "source": "etymology_db"
   }
 }

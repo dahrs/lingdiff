@@ -124,6 +124,40 @@ class NotableFeatures(BaseModel):
     source: str = "llm"
 
 
+class DonorLanguageShare(BaseModel):
+    name: str
+    glottocode: str | None = None
+    """Known only when the source gives a Glottolog code directly (WOLD does) or the donor
+    language's name could be cross-referenced against our own WALS-keyed dataset (etymology-db
+    gives only a free-text name, no code — see pipeline/etymology_db_loader.py)."""
+    count: int
+    percentage: float
+    """Share of this language's SAMPLED borrowed words attributed to this donor, 0-100."""
+
+
+class VocabularyOrigin(BaseModel):
+    borrowed_ratio: float
+    """0-1: estimated share of vocabulary that is borrowed rather than inherited/native-formed.
+    From WOLD: mean of its graded Borrowed_score (already a continuous 0-1 scale per word,
+    not binary) across every sampled word. From etymology-db: count of borrowing-type
+    relations / (borrowing-type + inherited_from relation count) — see
+    pipeline/vocabulary_origin.py for exactly which of etymology-db's 31 relation types count
+    as which."""
+    donor_languages: list[DonorLanguageShare]
+    """Breakdown of borrowed vocabulary by source language, sorted by descending share."""
+    sample_size: int
+    """How many words this estimate is based on — WOLD's fixed ~1,000-2,000-word list for
+    that language, or however many etymology-db rows had a direct origin classification for
+    it. A ratio based on a handful of words is far less reliable than one based on hundreds;
+    exposed so the UI can disclose that rather than presenting every ratio with equal
+    confidence."""
+    source: Literal["wold", "etymology_db"]
+    """WOLD preferred when it covers this language (expert-curated, graded score, Glottolog-
+    coded donor languages, only 41 languages total) — see pipeline/vocabulary_origin.py.
+    etymology_db is the broader-coverage (thousands of languages, extremely uneven depth),
+    automatically-Wiktionary-parsed fallback used when WOLD has nothing for this language."""
+
+
 class LanguageProfile(BaseModel):
     glottocode: str
     comparison_kind: Literal["leaf", "group"]
@@ -158,6 +192,14 @@ class LanguageProfile(BaseModel):
     writing_system: WritingSystem | None = None
     geography: Geography | None = None
     notable_features: NotableFeatures | None = None
+    vocabulary_origin: VocabularyOrigin | None = None
+
+
+class NearestNeighbor(BaseModel):
+    glottocode: str
+    name: str
+    score: int
+    """0-100 overall distance, same scale/meaning as the live comparison tool's score."""
 
 
 class LanguageIndexEntry(BaseModel):
@@ -168,7 +210,11 @@ class LanguageIndexEntry(BaseModel):
     indented under the Arabic macrolanguage group, Romanian under the Romance group — by
     finding, for each entry, the other entry whose own path is its longest matching prefix.
     Kept small (names only, no vectors) since every entry's row ships in the one index file
-    the picker loads upfront, unlike full profiles which stay lazily fetched."""
+    the picker loads upfront, unlike full profiles which stay lazily fetched.
+
+    `closest`/`farthest` (leaf entries only — see pipeline/nearest_neighbors.py) are
+    precomputed at build time specifically so the UI can show them for whichever language is
+    selected without an extra fetch: the data's already sitting in this same index file."""
 
     glottocode: str
     comparison_kind: Literal["leaf", "group"]
@@ -178,3 +224,5 @@ class LanguageIndexEntry(BaseModel):
     english_name: str
     family: str
     classification_path: list[str]
+    closest: NearestNeighbor | None = None
+    farthest: NearestNeighbor | None = None

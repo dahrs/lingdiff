@@ -4893,5 +4893,55 @@
   "notable_features": {
     "text": "Hindi is an SOV language with a very large phoneme inventory of 94 sounds and grammatically marks seven distinct tense/aspect categories, reflecting a rich verbal system. It belongs to the Indo-Aryan branch of Indo-European and functions as a major lingua franca across much of North, Central, East, Western, and Northeast India.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.471,
+    "donor_languages": [
+      {
+        "name": "Sanskrit",
+        "count": 898,
+        "percentage": 80.0
+      },
+      {
+        "name": "Arabic",
+        "glottocode": "stan1318",
+        "count": 58,
+        "percentage": 5.2
+      },
+      {
+        "name": "Classical Sanskrit",
+        "count": 38,
+        "percentage": 3.4
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 33,
+        "percentage": 2.9
+      },
+      {
+        "name": "Persian",
+        "count": 30,
+        "percentage": 2.7
+      },
+      {
+        "name": "Classical Persian",
+        "count": 12,
+        "percentage": 1.1
+      },
+      {
+        "name": "New Sanskrit",
+        "count": 8,
+        "percentage": 0.7
+      },
+      {
+        "name": "Portuguese",
+        "glottocode": "port1283",
+        "count": 7,
+        "percentage": 0.6
+      }
+    ],
+    "sample_size": 2382,
+    "source": "etymology_db"
   }
 }

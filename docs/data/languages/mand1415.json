@@ -4899,5 +4899,58 @@
   "notable_features": {
     "text": "Mandarin is a tonal language in which pitch contour distinguishes word meaning, and it follows a basic subject-verb-object word order. It encodes a notably rich set of tense/aspect distinctions (7 WALS categories) despite lacking inflectional morphology, relying instead on particles and word order. As a pluricentric language, it has standardized but accentually and lexically distinct varieties used officially across Mainland China, Taiwan, and Singapore.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.022,
+    "donor_languages": [
+      {
+        "name": "Unidentified",
+        "count": 28,
+        "percentage": 18.7
+      },
+      {
+        "name": "Proto-Altaic",
+        "count": 27,
+        "percentage": 18.0
+      },
+      {
+        "name": "Proto-Austroasiatic",
+        "glottocode": "aust1305",
+        "count": 21,
+        "percentage": 14.0
+      },
+      {
+        "name": "Japanese",
+        "glottocode": "nucl1643",
+        "count": 12,
+        "percentage": 8.0
+      },
+      {
+        "name": "Sanskrit",
+        "glottocode": "sans1269",
+        "count": 8,
+        "percentage": 5.3
+      },
+      {
+        "name": "Austro-Asiatic",
+        "glottocode": "aust1305",
+        "count": 7,
+        "percentage": 4.7
+      },
+      {
+        "name": "Proto-Hmong-Mien",
+        "glottocode": "hmon1336",
+        "count": 5,
+        "percentage": 3.3
+      },
+      {
+        "name": "Austronesian",
+        "glottocode": "aust1307",
+        "count": 5,
+        "percentage": 3.3
+      }
+    ],
+    "sample_size": 2130,
+    "source": "wold"
   }
 }

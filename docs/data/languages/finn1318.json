@@ -4925,5 +4925,58 @@
   "notable_features": {
     "text": "Finnish is a Uralic language that relies heavily on word endings rather than word order to show grammatical relationships, and it distinguishes 7 tense/aspect categories while using a basic subject-verb-object sentence structure. It has a relatively large phoneme inventory of 42 sounds and is closely related to Meänkieli and Kven, which are mutually intelligible with it but treated as separate languages for historical and social reasons.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.517,
+    "donor_languages": [
+      {
+        "name": "Swedish",
+        "glottocode": "swed1254",
+        "count": 1326,
+        "percentage": 43.8
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 609,
+        "percentage": 20.1
+      },
+      {
+        "name": "Russian",
+        "glottocode": "russ1263",
+        "count": 232,
+        "percentage": 7.7
+      },
+      {
+        "name": "Latin",
+        "count": 143,
+        "percentage": 4.7
+      },
+      {
+        "name": "Old Swedish",
+        "count": 121,
+        "percentage": 4.0
+      },
+      {
+        "name": "German",
+        "glottocode": "stan1295",
+        "count": 106,
+        "percentage": 3.5
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 98,
+        "percentage": 3.2
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 57,
+        "percentage": 1.9
+      }
+    ],
+    "sample_size": 5852,
+    "source": "etymology_db"
   }
 }

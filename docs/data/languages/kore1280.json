@@ -4865,5 +4865,58 @@
   "notable_features": {
     "text": "Korean has a large phoneme inventory of 48 sounds and follows a subject-object-verb word order, unlike English's subject-verb-object pattern. It marks seven distinct tense/aspect categories, reflecting a rich verbal system for expressing time and the nature of actions. As a Koreanic language spoken by about 81 million people, it serves as the official language of both North and South Korea, though it is referred to by different names (Hangugeo in the south, Chosŏnŏ in the north) and has gained global visibility through Korean popular culture.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.931,
+    "donor_languages": [
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 1599,
+        "percentage": 68.5
+      },
+      {
+        "name": "Japanese",
+        "glottocode": "nucl1643",
+        "count": 219,
+        "percentage": 9.4
+      },
+      {
+        "name": "Russian",
+        "glottocode": "russ1263",
+        "count": 119,
+        "percentage": 5.1
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 79,
+        "percentage": 3.4
+      },
+      {
+        "name": "German",
+        "glottocode": "stan1295",
+        "count": 53,
+        "percentage": 2.3
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 46,
+        "percentage": 2.0
+      },
+      {
+        "name": "Latin",
+        "count": 26,
+        "percentage": 1.1
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 23,
+        "percentage": 1.0
+      }
+    ],
+    "sample_size": 2509,
+    "source": "etymology_db"
   }
 }

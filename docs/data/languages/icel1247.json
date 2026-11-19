@@ -4521,5 +4521,57 @@
   "notable_features": {
     "text": "Icelandic is a North Germanic language closely related to Faroese and western Norwegian dialects, though not mutually intelligible with the continental Scandinavian languages. It has a relatively large phoneme inventory of 45 sounds and a rich tense/aspect system marking 5 WALS categories, while maintaining basic SVO word order. Despite being closely related in written form to Faroese, the two languages' spoken forms are not mutually intelligible with each other.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.113,
+    "donor_languages": [
+      {
+        "name": "Danish",
+        "glottocode": "dani1285",
+        "count": 233,
+        "percentage": 55.7
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 61,
+        "percentage": 14.6
+      },
+      {
+        "name": "Latin",
+        "count": 25,
+        "percentage": 6.0
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 21,
+        "percentage": 5.0
+      },
+      {
+        "name": "Middle Low German",
+        "count": 21,
+        "percentage": 5.0
+      },
+      {
+        "name": "German",
+        "glottocode": "stan1295",
+        "count": 20,
+        "percentage": 4.8
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 11,
+        "percentage": 2.6
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 4,
+        "percentage": 1.0
+      }
+    ],
+    "sample_size": 3702,
+    "source": "etymology_db"
   }
 }

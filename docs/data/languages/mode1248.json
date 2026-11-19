@@ -4888,5 +4888,56 @@
   "notable_features": {
     "text": "Modern Greek has a long continuous history, with its modern form emerging gradually from the fourth century AD onward rather than at a single sharp break, even though the fall of the Byzantine Empire in 1453 is often used as a symbolic dividing line. It has a relatively rich phoneme inventory of 41 sounds and marks an unusually high number of tense/aspect distinctions (7 WALS categories). Unlike many languages, it has no single dominant word order, allowing flexible arrangement of sentence elements.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.261,
+    "donor_languages": [
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 304,
+        "percentage": 20.6
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 284,
+        "percentage": 19.3
+      },
+      {
+        "name": "Ottoman Turkish",
+        "count": 255,
+        "percentage": 17.3
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 190,
+        "percentage": 12.9
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 168,
+        "percentage": 11.4
+      },
+      {
+        "name": "Arabic",
+        "glottocode": "stan1318",
+        "count": 43,
+        "percentage": 2.9
+      },
+      {
+        "name": "Latin",
+        "count": 34,
+        "percentage": 2.3
+      },
+      {
+        "name": "Venetian",
+        "count": 31,
+        "percentage": 2.1
+      }
+    ],
+    "sample_size": 5647,
+    "source": "etymology_db"
   }
 }

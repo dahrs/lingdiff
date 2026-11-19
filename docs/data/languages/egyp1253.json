@@ -4855,5 +4855,58 @@
       31.0,
       31.0
     ]
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.314,
+    "donor_languages": [
+      {
+        "name": "Ottoman Turkish",
+        "count": 23,
+        "percentage": 24.5
+      },
+      {
+        "name": "Coptic",
+        "glottocode": "copt1239",
+        "count": 19,
+        "percentage": 20.2
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 10,
+        "percentage": 10.6
+      },
+      {
+        "name": "Arabic",
+        "glottocode": "stan1318",
+        "count": 9,
+        "percentage": 9.6
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 9,
+        "percentage": 9.6
+      },
+      {
+        "name": "Persian",
+        "count": 7,
+        "percentage": 7.4
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 6,
+        "percentage": 6.4
+      },
+      {
+        "name": "Greek",
+        "glottocode": "mode1248",
+        "count": 3,
+        "percentage": 3.2
+      }
+    ],
+    "sample_size": 299,
+    "source": "etymology_db"
   }
 }

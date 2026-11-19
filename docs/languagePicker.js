@@ -113,18 +113,20 @@ function createLanguagePicker(container, entries, onSelect) {
   panel.innerHTML = "";
   let selected = null;
 
+  const selectEntry = (entry, { notify } = { notify: true }) => {
+    selected = entry;
+    button.textContent = entry.name;
+    closePanel();
+    if (notify) onSelect(entry);
+  };
+
   for (const { entry, depth } of rows) {
     const row = document.createElement("div");
     row.className = `picker-option depth-${Math.min(depth, 2)}`;
     row.style.paddingLeft = `${0.8 + depth * 1.4}rem`;
     row.textContent = entry.name + (entry.iso639_3 ? ` (${entry.iso639_3})` : "");
     row.title = entry.classification_path.join(" → ");
-    row.addEventListener("click", () => {
-      selected = entry;
-      button.textContent = entry.name;
-      closePanel();
-      onSelect(entry);
-    });
+    row.addEventListener("click", () => selectEntry(entry));
     panel.appendChild(row);
   }
 
@@ -151,5 +153,12 @@ function createLanguagePicker(container, entries, onSelect) {
 
   return {
     getSelected: () => selected,
+    /** Programmatically selects an entry by glottocode (e.g. from the nearest/farthest
+     * panel's "load this comparison" cards) without re-firing onSelect — the caller already
+     * knows what it's doing and drives the comparison itself. */
+    selectByGlottocode: (glottocode) => {
+      const entry = entries.find((e) => e.glottocode === glottocode);
+      if (entry) selectEntry(entry, { notify: false });
+    },
   };
 }

@@ -4610,5 +4610,60 @@
   "notable_features": {
     "text": "Dutch is a West Germanic language, closely related to German and English, and is the ancestor of Afrikaans, which developed from Cape Dutch dialects and remains partially mutually intelligible with it. It has a large phoneme inventory of 58 sounds and marks two tense/aspect categories grammatically, but unlike many languages it has no single dominant word order.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.189,
+    "donor_languages": [
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 117,
+        "percentage": 34.5
+      },
+      {
+        "name": "Latin",
+        "glottocode": "lati1261",
+        "count": 112,
+        "percentage": 33.0
+      },
+      {
+        "name": "High German",
+        "glottocode": "stan1295",
+        "count": 42,
+        "percentage": 12.4
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 23,
+        "percentage": 6.8
+      },
+      {
+        "name": "Spanish",
+        "glottocode": "stan1288",
+        "count": 10,
+        "percentage": 2.9
+      },
+      {
+        "name": "French (Picard)",
+        "glottocode": "pica1241",
+        "count": 7,
+        "percentage": 2.1
+      },
+      {
+        "name": "Celtic",
+        "glottocode": "celt1248",
+        "count": 5,
+        "percentage": 1.5
+      },
+      {
+        "name": "Portuguese",
+        "glottocode": "port1283",
+        "count": 4,
+        "percentage": 1.2
+      }
+    ],
+    "sample_size": 1588,
+    "source": "wold"
   }
 }

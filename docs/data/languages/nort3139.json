@@ -4117,5 +4117,51 @@
       34.1709,
       36.0468
     ]
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.164,
+    "donor_languages": [
+      {
+        "name": "Ottoman Turkish",
+        "count": 10,
+        "percentage": 40.0
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 5,
+        "percentage": 20.0
+      },
+      {
+        "name": "Arabic",
+        "glottocode": "stan1318",
+        "count": 4,
+        "percentage": 16.0
+      },
+      {
+        "name": "Persian",
+        "count": 2,
+        "percentage": 8.0
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 2,
+        "percentage": 8.0
+      },
+      {
+        "name": "Kipchak",
+        "count": 1,
+        "percentage": 4.0
+      },
+      {
+        "name": "Hijazi Arabic",
+        "glottocode": "hija1235",
+        "count": 1,
+        "percentage": 4.0
+      }
+    ],
+    "sample_size": 152,
+    "source": "etymology_db"
   }
 }

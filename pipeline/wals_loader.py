@@ -48,6 +48,12 @@ class WalsData:
     def find_language(self, iso639_3: str) -> dict[str, str] | None:
         return self._language_by_iso.get(iso639_3.lower())
 
+    def all_iso_codes(self) -> list[str]:
+        """Every ISO 639-3 code WALS has a (best-pick) entry for — the natural ceiling for
+        how many languages this pipeline can build a leaf profile for, since build_profile
+        requires a WALS match. Sorted for a stable, diffable run order."""
+        return sorted(self._language_by_iso.keys())
+
     def param_name(self, parameter_id: str) -> str:
         return self._param_name_by_id.get(parameter_id, parameter_id)
 

@@ -4450,5 +4450,58 @@
   "notable_features": {
     "text": "Portuguese is a Western Romance language with a very large phoneme inventory of 47 sounds, reflecting its rich system of vowels, nasal vowels, and diphthongs typical of Romance languages. It follows a basic subject-verb-object (SVO) word order and marks five distinct tense/aspect categories, indicating a fairly elaborate verbal system. As the most widely spoken language in the Southern Hemisphere, it also serves as an official or co-official language across multiple countries on several continents.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.536,
+    "donor_languages": [
+      {
+        "name": "Latin",
+        "count": 2114,
+        "percentage": 34.5
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 856,
+        "percentage": 14.0
+      },
+      {
+        "name": "Japanese",
+        "glottocode": "nucl1643",
+        "count": 571,
+        "percentage": 9.3
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 534,
+        "percentage": 8.7
+      },
+      {
+        "name": "Spanish",
+        "glottocode": "stan1288",
+        "count": 390,
+        "percentage": 6.4
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 307,
+        "percentage": 5.0
+      },
+      {
+        "name": "Late Latin",
+        "count": 192,
+        "percentage": 3.1
+      },
+      {
+        "name": "German",
+        "glottocode": "stan1295",
+        "count": 111,
+        "percentage": 1.8
+      }
+    ],
+    "sample_size": 11429,
+    "source": "etymology_db"
   }
 }

@@ -1,0 +1,36 @@
+{
+  "glottocode": "cuit1236",
+  "comparison_kind": "leaf",
+  "glottolog_level": "language",
+  "iso639_3": "cuy",
+  "name": "Cuitlatec",
+  "english_name": "Cuitlatec",
+  "classification": {
+    "path": [
+      {
+        "name": "Cuitlatec",
+        "glottocode": "cuit1236"
+      }
+    ],
+    "path_source": "wals"
+  },
+  "other_typological_features": [
+    {
+      "wals_code": "129A",
+      "name": "Hand and Arm",
+      "value": "Different"
+    },
+    {
+      "wals_code": "130A",
+      "name": "Finger and Hand",
+      "value": "Different"
+    }
+  ],
+  "geography": {
+    "primary_region": "North America",
+    "coordinates": [
+      18.1,
+      -100.5
+    ]
+  }
+}

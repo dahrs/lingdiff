@@ -4926,5 +4926,56 @@
   "notable_features": {
     "text": "French distinguishes a relatively large inventory of about 40 phonemes, including nasal vowels and a characteristic uvular 'r', and follows a basic subject-verb-object word order. It has a richly developed verbal system that marks seven distinct tense/aspect categories, reflecting its evolution from Vulgar Latin with layered Celtic and Germanic Frankish influences.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.456,
+    "donor_languages": [
+      {
+        "name": "Latin",
+        "count": 2812,
+        "percentage": 40.9
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 825,
+        "percentage": 12.0
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 458,
+        "percentage": 6.7
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 452,
+        "percentage": 6.6
+      },
+      {
+        "name": "Late Latin",
+        "count": 330,
+        "percentage": 4.8
+      },
+      {
+        "name": "Occitan",
+        "glottocode": "occi1239",
+        "count": 230,
+        "percentage": 3.3
+      },
+      {
+        "name": "Medieval Latin",
+        "count": 228,
+        "percentage": 3.3
+      },
+      {
+        "name": "Arabic",
+        "glottocode": "stan1318",
+        "count": 191,
+        "percentage": 2.8
+      }
+    ],
+    "sample_size": 15080,
+    "source": "etymology_db"
   }
 }

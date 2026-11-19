@@ -4565,5 +4565,58 @@
   "notable_features": {
     "text": "Polish marks grammatical distinctions through a complex case system typical of Slavic languages, and it has a rich consonant inventory of 37 phonemes, including many palatalized and affricate sounds. It strictly follows SVO word order and encodes two WALS tense/aspect categories, reflecting the Slavic emphasis on verbal aspect. Socially, Polish requires strict T–V distinction and obligatory honorifics, making formality a grammatically enforced part of addressing others.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.355,
+    "donor_languages": [
+      {
+        "name": "German",
+        "glottocode": "stan1295",
+        "count": 194,
+        "percentage": 24.0
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 159,
+        "percentage": 19.7
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 135,
+        "percentage": 16.7
+      },
+      {
+        "name": "Latin",
+        "count": 111,
+        "percentage": 13.7
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 29,
+        "percentage": 3.6
+      },
+      {
+        "name": "Ukrainian",
+        "glottocode": "ukra1253",
+        "count": 28,
+        "percentage": 3.5
+      },
+      {
+        "name": "Russian",
+        "glottocode": "russ1263",
+        "count": 21,
+        "percentage": 2.6
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 19,
+        "percentage": 2.4
+      }
+    ],
+    "sample_size": 2274,
+    "source": "etymology_db"
   }
 }

@@ -4599,5 +4599,55 @@
   "notable_features": {
     "text": "Italian is a Romance language closely related to Latin, often considered one of the least changed Romance languages from its Latin roots. It follows a basic subject-verb-object word order and has a relatively large phoneme inventory of 70 sounds. The standard language is based on literary Florentine Tuscan, and it is spoken by tens of millions of people as a native or second language.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.545,
+    "donor_languages": [
+      {
+        "name": "Latin",
+        "count": 2141,
+        "percentage": 38.3
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 745,
+        "percentage": 13.3
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 687,
+        "percentage": 12.3
+      },
+      {
+        "name": "Late Latin",
+        "count": 315,
+        "percentage": 5.6
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 263,
+        "percentage": 4.7
+      },
+      {
+        "name": "Spanish",
+        "glottocode": "stan1288",
+        "count": 197,
+        "percentage": 3.5
+      },
+      {
+        "name": "Translingual",
+        "count": 173,
+        "percentage": 3.1
+      },
+      {
+        "name": "Old French",
+        "count": 152,
+        "percentage": 2.7
+      }
+    ],
+    "sample_size": 10258,
+    "source": "etymology_db"
   }
 }

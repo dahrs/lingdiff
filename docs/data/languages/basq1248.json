@@ -4868,5 +4868,56 @@
   "notable_features": {
     "text": "Basque is famous as Europe's only language isolate, with no demonstrated relatives among surviving languages, and is considered the last living descendant of a pre-Indo-European Paleo-European language. It uses a strict SOV word order and has a notably rich verbal system, marking seven distinct tense/aspect categories, alongside a relatively large phoneme inventory of 43 sounds.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.495,
+    "donor_languages": [
+      {
+        "name": "Spanish",
+        "glottocode": "stan1288",
+        "count": 127,
+        "percentage": 63.2
+      },
+      {
+        "name": "Latin",
+        "count": 25,
+        "percentage": 12.4
+      },
+      {
+        "name": "Old Spanish",
+        "count": 9,
+        "percentage": 4.5
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 8,
+        "percentage": 4.0
+      },
+      {
+        "name": "Occitan",
+        "glottocode": "occi1239",
+        "count": 7,
+        "percentage": 3.5
+      },
+      {
+        "name": "Vulgar Latin",
+        "count": 4,
+        "percentage": 2.0
+      },
+      {
+        "name": "Late Latin",
+        "count": 3,
+        "percentage": 1.5
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 2,
+        "percentage": 1.0
+      }
+    ],
+    "sample_size": 406,
+    "source": "etymology_db"
   }
 }

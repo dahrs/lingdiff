@@ -4904,5 +4904,57 @@
   "notable_features": {
     "text": "Russian is a Slavic language with a large phoneme inventory of 42 sounds and marks seven distinct tense/aspect categories, reflecting its rich system of grammatical aspect alongside tense. It follows a basic SVO word order but, like other Slavic languages, allows flexibility due to its case-marking morphology. Historically tied to the Soviet Union, it continues to serve as a lingua franca across much of Eastern Europe, the Caucasus, and Central Asia.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.299,
+    "donor_languages": [
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 80,
+        "percentage": 13.4
+      },
+      {
+        "name": "German",
+        "glottocode": "stan1295",
+        "count": 67,
+        "percentage": 11.3
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 66,
+        "percentage": 11.1
+      },
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 58,
+        "percentage": 9.7
+      },
+      {
+        "name": "Latin",
+        "count": 55,
+        "percentage": 9.2
+      },
+      {
+        "name": "Polish",
+        "glottocode": "poli1260",
+        "count": 42,
+        "percentage": 7.1
+      },
+      {
+        "name": "Old Church Slavonic",
+        "count": 41,
+        "percentage": 6.9
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 20,
+        "percentage": 3.4
+      }
+    ],
+    "sample_size": 1991,
+    "source": "etymology_db"
   }
 }

@@ -4824,5 +4824,57 @@
   "notable_features": {
     "text": "Zulu has a large phoneme inventory of 43 sounds, which notably includes click consonants borrowed from contact with Khoisan languages. It uses a basic subject-verb-object word order and, as a Bantu language, has a rich noun class system along with agglutinative verb morphology that marks 7 distinct tense/aspect categories.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.374,
+    "donor_languages": [
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 218,
+        "percentage": 77.9
+      },
+      {
+        "name": "Afrikaans",
+        "glottocode": "afri1274",
+        "count": 49,
+        "percentage": 17.5
+      },
+      {
+        "name": "Xhosa",
+        "glottocode": "xhos1239",
+        "count": 5,
+        "percentage": 1.8
+      },
+      {
+        "name": "Seroa",
+        "count": 1,
+        "percentage": 0.4
+      },
+      {
+        "name": "Tswana",
+        "glottocode": "tswa1253",
+        "count": 1,
+        "percentage": 0.4
+      },
+      {
+        "name": "Swahili",
+        "count": 1,
+        "percentage": 0.4
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 1,
+        "percentage": 0.4
+      },
+      {
+        "name": "Japanese",
+        "glottocode": "nucl1643",
+        "count": 1,
+        "percentage": 0.4
+      }
+    ],
+    "sample_size": 748,
+    "source": "etymology_db"
   }
 }

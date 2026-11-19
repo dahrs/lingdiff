@@ -4554,5 +4554,60 @@
   "notable_features": {
     "text": "Romanian is the only member of the Eastern Romance sub-branch to survive as a major national language, having evolved from Vulgar Latin dialects that split from Western Romance between the 5th and 8th centuries, giving it a distinctively isolated position among Romance languages. It follows a basic subject-verb-object word order and has a relatively large phoneme inventory of 51 sounds. Its verb system marks five distinct tense/aspect categories, reflecting a rich grammatical marking of time and aspect inherited and elaborated from its Latin roots.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.42,
+    "donor_languages": [
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 351,
+        "percentage": 25.1
+      },
+      {
+        "name": "Slavic",
+        "glottocode": "slav1255",
+        "count": 246,
+        "percentage": 17.6
+      },
+      {
+        "name": "Latin",
+        "glottocode": "lati1261",
+        "count": 218,
+        "percentage": 15.6
+      },
+      {
+        "name": "Bulgarian",
+        "glottocode": "bulg1262",
+        "count": 111,
+        "percentage": 7.9
+      },
+      {
+        "name": "Greek",
+        "glottocode": "mode1248",
+        "count": 77,
+        "percentage": 5.5
+      },
+      {
+        "name": "Serbian",
+        "glottocode": "serb1264",
+        "count": 63,
+        "percentage": 4.5
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 55,
+        "percentage": 3.9
+      },
+      {
+        "name": "German",
+        "glottocode": "stan1295",
+        "count": 54,
+        "percentage": 3.9
+      }
+    ],
+    "sample_size": 2270,
+    "source": "wold"
   }
 }

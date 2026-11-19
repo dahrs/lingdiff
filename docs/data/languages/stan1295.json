@@ -4912,5 +4912,56 @@
   "notable_features": {
     "text": "German is notable for its flexible word order, which lacks a single dominant pattern and instead relies on case marking and verb position rules to convey grammatical relationships. It also has a rich verbal system that marks seven distinct tense/aspect categories, and a relatively large phoneme inventory of 41 sounds compared to many other languages. As a West Germanic language, it serves as an official or recognized language across a wide range of European countries and communities beyond Germany itself.",
     "source": "llm"
+  },
+  "vocabulary_origin": {
+    "borrowed_ratio": 0.089,
+    "donor_languages": [
+      {
+        "name": "English",
+        "glottocode": "stan1293",
+        "count": 277,
+        "percentage": 27.5
+      },
+      {
+        "name": "Latin",
+        "count": 162,
+        "percentage": 16.1
+      },
+      {
+        "name": "French",
+        "glottocode": "stan1290",
+        "count": 141,
+        "percentage": 14.0
+      },
+      {
+        "name": "Middle Low German",
+        "count": 55,
+        "percentage": 5.5
+      },
+      {
+        "name": "Italian",
+        "glottocode": "ital1282",
+        "count": 52,
+        "percentage": 5.2
+      },
+      {
+        "name": "Ancient Greek",
+        "count": 44,
+        "percentage": 4.4
+      },
+      {
+        "name": "Dutch",
+        "glottocode": "dutc1256",
+        "count": 33,
+        "percentage": 3.3
+      },
+      {
+        "name": "German Low German",
+        "count": 20,
+        "percentage": 2.0
+      }
+    ],
+    "sample_size": 11312,
+    "source": "etymology_db"
   }
 }
