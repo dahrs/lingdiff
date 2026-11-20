@@ -8,10 +8,7 @@
   "classification": {
     "path": [
       {
-        "name": "other"
-      },
-      {
-        "name": "Sign Languages"
+        "name": "French Sign Language family"
       },
       {
         "name": "Lingua Italiana dei Segni",
@@ -3738,7 +3735,7 @@
       0.0,
       0.0
     ],
-    "path_source": "wals"
+    "path_source": "wikidata"
   },
   "phonology": {
     "phonemes": [],
@@ -3934,7 +3931,13 @@
     ]
   },
   "syntax": {
-    "features": [],
+    "features": [
+      {
+        "wals_code": "wikidata-P4132",
+        "name": "Basic word order",
+        "value": "SOV"
+      }
+    ],
     "syntactic_vector": [
       1.0,
       0.0,

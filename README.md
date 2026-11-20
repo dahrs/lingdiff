@@ -208,6 +208,45 @@ same pattern as `repair_empty_glottocodes.py`); verified live that every one of 
 languages' closest/farthest podiums contain only other sign languages, and spot-checked spoken
 languages (e.g. Spanish) show none.
 
+**Sign languages used to all score identically against each other — fixed, with two real
+gaps closed**: every pairing lacking both writing-system AND word-order data (the overwhelming
+majority) fell back to family distance alone, and that was *also* broken for sign languages
+specifically. The actual bug: WALS's own "Family" column is the literal placeholder `"other"`
+for every one of its 40 Sign Languages genus rows — it was never intended to carry a real
+top-level family for this genus — but `_build_classification`'s trust check
+(`_root_matches_wals_family`) didn't know that, so it rejected Wikidata's real, specific
+sign-language genealogies (e.g. "BANZSL" uniting British/Australian/NZ Sign Language, a
+"French Sign Language family" uniting French/American/Quebec Sign Language — already being
+fetched and cached, just discarded) every time, because they obviously never matched the
+placeholder "other". Every sign language fell back to the same flat
+`["other", "Sign Languages", <name>]` WALS-only path, making family distance — and therefore
+the whole score, for any pair without the rare writing-system/word-order data below — come out
+identical for nearly every pairing (confirmed live: 33, unconditionally). Fixed: WALS's
+"other" is now treated as "nothing to validate against" **specifically for the Sign Languages
+genus** (unlike Creoles and Pidgins, which also code `Family="other"`, but deliberately — a
+creole genuinely has no single lineage to check a root against, so that case is left alone).
+
+Second gap, newly sourced: WALS's Ch.81 (basic word order) has no parameters at all for sign
+languages, but Wikidata's P4132 ("linguistic typology") property does give a real SVO/SOV/
+OSV-style value for some of them — confirmed live, 5 of the 40 (ASL "subject–verb–object",
+British Sign Language "object–subject–verb", German Sign Language "subject–object–verb",
+Quebec Sign Language and Italian Sign Language also covered). `wikidata_lookup.py` now fetches
+this alongside its other 5 properties; `build_profile.py`'s `_normalize_word_order_label`
+converts Wikidata's spelled-out label to WALS's own SVO-style abbreviation so the two sources
+are directly comparable, and feeds it into `syntax.features` like any other word-order
+feature — appears for every language, filled only where a source actually has it (sign or
+spoken), exactly the "same field, sparse outside sign languages" shape vocabulary origin and
+sample_glyphs already use.
+
+Both fixes are scoped to the 40 sign languages specifically (`pipeline/
+backfill_sign_language_typology.py` — re-fetches just their Wikidata grammar data via a new
+`WikidataGrammarCache.invalidate()`, since a plain cache hit wouldn't have picked up the new
+P4132 property, then rebuilds their profiles and recomputes `index.json`'s podiums from the
+complete set). Verified live, and linguistically sensible: ASL's closest match is now Quebec
+Sign Language (a direct, documented descendant, score 15 — "very close"), and British Sign
+Language's/Auslan's closest matches are each other plus New Zealand Sign Language (all three
+really do belong to the BANZSL family) — none of which could be expressed before this fix.
+
 `pipeline/scoring.py` is a **hand-maintained Python port** of `compare.js`'s overall-score
 math (no Node/JS runtime available in this environment to run the real JS from Python, and no
 shared implementation between the two — see that file's docstring). If you change the scoring

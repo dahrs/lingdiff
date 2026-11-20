@@ -1,10 +1,15 @@
 """Wikidata SPARQL lookups for data neither WALS nor PHOIBLE cover directly: writing system
-(fallback when WALS's sparse "Writing Systems" chapter has no entry), and real named
-enumerations of grammatical case/tense/mood/aspect (Wikidata has dedicated properties for
-these — confirmed live: German correctly returns its 4 cases via P2989, Finnish its 15).
+(fallback when WALS's sparse "Writing Systems" chapter has no entry), basic word order (P4132,
+"linguistic typology" — WALS's own Ch.81 covers this for spoken languages, but has no
+parameters at all for the Sign Languages genus; confirmed live, Wikidata gives a real SVO/SOV/
+OSV-style value for 5 of the 40 WALS-listed sign languages, e.g. ASL "subject–verb–object",
+German Sign Language "subject–object–verb" — sparse, but genuinely comparable data WALS
+simply doesn't have), and real named enumerations of grammatical case/tense/mood/aspect
+(Wikidata has dedicated properties for these — confirmed live: German correctly returns its 4
+cases via P2989, Finnish its 15).
 
-All five properties are fetched in ONE combined query per language (see
-WikidataGrammarCache) rather than five separate ones — confirmed live, a ~5x reduction in
+All six properties are fetched in ONE combined query per language (see
+WikidataGrammarCache) rather than six separate ones — confirmed live, a large reduction in
 Wikidata requests per language, which matters once building thousands of profiles rather than
 a couple dozen even though it made no visible difference at draft scale.
 """
@@ -52,6 +57,7 @@ _SCRIPT_FAMILY_TYPES: dict[str, str] = {
 # query; dict iteration order is used to build both the pattern and the cache shape.
 _PROPERTIES: dict[str, str] = {
     "writing_system": "P282",
+    "word_order": "P4132",
     "grammatical_case": "P2989",
     "tense": "P3103",
     "mood": "P3161",
@@ -110,7 +116,18 @@ class WikidataGrammarCache:
             self._cache[iso639_3] = raw
             self._write_cache()
         stored = self._cache[iso639_3]
-        return {kind: _dedupe(stored.get(kind, "").split("|")) if stored.get(kind) else [] for kind in _PROPERTIES}
+        return {
+            kind: _dedupe(stored.get(kind, "").split("|")) if stored.get(kind) else []
+            for kind in _PROPERTIES
+        }
+
+    def invalidate(self, iso639_3: str) -> None:
+        """Drops this language's cached entry so the next get() call re-queries Wikidata live
+        — needed when a NEW property is added to _PROPERTIES after this language was already
+        cached under the old shape (a plain cache hit would otherwise return [] for the new
+        property forever, since get() only queries live on a cache MISS). See
+        pipeline/backfill_sign_language_typology.py."""
+        self._cache.pop(iso639_3, None)
 
 
 def _dedupe(values: list[str]) -> list[str]:
@@ -155,7 +172,9 @@ def _query_combined(iso639_3: str) -> dict[str, str] | None:
             f"OPTIONAL {{ ?entity wdt:{property_id} ?{val_var} . "
             f'?{val_var} rdfs:label ?{label_var} . FILTER(LANG(?{label_var})="en") }}'
         )
-        select_expressions.append(f'(GROUP_CONCAT(DISTINCT ?{label_var}; separator="|") AS ?{kind})')
+        select_expressions.append(
+            f'(GROUP_CONCAT(DISTINCT ?{label_var}; separator="|") AS ?{kind})'
+        )
     pattern = " ".join(optional_blocks)
     return query_multi_with_macrolanguage_fallback(
         iso639_3, pattern, select_expressions, output_vars=list(_PROPERTIES)

@@ -897,18 +897,18 @@
     ],
     "closest": [
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
         "score": 33
       },
       {
-        "glottocode": "aust1271",
-        "name": "Auslan",
+        "glottocode": "braz1236",
+        "name": "L\u00edngua de Sinais Brasileira",
+        "score": 33
+      },
+      {
+        "glottocode": "chin1283",
+        "name": "Chinese Sign Language",
         "score": 33
       }
     ],
@@ -916,17 +916,17 @@
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "aust1271",
         "name": "Auslan",
-        "score": 33
+        "score": 100
+      },
+      {
+        "glottocode": "beng1239",
+        "name": "Kata Kolok",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -3702,44 +3702,43 @@
     "iso639_3": "ase",
     "name": "American Sign Language",
     "english_name": "American Sign Language",
-    "family": "other",
+    "family": "French Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "French Sign Language family",
       "American Sign Language"
     ],
     "closest": [
       {
-        "glottocode": "brit1235",
-        "name": "British Sign Language",
-        "score": 25
-      },
-      {
         "glottocode": "queb1245",
         "name": "Langue des Signes Qu\u00e9becoise",
-        "score": 25
+        "score": 15
       },
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
+        "glottocode": "fren1243",
+        "name": "Langue des Signes Fran\u00e7aise",
+        "score": 50
+      },
+      {
+        "glottocode": "gree1271",
+        "name": "Greek Sign Language",
+        "score": 50
       }
     ],
     "farthest": [
       {
-        "glottocode": "germ1281",
-        "name": "Deutsche Geb\u00e4rdensprache",
-        "score": 42
+        "glottocode": "adam1238",
+        "name": "Adamorobe Sign Language",
+        "score": 100
       },
       {
-        "glottocode": "vlaa1235",
-        "name": "Vlaamse Gebarentaal",
-        "score": 42
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
+        "score": 100
       },
       {
-        "glottocode": "braz1236",
-        "name": "L\u00edngua de Sinais Brasileira",
-        "score": 38
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -5703,31 +5702,31 @@
         "score": 33
       },
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
+        "glottocode": "braz1236",
+        "name": "L\u00edngua de Sinais Brasileira",
         "score": 33
       },
       {
-        "glottocode": "aust1271",
-        "name": "Auslan",
+        "glottocode": "chin1283",
+        "name": "Chinese Sign Language",
         "score": 33
       }
     ],
     "farthest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "aust1271",
         "name": "Auslan",
-        "score": 33
+        "score": 100
+      },
+      {
+        "glottocode": "beng1239",
+        "name": "Kata Kolok",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -6894,44 +6893,43 @@
     "iso639_3": "asf",
     "name": "Auslan",
     "english_name": "Auslan",
-    "family": "other",
+    "family": "BANZSL",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "BANZSL",
       "Auslan"
     ],
     "closest": [
       {
+        "glottocode": "brit1235",
+        "name": "British Sign Language",
+        "score": 50
+      },
+      {
+        "glottocode": "newz1236",
+        "name": "New Zealand Sign Language",
+        "score": 50
+      },
+      {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -11744,44 +11742,43 @@
     "iso639_3": "bqy",
     "name": "Kata Kolok",
     "english_name": "Kata Kolok",
-    "family": "other",
+    "family": "village sign language",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "village sign language",
       "Kata Kolok"
     ],
     "closest": [
       {
+        "glottocode": "urub1243",
+        "name": "Urub\u00fa Sign Language",
+        "score": 50
+      },
+      {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -14522,36 +14519,36 @@
     ],
     "closest": [
       {
-        "glottocode": "indi1237",
-        "name": "Indo-Pakistani Sign Language (Indian dialects)",
-        "score": 25
-      },
-      {
-        "glottocode": "paki1242",
-        "name": "Indo-Pakistani Sign Language (Karachi dialect)",
-        "score": 25
-      },
-      {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
+        "score": 33
+      },
+      {
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
+        "score": 33
+      },
+      {
+        "glottocode": "chin1283",
+        "name": "Chinese Sign Language",
         "score": 33
       }
     ],
     "farthest": [
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 38
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       },
       {
-        "glottocode": "brit1235",
-        "name": "British Sign Language",
-        "score": 38
+        "glottocode": "beng1239",
+        "name": "Kata Kolok",
+        "score": 100
       },
       {
-        "glottocode": "germ1281",
-        "name": "Deutsche Geb\u00e4rdensprache",
-        "score": 38
+        "glottocode": "dutc1253",
+        "name": "Nederlandse Gebarentaal",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -14663,44 +14660,43 @@
     "iso639_3": "bfi",
     "name": "British Sign Language",
     "english_name": "British Sign Language",
-    "family": "other",
+    "family": "BANZSL",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "BANZSL",
       "British Sign Language"
     ],
     "closest": [
       {
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 50
+      },
+      {
+        "glottocode": "newz1236",
+        "name": "New Zealand Sign Language",
+        "score": 50
+      },
+      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 25
-      },
-      {
-        "glottocode": "queb1245",
-        "name": "Langue des Signes Qu\u00e9becoise",
-        "score": 25
-      },
-      {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 83
       }
     ],
     "farthest": [
       {
-        "glottocode": "germ1281",
-        "name": "Deutsche Geb\u00e4rdensprache",
-        "score": 42
+        "glottocode": "adam1238",
+        "name": "Adamorobe Sign Language",
+        "score": 100
       },
       {
-        "glottocode": "vlaa1235",
-        "name": "Vlaamse Gebarentaal",
-        "score": 42
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
+        "score": 100
       },
       {
-        "glottocode": "braz1236",
-        "name": "L\u00edngua de Sinais Brasileira",
-        "score": 38
+        "glottocode": "beng1239",
+        "name": "Kata Kolok",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -19850,13 +19846,13 @@
     ],
     "closest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
+        "glottocode": "hong1241",
+        "name": "Hong Kong Sign Language",
+        "score": 17
       },
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
+        "glottocode": "adam1238",
+        "name": "Adamorobe Sign Language",
         "score": 33
       },
       {
@@ -19867,19 +19863,19 @@
     ],
     "farthest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
+      },
+      {
+        "glottocode": "beng1239",
+        "name": "Kata Kolok",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -26895,44 +26891,43 @@
     "iso639_3": "dse",
     "name": "Nederlandse Gebarentaal",
     "english_name": "Nederlandse Gebarentaal",
-    "family": "other",
+    "family": "Dutch-Belgian Sign Languages",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Dutch-Belgian Sign Languages",
       "Nederlandse Gebarentaal"
     ],
     "closest": [
       {
+        "glottocode": "vlaa1235",
+        "name": "Vlaamse Gebarentaal",
+        "score": 50
+      },
+      {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -30024,44 +30019,43 @@
     "iso639_3": "fse",
     "name": "Finnish Sign Language",
     "english_name": "Finnish Sign Language",
-    "family": "other",
+    "family": "Swedish Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Swedish Sign Language family",
       "Finnish Sign Language"
     ],
     "closest": [
       {
+        "glottocode": "port1277",
+        "name": "L\u00edngua Gestual Portuguesa",
+        "score": 50
+      },
+      {
+        "glottocode": "swed1236",
+        "name": "Svenska Teckenspr\u00e5ket",
+        "score": 50
+      },
+      {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -30420,44 +30414,43 @@
     "iso639_3": "fsl",
     "name": "Langue des Signes Fran\u00e7aise",
     "english_name": "Langue des Signes Fran\u00e7aise",
-    "family": "other",
+    "family": "French Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "French Sign Language family",
       "Langue des Signes Fran\u00e7aise"
     ],
     "closest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 50
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "gree1271",
+        "name": "Greek Sign Language",
+        "score": 50
+      },
+      {
+        "glottocode": "icel1236",
+        "name": "Icelandic Sign Language",
+        "score": 50
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
+      },
+      {
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -32150,44 +32143,43 @@
     "iso639_3": "gsg",
     "name": "Deutsche Geb\u00e4rdensprache",
     "english_name": "Deutsche Geb\u00e4rdensprache",
-    "family": "other",
+    "family": "German Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "German Sign Language family",
       "Deutsche Geb\u00e4rdensprache"
     ],
     "closest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
+        "glottocode": "isra1236",
+        "name": "Israeli Sign Language",
+        "score": 50
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "ital1275",
+        "name": "Lingua Italiana dei Segni",
+        "score": 60
       },
       {
-        "glottocode": "aust1271",
-        "name": "Auslan",
-        "score": 33
+        "glottocode": "braz1236",
+        "name": "L\u00edngua de Sinais Brasileira",
+        "score": 88
       }
     ],
     "farthest": [
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 42
+        "glottocode": "adam1238",
+        "name": "Adamorobe Sign Language",
+        "score": 100
       },
       {
-        "glottocode": "brit1235",
-        "name": "British Sign Language",
-        "score": 42
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
+        "score": 100
       },
       {
-        "glottocode": "queb1245",
-        "name": "Langue des Signes Qu\u00e9becoise",
-        "score": 42
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -33140,44 +33132,43 @@
     "iso639_3": "gss",
     "name": "Greek Sign Language",
     "english_name": "Greek Sign Language",
-    "family": "other",
+    "family": "French Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "French Sign Language family",
       "Greek Sign Language"
     ],
     "closest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 50
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "fren1243",
+        "name": "Langue des Signes Fran\u00e7aise",
+        "score": 50
+      },
+      {
+        "glottocode": "icel1236",
+        "name": "Icelandic Sign Language",
+        "score": 50
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
+      },
+      {
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -37586,44 +37577,43 @@
     "iso639_3": "hks",
     "name": "Hong Kong Sign Language",
     "english_name": "Hong Kong Sign Language",
-    "family": "other",
+    "family": "Chinese Sign Language",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Chinese Sign Language",
       "Hong Kong Sign Language"
     ],
     "closest": [
       {
+        "glottocode": "chin1283",
+        "name": "Chinese Sign Language",
+        "score": 17
+      },
+      {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -38916,44 +38906,43 @@
     "iso639_3": "icl",
     "name": "Icelandic Sign Language",
     "english_name": "Icelandic Sign Language",
-    "family": "other",
+    "family": "French Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "French Sign Language family",
       "Icelandic Sign Language"
     ],
     "closest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 50
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "fren1243",
+        "name": "Langue des Signes Fran\u00e7aise",
+        "score": 50
+      },
+      {
+        "glottocode": "gree1271",
+        "name": "Greek Sign Language",
+        "score": 50
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
+      },
+      {
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -39656,44 +39645,43 @@
     "iso639_3": "ins",
     "name": "Indo-Pakistani Sign Language (Indian dialects)",
     "english_name": "Indo-Pakistani Sign Language (Indian dialects)",
-    "family": "other",
+    "family": "Indo-Pakistani Sign Language",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Indo-Pakistani Sign Language",
       "Indo-Pakistani Sign Language (Indian dialects)"
     ],
     "closest": [
       {
-        "glottocode": "braz1236",
-        "name": "L\u00edngua de Sinais Brasileira",
-        "score": 25
-      },
-      {
         "glottocode": "paki1242",
         "name": "Indo-Pakistani Sign Language (Karachi dialect)",
-        "score": 25
+        "score": 38
       },
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
+        "glottocode": "braz1236",
+        "name": "L\u00edngua de Sinais Brasileira",
+        "score": 75
+      },
+      {
+        "glottocode": "amer1248",
+        "name": "American Sign Language",
+        "score": 88
       }
     ],
     "farthest": [
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 38
+        "glottocode": "adam1238",
+        "name": "Adamorobe Sign Language",
+        "score": 100
       },
       {
-        "glottocode": "brit1235",
-        "name": "British Sign Language",
-        "score": 38
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
+        "score": 100
       },
       {
-        "glottocode": "germ1281",
-        "name": "Deutsche Geb\u00e4rdensprache",
-        "score": 38
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -40006,44 +39994,43 @@
     "iso639_3": "ils",
     "name": "International Sign",
     "english_name": "International Sign",
-    "family": "other",
+    "family": "sign language",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "sign language",
       "International Sign"
     ],
     "closest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -40298,44 +40285,43 @@
     "iso639_3": "isg",
     "name": "Irish Sign Language",
     "english_name": "Irish Sign Language",
-    "family": "other",
+    "family": "French Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "French Sign Language family",
       "Irish Sign Language"
     ],
     "closest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 50
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "fren1243",
+        "name": "Langue des Signes Fran\u00e7aise",
+        "score": 50
+      },
+      {
+        "glottocode": "gree1271",
+        "name": "Greek Sign Language",
+        "score": 50
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
+      },
+      {
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -41190,44 +41176,43 @@
     "iso639_3": "isr",
     "name": "Israeli Sign Language",
     "english_name": "Israeli Sign Language",
-    "family": "other",
+    "family": "German Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "German Sign Language family",
       "Israeli Sign Language"
     ],
     "closest": [
       {
+        "glottocode": "germ1281",
+        "name": "Deutsche Geb\u00e4rdensprache",
+        "score": 50
+      },
+      {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -41386,44 +41371,43 @@
     "iso639_3": "ise",
     "name": "Lingua Italiana dei Segni",
     "english_name": "Lingua Italiana dei Segni",
-    "family": "other",
+    "family": "French Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "French Sign Language family",
       "Lingua Italiana dei Segni"
     ],
     "closest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
+        "glottocode": "fren1243",
+        "name": "Langue des Signes Fran\u00e7aise",
+        "score": 50
       },
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
+        "glottocode": "gree1271",
+        "name": "Greek Sign Language",
+        "score": 50
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "icel1236",
+        "name": "Icelandic Sign Language",
+        "score": 50
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
+      },
+      {
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -42337,44 +42321,43 @@
     "iso639_3": "jsl",
     "name": "Nihon Shuwa (Japanese Sign Language)",
     "english_name": "Nihon Shuwa (Japanese Sign Language)",
-    "family": "other",
+    "family": "Japanese Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Japanese Sign Language family",
       "Nihon Shuwa (Japanese Sign Language)"
     ],
     "closest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -43173,44 +43156,43 @@
     "iso639_3": "jos",
     "name": "Lughat al-Isharat al-Lubnaniya",
     "english_name": "Lughat al-Isharat al-Lubnaniya",
-    "family": "other",
+    "family": "Levantine Arabic Sign Language",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Levantine Arabic Sign Language",
       "Lughat al-Isharat al-Lubnaniya"
     ],
     "closest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -48156,44 +48138,43 @@
     "iso639_3": "xki",
     "name": "Kenyan Sign Language",
     "english_name": "Kenyan Sign Language",
-    "family": "other",
+    "family": "human language",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "human language",
       "Kenyan Sign Language"
     ],
     "closest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -51685,31 +51666,31 @@
         "score": 33
       },
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
         "score": 33
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
+        "glottocode": "braz1236",
+        "name": "L\u00edngua de Sinais Brasileira",
         "score": 33
       }
     ],
     "farthest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
+      },
+      {
+        "glottocode": "beng1239",
+        "name": "Kata Kolok",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -73579,44 +73560,43 @@
     "iso639_3": "nzs",
     "name": "New Zealand Sign Language",
     "english_name": "New Zealand Sign Language",
-    "family": "other",
+    "family": "BANZSL",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "BANZSL",
       "New Zealand Sign Language"
     ],
     "closest": [
       {
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 50
+      },
+      {
+        "glottocode": "brit1235",
+        "name": "British Sign Language",
+        "score": 50
+      },
+      {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -77584,44 +77564,43 @@
     "iso639_3": "nsl",
     "name": "Norsk Tegnspr\u00e5k",
     "english_name": "Norsk Tegnspr\u00e5k",
-    "family": "other",
+    "family": "French Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "French Sign Language family",
       "Norsk Tegnspr\u00e5k"
     ],
     "closest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 50
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "fren1243",
+        "name": "Langue des Signes Fran\u00e7aise",
+        "score": 50
+      },
+      {
+        "glottocode": "gree1271",
+        "name": "Greek Sign Language",
+        "score": 50
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
+      },
+      {
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -83156,44 +83135,43 @@
     "iso639_3": "pks",
     "name": "Indo-Pakistani Sign Language (Karachi dialect)",
     "english_name": "Indo-Pakistani Sign Language (Karachi dialect)",
-    "family": "other",
+    "family": "Indo-Pakistani Sign Language",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Indo-Pakistani Sign Language",
       "Indo-Pakistani Sign Language (Karachi dialect)"
     ],
     "closest": [
       {
-        "glottocode": "braz1236",
-        "name": "L\u00edngua de Sinais Brasileira",
-        "score": 25
-      },
-      {
         "glottocode": "indi1237",
         "name": "Indo-Pakistani Sign Language (Indian dialects)",
-        "score": 25
+        "score": 38
       },
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
+        "glottocode": "braz1236",
+        "name": "L\u00edngua de Sinais Brasileira",
+        "score": 75
+      },
+      {
+        "glottocode": "amer1248",
+        "name": "American Sign Language",
+        "score": 88
       }
     ],
     "farthest": [
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 38
+        "glottocode": "adam1238",
+        "name": "Adamorobe Sign Language",
+        "score": 100
       },
       {
-        "glottocode": "brit1235",
-        "name": "British Sign Language",
-        "score": 38
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
+        "score": 100
       },
       {
-        "glottocode": "germ1281",
-        "name": "Deutsche Geb\u00e4rdensprache",
-        "score": 38
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -85682,44 +85660,43 @@
     "iso639_3": "psd",
     "name": "Plains-Indians Sign Language",
     "english_name": "Plains-Indians Sign Language",
-    "family": "other",
+    "family": "American Indian Sign Language",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "American Indian Sign Language",
       "Plains-Indians Sign Language"
     ],
     "closest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -86326,44 +86303,43 @@
     "iso639_3": "psr",
     "name": "L\u00edngua Gestual Portuguesa",
     "english_name": "L\u00edngua Gestual Portuguesa",
-    "family": "other",
+    "family": "Swedish Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Swedish Sign Language family",
       "L\u00edngua Gestual Portuguesa"
     ],
     "closest": [
       {
+        "glottocode": "finn1310",
+        "name": "Finnish Sign Language",
+        "score": 50
+      },
+      {
+        "glottocode": "swed1236",
+        "name": "Svenska Teckenspr\u00e5ket",
+        "score": 50
+      },
+      {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -87611,44 +87587,43 @@
     "iso639_3": "fcs",
     "name": "Langue des Signes Qu\u00e9becoise",
     "english_name": "Langue des Signes Qu\u00e9becoise",
-    "family": "other",
+    "family": "American Sign Language",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "American Sign Language",
       "Langue des Signes Qu\u00e9becoise"
     ],
     "closest": [
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 25
-      },
-      {
-        "glottocode": "brit1235",
-        "name": "British Sign Language",
-        "score": 25
+        "score": 15
       },
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
+      },
+      {
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
+        "score": 100
       }
     ],
     "farthest": [
       {
-        "glottocode": "germ1281",
-        "name": "Deutsche Geb\u00e4rdensprache",
-        "score": 42
+        "glottocode": "adam1238",
+        "name": "Adamorobe Sign Language",
+        "score": 100
       },
       {
-        "glottocode": "vlaa1235",
-        "name": "Vlaamse Gebarentaal",
-        "score": 42
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
+        "score": 100
       },
       {
-        "glottocode": "braz1236",
-        "name": "L\u00edngua de Sinais Brasileira",
-        "score": 38
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -89612,44 +89587,43 @@
     "iso639_3": "rsl",
     "name": "Russian Sign Language",
     "english_name": "Russian Sign Language",
-    "family": "other",
+    "family": "French Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "French Sign Language family",
       "Russian Sign Language"
     ],
     "closest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 50
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "fren1243",
+        "name": "Langue des Signes Fran\u00e7aise",
+        "score": 50
+      },
+      {
+        "glottocode": "gree1271",
+        "name": "Greek Sign Language",
+        "score": 50
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
+      },
+      {
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -97448,44 +97422,43 @@
     "iso639_3": "ssp",
     "name": "Lengua de Se\u00f1as Espa\u00f1ola",
     "english_name": "Lengua de Se\u00f1as Espa\u00f1ola",
-    "family": "other",
+    "family": "Spanish Sign language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Spanish Sign language family",
       "Lengua de Se\u00f1as Espa\u00f1ola"
     ],
     "closest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -99245,44 +99218,43 @@
     "iso639_3": "swl",
     "name": "Svenska Teckenspr\u00e5ket",
     "english_name": "Svenska Teckenspr\u00e5ket",
-    "family": "other",
+    "family": "Swedish Sign Language family",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Swedish Sign Language family",
       "Svenska Teckenspr\u00e5ket"
     ],
     "closest": [
       {
+        "glottocode": "finn1310",
+        "name": "Finnish Sign Language",
+        "score": 50
+      },
+      {
+        "glottocode": "port1277",
+        "name": "L\u00edngua Gestual Portuguesa",
+        "score": 50
+      },
+      {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -100137,44 +100109,43 @@
     "iso639_3": "tss",
     "name": "Taiwanese Sign Language (Ziran Shouyu)",
     "english_name": "Taiwanese Sign Language (Ziran Shouyu)",
-    "family": "other",
+    "family": "Japanese Sign Language",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Japanese Sign Language",
       "Taiwanese Sign Language (Ziran Shouyu)"
     ],
     "closest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -101098,31 +101069,31 @@
         "score": 33
       },
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
         "score": 33
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
+        "glottocode": "braz1236",
+        "name": "L\u00edngua de Sinais Brasileira",
         "score": 33
       }
     ],
     "farthest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
+      },
+      {
+        "glottocode": "beng1239",
+        "name": "Kata Kolok",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -103614,31 +103585,31 @@
         "score": 33
       },
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
         "score": 33
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
+        "glottocode": "braz1236",
+        "name": "L\u00edngua de Sinais Brasileira",
         "score": 33
       }
     ],
     "farthest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
+      },
+      {
+        "glottocode": "beng1239",
+        "name": "Kata Kolok",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -107695,31 +107666,31 @@
         "score": 33
       },
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
         "score": 33
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
+        "glottocode": "braz1236",
+        "name": "L\u00edngua de Sinais Brasileira",
         "score": 33
       }
     ],
     "farthest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
+      },
+      {
+        "glottocode": "beng1239",
+        "name": "Kata Kolok",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -108824,31 +108795,31 @@
         "score": 33
       },
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
         "score": 33
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
+        "glottocode": "braz1236",
+        "name": "L\u00edngua de Sinais Brasileira",
         "score": 33
       }
     ],
     "farthest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
-      },
-      {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
+      },
+      {
+        "glottocode": "beng1239",
+        "name": "Kata Kolok",
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -110048,44 +110019,43 @@
     "iso639_3": "uks",
     "name": "Urub\u00fa Sign Language",
     "english_name": "Urub\u00fa Sign Language",
-    "family": "other",
+    "family": "village sign language",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "village sign language",
       "Urub\u00fa Sign Language"
     ],
     "closest": [
       {
+        "glottocode": "beng1239",
+        "name": "Kata Kolok",
+        "score": 50
+      },
+      {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
-      },
-      {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "farthest": [
       {
         "glottocode": "adam1238",
         "name": "Adamorobe Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "amer1248",
         "name": "American Sign Language",
-        "score": 33
+        "score": 100
       },
       {
         "glottocode": "arge1236",
         "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "score": 100
       }
     ],
     "is_sign_language": true
@@ -111094,44 +111064,43 @@
     "iso639_3": "vgt",
     "name": "Vlaamse Gebarentaal",
     "english_name": "Vlaamse Gebarentaal",
-    "family": "other",
+    "family": "Dutch-Belgian Sign Languages",
     "classification_path": [
-      "other",
-      "Sign Languages",
+      "Dutch-Belgian Sign Languages",
       "Vlaamse Gebarentaal"
     ],
     "closest": [
       {
-        "glottocode": "adam1238",
-        "name": "Adamorobe Sign Language",
-        "score": 33
+        "glottocode": "dutc1253",
+        "name": "Nederlandse Gebarentaal",
+        "score": 50
       },
       {
-        "glottocode": "arge1236",
-        "name": "Lengua de Se\u00f1as Argentina",
-        "score": 33
+        "glottocode": "braz1236",
+        "name": "L\u00edngua de Sinais Brasileira",
+        "score": 88
       },
       {
-        "glottocode": "aust1271",
-        "name": "Auslan",
-        "score": 33
+        "glottocode": "indi1237",
+        "name": "Indo-Pakistani Sign Language (Indian dialects)",
+        "score": 88
       }
     ],
     "farthest": [
       {
-        "glottocode": "amer1248",
-        "name": "American Sign Language",
-        "score": 42
+        "glottocode": "adam1238",
+        "name": "Adamorobe Sign Language",
+        "score": 100
       },
       {
-        "glottocode": "brit1235",
-        "name": "British Sign Language",
-        "score": 42
+        "glottocode": "arge1236",
+        "name": "Lengua de Se\u00f1as Argentina",
+        "score": 100
       },
       {
-        "glottocode": "germ1281",
-        "name": "Deutsche Geb\u00e4rdensprache",
-        "score": 42
+        "glottocode": "aust1271",
+        "name": "Auslan",
+        "score": 100
       }
     ],
     "is_sign_language": true

@@ -9,6 +9,7 @@ by ISO 639-3 code.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 
 from pipeline import uriel_vectors
@@ -128,8 +129,10 @@ def build_profile(
 
     claimed_parameter_ids: set[str] = set()
     grammar = wikidata.get(iso639_3)
-    classification = _build_classification(wals_lang, iso639_3, effective_glottocode, family_tree_cache)
-    syntax = _build_syntax(wals_lang, wals, iso639_3, claimed_parameter_ids)
+    classification = _build_classification(
+        wals_lang, iso639_3, effective_glottocode, family_tree_cache
+    )
+    syntax = _build_syntax(wals_lang, wals, iso639_3, claimed_parameter_ids, grammar)
     morphology = _build_morphology(wals_lang, wals, grammar, claimed_parameter_ids)
     writing_system = _build_writing_system(
         wals_lang, wals, grammar, claimed_parameter_ids, iso639_3, cldr
@@ -142,7 +145,11 @@ def build_profile(
     vocabulary_origin = None
     if vocabulary_sources is not None:
         vocabulary_origin = build_vocabulary_origin(
-            iso639_3, vocabulary_sources.wold, vocabulary_sources.etymology_db, wals, vocabulary_sources.name_to_iso3
+            iso639_3,
+            vocabulary_sources.wold,
+            vocabulary_sources.etymology_db,
+            wals,
+            vocabulary_sources.name_to_iso3,
         )
 
     return LanguageProfile(
@@ -165,7 +172,11 @@ def build_profile(
 
 
 def build_group_profile(
-    glottocode: str, name: str, wikidata_qid: str, macroarea: str | None, coordinates: tuple[float, float] | None
+    glottocode: str,
+    name: str,
+    wikidata_qid: str,
+    macroarea: str | None,
+    coordinates: tuple[float, float] | None,
 ) -> LanguageProfile:
     """Builds a "group"-level entry — a family or macrolanguage grouping rather than a single
     speakable variety (see schema.LanguageProfile.comparison_kind). Only `classification` is
@@ -183,8 +194,14 @@ def build_group_profile(
     nodes = [ClassificationNode(name=n) for n in reversed(deep_path)]
     nodes.append(ClassificationNode(name=name, glottocode=glottocode))
     nodes = _dedupe_consecutive(nodes)
-    classification = Classification(path=nodes, genetic_vector=None, path_source="wikidata" if deep_path else "wals")
-    geography = Geography(primary_region=macroarea or "Unknown", coordinates=coordinates) if coordinates else None
+    classification = Classification(
+        path=nodes, genetic_vector=None, path_source="wikidata" if deep_path else "wals"
+    )
+    geography = (
+        Geography(primary_region=macroarea or "Unknown", coordinates=coordinates)
+        if coordinates
+        else None
+    )
 
     return LanguageProfile(
         glottocode=glottocode,
@@ -199,16 +216,22 @@ def build_group_profile(
 
 
 def _build_classification(
-    wals_lang: dict[str, str], iso639_3: str, effective_glottocode: str, family_tree_cache: FamilyTreeCache
+    wals_lang: dict[str, str],
+    iso639_3: str,
+    effective_glottocode: str,
+    family_tree_cache: FamilyTreeCache,
 ) -> Classification:
     genetic_vector = uriel_vectors.get_genetic_vector(iso639_3)
     wals_family = wals_lang.get("Family", "").strip()
+    wals_genus = wals_lang.get("Genus", "").strip()
 
     deep_path = family_tree_cache.get(iso639_3) or []
-    if deep_path and _root_matches_wals_family(deep_path[-1], wals_family):
+    if deep_path and _root_matches_wals_family(deep_path[-1], wals_family, wals_genus):
         nodes = [ClassificationNode(name=name) for name in reversed(deep_path)]
         nodes.append(ClassificationNode(name=wals_lang["Name"], glottocode=effective_glottocode))
-        return Classification(path=_dedupe_consecutive(nodes), genetic_vector=genetic_vector, path_source="wikidata")
+        return Classification(
+            path=_dedupe_consecutive(nodes), genetic_vector=genetic_vector, path_source="wikidata"
+        )
     # Wikidata's P279 chain sometimes encodes a disputed/alternative classification scheme
     # alongside the mainstream one (confirmed live: Mandarin's chain ending at "Dené–Caucasian"
     # instead of Sino-Tibetan, Korean's at the disputed "Altaic" hypothesis, French's at an
@@ -225,7 +248,9 @@ def _build_classification(
         if value:
             path.append(ClassificationNode(name=value))
     path.append(ClassificationNode(name=wals_lang["Name"], glottocode=effective_glottocode))
-    return Classification(path=_dedupe_consecutive(path), genetic_vector=genetic_vector, path_source="wals")
+    return Classification(
+        path=_dedupe_consecutive(path), genetic_vector=genetic_vector, path_source="wals"
+    )
 
 
 def _dedupe_consecutive(nodes: list[ClassificationNode]) -> list[ClassificationNode]:
@@ -247,17 +272,34 @@ def _dedupe_consecutive(nodes: list[ClassificationNode]) -> list[ClassificationN
     return result
 
 
-def _root_matches_wals_family(wikidata_root: str, wals_family: str) -> bool:
+def _root_matches_wals_family(wikidata_root: str, wals_family: str, wals_genus: str) -> bool:
     """Loose match (case-insensitive, either containing the other) — Wikidata and WALS don't
     always format a family name identically (e.g. "Afro-Asiatic" vs "Afroasiatic")."""
     if not wals_family:
         return True  # nothing to validate against (WALS had no Family value) — trust Wikidata
+    if wals_genus == "Sign Languages" and wals_family.lower() == "other":
+        # WALS's Family column is the literal placeholder "other" for every single one of its
+        # 40 Sign Languages genus rows — it has no real top-level family classification for
+        # sign languages at all, unlike Creoles and Pidgins (which also uses "other", but
+        # deliberately: a creole genuinely has no single lineage to validate a root against).
+        # Sign languages DO have real, specific documented genealogies (BANZSL unites British/
+        # Australian/NZ Sign Language; a "French Sign Language family" unites French/American/
+        # Quebec Sign Language — confirmed live via Wikidata's own P279 chain), so there's
+        # nothing for this placeholder to usefully validate against either; trust Wikidata the
+        # same as the empty-string case above. Without this, every sign language fell back to
+        # the flat, non-discriminating ["other", "Sign Languages", <name>] WALS path, making
+        # family distance (and therefore the overall score) identical for nearly every pair.
+        return True
     a, b = wikidata_root.lower().replace("-", ""), wals_family.lower().replace("-", "")
     return a in b or b in a
 
 
 def _build_syntax(
-    wals_lang: dict[str, str], wals: WalsData, iso639_3: str, claimed: set[str]
+    wals_lang: dict[str, str],
+    wals: WalsData,
+    iso639_3: str,
+    claimed: set[str],
+    grammar: dict[str, list[str]],
 ) -> SyntaxData | None:
     rows = wals.values_for(wals_lang["ID"], name_contains=("order of",))
     claimed.update(row["Parameter_ID"] for row in rows)
@@ -269,10 +311,41 @@ def _build_syntax(
         )
         for row in rows
     ]
+    # Wikidata's P4132 ("linguistic typology") — see wikidata_lookup.py's module docstring for
+    # why this is fetched at all: it's the only source of basic word order for the Sign
+    # Languages genus, which WALS's own Ch.81 ("Order of Subject, Object and Verb") never
+    # covers. Normalized to WALS's own SVO/SOV/... abbreviation (rather than Wikidata's spelled
+    # -out "subject–verb–object") so the two sources are directly comparable/matchable by
+    # compareWordOrder's exact-value check, in case a profile ever had both.
+    for label in grammar.get("word_order", []):
+        normalized = _normalize_word_order_label(label)
+        if normalized is not None:
+            features.append(
+                WordOrderFeature(
+                    wals_code="wikidata-P4132", name="Basic word order", value=normalized
+                )
+            )
     vector = uriel_vectors.get_syntactic_vector(iso639_3)
     if not features and vector is None:
         return None
     return SyntaxData(features=features, syntactic_vector=vector)
+
+
+_WORD_ORDER_TERMS: dict[str, str] = {"subject": "S", "object": "O", "verb": "V"}
+
+
+def _normalize_word_order_label(label: str) -> str | None:
+    """Converts Wikidata's spelled-out linguistic-typology label (e.g.
+    "subject–verb–object") to WALS's own short form ("SVO"). Returns None, not the raw label,
+    for anything unrecognized (e.g. "no dominant order") — never guessed, since an
+    unnormalized value could never exact-match a real WALS code anyway."""
+    parts = re.split(r"[‐–—-]", label.strip().lower())
+    if len(parts) != 3:
+        return None
+    letters = [_WORD_ORDER_TERMS.get(part.strip()) for part in parts]
+    if any(letter is None for letter in letters):
+        return None
+    return "".join(letter for letter in letters if letter is not None)
 
 
 def _build_morphology(
@@ -284,7 +357,9 @@ def _build_morphology(
     rows = wals.values_for(wals_lang["ID"], name_contains=("tense", "aspect", "perfect", "case"))
     claimed.update(row["Parameter_ID"] for row in rows)
     categories = [
-        TenseAspectCategory(wals_code=row["Parameter_ID"], name=wals.param_name(row["Parameter_ID"]))
+        TenseAspectCategory(
+            wals_code=row["Parameter_ID"], name=wals.param_name(row["Parameter_ID"])
+        )
         for row in rows
     ]
     grammatical_cases = grammar["grammatical_case"]
@@ -360,7 +435,9 @@ def attach_sample_glyphs(scripts: list[Script], iso639_3: str, cldr: CldrData) -
 
 def wals_script_type_for(code_text: str) -> str:
     lowered = code_text.lower()
-    return next((t for keyword, t in _WALS_SCRIPT_TYPE_KEYWORDS.items() if keyword in lowered), "other")
+    return next(
+        (t for keyword, t in _WALS_SCRIPT_TYPE_KEYWORDS.items() if keyword in lowered), "other"
+    )
 
 
 def _build_other_typological_features(

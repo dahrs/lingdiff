@@ -8,10 +8,7 @@
   "classification": {
     "path": [
       {
-        "name": "other"
-      },
-      {
-        "name": "Sign Languages"
+        "name": "Indo-Pakistani Sign Language"
       },
       {
         "name": "Indo-Pakistani Sign Language (Indian dialects)",
@@ -3738,7 +3735,7 @@
       0.0,
       0.0
     ],
-    "path_source": "wals"
+    "path_source": "wikidata"
   },
   "phonology": {
     "phonemes": [],
