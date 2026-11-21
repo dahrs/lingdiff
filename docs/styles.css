@@ -240,16 +240,23 @@ main {
   padding: 0.25rem 0;
 }
 
+/* Box-sizing + the same 0.8rem horizontal inset as .picker-option below, at width: 100% of
+ * the same .picker-panel parent — this is what keeps the search box's text flush with every
+ * row's text underneath it, at any viewport width (a margin-based inset here, a different
+ * padding-based one on .picker-option, was the actual cause of the two drifting apart,
+ * confirmed live, most visibly on a narrow/phone-width screen). */
 .picker-search {
   position: sticky;
   top: 0;
   z-index: 1;
   display: block;
-  width: calc(100% - 1.2rem);
-  margin: 0 0.6rem 0.4rem;
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 0 0.4rem;
+  padding: 0.5rem 0.8rem;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
   background: var(--bg);
   color: var(--fg);
   font-size: 0.95rem;
@@ -258,7 +265,7 @@ main {
 
 .picker-search:focus {
   outline: none;
-  border-color: var(--accent);
+  background: var(--only-a-bg);
 }
 
 .picker-no-matches {
@@ -269,37 +276,23 @@ main {
   font-style: italic;
 }
 
+/* One flat, alphabetically-sorted list (see languagePicker.js) — every row gets the exact
+ * same weight/size/color. Previously nested by family/macrolanguage with per-depth styling,
+ * which stopped being legible as "grouping" at ~2444 entries and just read as an inconsistent
+ * mix of bold and greyed-out rows in a non-alphabetical order. */
 .picker-option {
   padding: 0.35rem 0.8rem;
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: var(--fg);
 }
 
 .picker-option:hover {
   background: var(--only-a-bg);
-}
-
-/* Main languages & family/macrolanguage groups: bold, full prominence. Each further nesting
- * level (dialects, and dialects-of-dialects) gets progressively lighter and smaller — see
- * languagePicker.js's buildLanguageTree for how depth is determined. */
-.picker-option.depth-0 {
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--fg);
-}
-
-.picker-option.depth-1 {
-  font-weight: 400;
-  font-size: 0.92rem;
-  color: var(--fg);
-}
-
-.picker-option.depth-2 {
-  font-weight: 300;
-  font-size: 0.85rem;
-  color: var(--muted);
 }
 
 .vs {

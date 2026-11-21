@@ -149,19 +149,22 @@ isn't reachable once Pages is enabled, regardless of relative-path tricks.
   unrelated under prefix-matching because Egyptian Arabic's WALS-fallback path has no
   separate "Arabic" step at all — it jumps straight from "Semitic" to the specific variety).
 - `languagePicker.js` — the picker itself: a custom listbox (not a native `<select>`, which
-  can't reliably style `<option>` font-weight/indentation across browsers) that **nests each
-  language under its macrolanguage/family** rather than listing everything alphabetically
-  flat. Matches on word-boundaries within path elements, not exact position or plain
-  substring (plain substring wrongly nests German's Germanic siblings *under* German itself,
-  since "german" is a literal substring of "Germanic languages" — word-boundary matching
-  requires "german" to be a whole word in some element, which it isn't there, but "Arabic" is
-  a whole word in "Arabic (Egyptian)"). Falls back to checking the entry's own leaf name only
-  when nothing at all matched further up its ancestor chain, for sources sparse enough to
-  skip a level entirely (same Egyptian Arabic case as above). Its panel also opens with a
-  type-to-search box, auto-focused — scrolling ~2400 entries by hand wasn't practical once
-  broad coverage landed. Matches by word-prefix (typing "Beirut" finds "Arabic (Beirut)", not
-  just names literally starting with it) against the name or the ISO 639-3 code; Enter
-  selects the first visible match, Escape closes.
+  can't reliably style `<option>` padding/overflow across browsers). **Flat, alphabetical,
+  one uniform row style** — originally nested each language under its macrolanguage/family
+  (word-boundary matching against classification-path elements, with a leaf-name fallback for
+  sparse sources), but at ~2444 entries that stopped being legible as "grouped by family": it
+  just read as an inconsistent mix of bold/grey rows in a non-alphabetical order, and the same
+  non-alphabetical order carried into the type-to-search results below (which just filtered
+  that same pre-nested list), confirmed as user-reported confusion. Each row still carries its
+  full classification path as a hover tooltip for anyone who wants the family context, just
+  not as visual nesting. Its panel also opens with a type-to-search box, auto-focused —
+  scrolling ~2400 entries by hand wasn't practical once broad coverage landed. Matches by
+  word-prefix (typing "Beirut" finds "Arabic (Beirut)", not just names literally starting with
+  it) against the name or the ISO 639-3 code; Enter selects the first visible (alphabetical)
+  match, Escape closes. The search box's own CSS now shares `.picker-option`'s exact
+  horizontal padding (0.8rem) at `width: 100%` instead of a separate margin-based inset —
+  the two insets not matching was why the search box drifted out of alignment with the rows
+  under it, most visibly on a narrow/phone-width screen (confirmed live).
 - `diffView.js` — the reusable "shared / only-in-A / only-in-B" renderer behind the
   public-friendly requirement (phonemes, grammatical categories, writing-system scripts, etc.
   all reduce to this)
