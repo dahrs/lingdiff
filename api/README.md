@@ -45,8 +45,30 @@ Then: `curl "http://127.0.0.1:8000/compare?a=fra&b=ita"`. Interactive docs at
 
 ## Deploying
 
-Not deployed anywhere yet — this is the application code only. Any host that can run a
-Python ASGI app works (a plain VM with `uvicorn`/`gunicorn`, Fly.io, Render, Railway, ...); it
-needs read access to `../docs/data/` (the two directories can be deployed together, or
-`docs/data/` can be synced/mounted separately) and no secrets or external services of any
-kind — the whole thing is a pure function over already-public, already-committed JSON.
+**Currently self-hosted on the same Raspberry Pi this repo lives on** — no cloud account, no
+extra cost. Two systemd **user** services (not committed here — they're host-specific, with
+hardcoded `/home/dahrs/...` paths; this section exists so the setup is reproducible elsewhere,
+not because the files themselves belong in the repo):
+
+- `~/.config/systemd/user/lingdiff-api.service` — runs `uv run uvicorn app.main:app --host
+  127.0.0.1 --port 8000` from this directory, `Restart=on-failure`.
+- `~/.config/systemd/user/lingdiff-api-tunnel.service` — runs `cloudflared tunnel --url
+  http://127.0.0.1:8000`, a free Cloudflare "quick tunnel" that exposes the local service
+  publicly over HTTPS with no account, no domain, and no router/port-forwarding config needed.
+
+Both `systemctl --user enable --now`'d, and `loginctl enable-linger dahrs` (no sudo needed —
+a user can enable linger for their own account) makes them survive logout and reboot without
+an active login session, same as a system-level service would, without needing root.
+
+**The quick tunnel's URL is random and changes every time it restarts** (reboot, crash, or a
+manual restart) — that's the deliberate tradeoff for zero account setup; Cloudflare's own docs
+say quick tunnels carry no uptime guarantee and aren't meant for production use long-term.
+Upgrading to a stable, fixed URL needs a **named** tunnel instead, which needs a Cloudflare
+account with a domain added to it (`cloudflared tunnel login` + `cloudflared tunnel create` +
+`cloudflared tunnel route dns`) — not set up, since there's no domain for this project yet.
+
+For a from-scratch deploy elsewhere (not on this Pi): any host that can run a Python ASGI app
+works (a plain VM with `uvicorn`/`gunicorn`, Fly.io, Render, Railway, ...); it needs read
+access to `../docs/data/` (the two directories can be deployed together, or `docs/data/` can
+be synced/mounted separately) and no secrets or external services of any kind — the whole
+thing is a pure function over already-public, already-committed JSON.
