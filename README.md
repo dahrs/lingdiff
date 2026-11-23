@@ -321,6 +321,41 @@ real data to confirm the actual math and tree structure, not just that the JS pa
 open the real page yourself before trusting it works end-to-end — a logic re-implementation
 confirms the algorithm, not that the DOM renders it correctly.
 
+## API
+
+`api/` — a small, separately-deployed FastAPI service: `GET /compare?a=<code>&b=<code>` (ISO
+639-3 or glottocode, either side) returns the exact same comparison the website computes
+(family distance, phonology, word order, morphology, writing system, vocabulary origin — full
+score + shared/only-A/only-B lists per category), as JSON, for anyone who wants the data
+without the page. See `api/README.md` for run/deploy instructions and `api/app/diff.py`'s
+docstring for why it exists as its own thing.
+
+**A third hand-maintained port of the same comparison logic** (`docs/compare.js` for the
+browser, `pipeline/scoring.py`'s score-only subset for offline nearest-neighbor ranking, now
+this one, in full, for the API) — no shared implementation between any of the three (no
+Node/JS runtime available in this project's pipeline/development environment to unify the
+first two; the API is plain Python specifically so it's fully testable here, unlike a
+JS-based serverless function would have been). If you change the comparison logic, change it
+in all three that need it. Verified live against the real dataset: French vs. Italian through
+the API gives the exact same shared/only-A/only-B letter counts and overall score (38,
+"moderately different") as the from-scratch verification done for the writing-system feature
+above; 404 for an unrecognized code, 422 for a missing required parameter, CORS enabled for any
+origin (read-only, no auth, nothing sensitive in the response).
+
+**Deliberately has no dependency on `pipeline/`** (its own `pyproject.toml`/`.venv`, needing
+only `fastapi`/`uvicorn`/`pydantic`) — same reasoning as this repo's own pipeline venv being
+independent of a frontend toolchain, just one level further: a comparison API has no business
+pulling in `pycldf`/`lang2vec`/`panphon` just to read some JSON files and run set arithmetic
+over them. Reads `docs/data/` directly (the same files the published site serves) rather than
+importing `pipeline.schema` — crossing the API boundary with plain dicts, validated only on
+the way *out* through `app/schemas.py`'s Pydantic response models.
+
+**Not deployed anywhere yet** — this is the application code only, written and verified by
+running the server locally (`uv run uvicorn app.main:app`) and `curl`-ing it against the real
+dataset. Any host that runs a Python ASGI app would work; actually standing up a public
+instance (choosing a host, a domain, whether/how to rate-limit) is a separate decision for
+whenever that's wanted.
+
 ## Vocabulary origin
 
 `LanguageProfile.vocabulary_origin` (see `schema.VocabularyOrigin`) — an estimated
